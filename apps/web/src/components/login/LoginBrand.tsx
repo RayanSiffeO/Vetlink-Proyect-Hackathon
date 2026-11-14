@@ -1,5 +1,30 @@
-import { ShieldCheck } from 'lucide-react';
+import { ClipboardList, FileSearch, ShieldCheck, StickyNote } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { CatMascot } from './CatMascot';
+
+interface Pillar {
+  icon: LucideIcon;
+  title: string;
+  text: string;
+}
+
+const PILLARS: Pillar[] = [
+  {
+    icon: FileSearch,
+    title: 'Word, Excel, JSON y CSV → una ficha única',
+    text: 'La historia del paciente en un registro canónico, sin copiar y pegar.',
+  },
+  {
+    icon: ClipboardList,
+    title: 'Alertas y procedencia',
+    text: 'Cada alerta ordenada por lo que no puede esperar, con su fuente a la vista.',
+  },
+  {
+    icon: StickyNote,
+    title: 'Briefing antes de la visita',
+    text: 'El especialista lee el caso antes de entrar; la consulta empieza informada.',
+  },
+];
 
 function BrandLockup() {
   return (
@@ -25,43 +50,55 @@ function HeroGlow() {
   );
 }
 
-function HeroCopy() {
+function PillarCard({ pillar }: { pillar: Pillar }) {
+  const Icon = pillar.icon;
   return (
-    <div className="mt-10 max-w-[560px] lg:mt-[clamp(24px,6vh,72px)]">
-      <h1 className="text-[clamp(34px,4.6vw,64px)] font-medium leading-[1.06] tracking-[-0.03em] text-ink">
-        <span className="block">Menos papeleo.</span>
-        <span className="block">Más tiempo</span>
-        <span className="block">
-          para <span className="text-indigo-700">cuidar</span>.
-        </span>
-      </h1>
-      <p className="mt-5 max-w-[420px] text-[13.5px] leading-6 text-para">
-        La historia completa de tu paciente, con alertas y briefing, antes de la consulta.
-      </p>
-    </div>
+    <li className="glass flex items-start gap-3 rounded-[20px] px-4 py-3.5">
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/45 bg-white/40 text-indigo-700">
+        <Icon className="h-[17px] w-[17px]" aria-hidden="true" />
+      </span>
+      <span className="min-w-0">
+        <span className="block text-[12.5px] font-medium leading-4 text-ink">{pillar.title}</span>
+        <span className="mt-1 block text-[11.5px] leading-4 text-para">{pillar.text}</span>
+      </span>
+    </li>
   );
 }
 
-function CatShowcase() {
+function HeroContent() {
   return (
-    <div className="glass-login mt-7 flex max-w-[460px] items-center gap-4 rounded-[30px] p-4 sm:gap-5 sm:p-5">
-      <CatMascot />
-      <div className="min-w-0">
-        <p className="vl-section-title text-indigo-700">Kira · Border Collie</p>
-        <p className="mt-1 text-[13px] font-medium leading-5 text-ink">La ficha ya está lista.</p>
-        <p className="mt-1 text-[11.5px] leading-4 text-caption">
-          7 alertas · briefing pre-visita
-        </p>
+    <div className="mt-8 max-w-[520px] lg:mt-[clamp(20px,5vh,56px)]">
+      <p className="flex items-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.16em] text-indigo-700">
+        <span className="h-px w-6 bg-indigo-700/40" aria-hidden="true" />
+        Historia clínica · antes de la visita
+      </p>
+      <div className="mt-3">
+        <CatMascot />
       </div>
+      <p className="mt-3 max-w-[440px] text-[13px] leading-6 text-para">
+        Word, Excel, JSON y CSV se convierten en una ficha canónica: cada alerta con su fuente y un
+        briefing listo antes de que el especialista entre en la consulta.
+      </p>
+      <ul className="stagger mt-5 grid gap-2.5">
+        {PILLARS.map((pillar) => (
+          <PillarCard key={pillar.title} pillar={pillar} />
+        ))}
+      </ul>
     </div>
   );
 }
 
 function HeroFootnote() {
   return (
-    <p className="mt-5 flex items-center gap-1.5 text-[10.5px] text-caption">
-      <ShieldCheck className="h-3 w-3" aria-hidden="true" />
-      Demo con datos ficticios
+    <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10.5px] text-caption">
+      <span>Clínica Vall del Sol · Sant Cugat del Vallès</span>
+      <span aria-hidden="true">·</span>
+      <span>Caso guía Kira</span>
+      <span aria-hidden="true">·</span>
+      <span className="inline-flex items-center gap-1">
+        <ShieldCheck className="h-3 w-3" aria-hidden="true" />
+        Datos ficticios
+      </span>
     </p>
   );
 }
@@ -74,8 +111,7 @@ export function LoginBrand() {
         <BrandLockup />
       </div>
       <div className="relative z-10">
-        <HeroCopy />
-        <CatShowcase />
+        <HeroContent />
         <HeroFootnote />
       </div>
     </section>

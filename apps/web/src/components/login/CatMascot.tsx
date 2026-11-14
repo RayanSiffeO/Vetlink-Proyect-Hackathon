@@ -2,10 +2,11 @@ export function CatMascot() {
   return (
     <div className="cat-scene" aria-hidden="true">
       <span className="cat-glow" />
+      <span className="cat-shadow" />
       <div className="cat">
         <div className="cat-body">
-          <span className="cat-paw cat-paw-left" />
-          <span className="cat-paw cat-paw-right" />
+          <span className="cat-arm cat-arm-left" />
+          <span className="cat-arm cat-arm-right" />
           <span className="cat-tail" />
         </div>
         <span className="cat-ear cat-ear-left">
@@ -15,15 +16,15 @@ export function CatMascot() {
           <span className="cat-ear-inner" />
         </span>
         <div className="cat-head">
-          <span className="cat-stripe cat-stripe-left" />
-          <span className="cat-stripe cat-stripe-right" />
-          <span className="cat-eye cat-eye-left" />
-          <span className="cat-eye cat-eye-right" />
-          <span className="cat-cheek cat-cheek-left" />
-          <span className="cat-cheek cat-cheek-right" />
+          <div className="cat-eye cat-eye-left">
+            <span className="cat-pupil" />
+            <span className="cat-sparkle" />
+          </div>
+          <div className="cat-eye cat-eye-right">
+            <span className="cat-pupil" />
+            <span className="cat-sparkle" />
+          </div>
           <span className="cat-nose" />
-          <span className="cat-mouth cat-mouth-left" />
-          <span className="cat-mouth cat-mouth-right" />
           <span className="cat-whisker cat-whisker-left cat-whisker-1" />
           <span className="cat-whisker cat-whisker-left cat-whisker-2" />
           <span className="cat-whisker cat-whisker-left cat-whisker-3" />

@@ -361,16 +361,28 @@
 
   .cat-scene {
     position: relative;
-    width: 190px;
-    height: 190px;
+    width: 230px;
+    height: 230px;
     flex-shrink: 0;
   }
 
   .cat-glow {
     position: absolute;
-    inset: 4%;
+    inset: 2%;
     border-radius: 9999px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(233, 180, 138, 0.18) 58%, transparent 72%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(233, 180, 138, 0.16) 58%, transparent 72%);
+  }
+
+  .cat-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    width: 156px;
+    height: 24px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: rgba(46, 36, 31, 0.2);
+    filter: blur(6px);
   }
 
   .cat {
@@ -382,167 +394,234 @@
   .cat-body {
     position: absolute;
     left: 50%;
-    bottom: 2px;
-    width: 122px;
-    height: 90px;
+    bottom: 22px;
+    width: 126px;
+    height: 82px;
     transform: translateX(-50%);
-    border-radius: 46% 46% 42% 42%;
-    background: linear-gradient(160deg, #e9b48a 0%, #d98d6d 100%);
-    box-shadow: inset 0 8px 16px rgba(255, 255, 255, 0.35), inset 0 -10px 16px rgba(158, 76, 54, 0.18);
+    border-radius: 46% 46% 42% 42% / 38% 38% 56% 56%;
+    background: #25211f;
+    box-shadow: inset 0 8px 14px rgba(255, 255, 255, 0.06);
   }
 
-  .cat-paw {
+  .cat-arm {
     position: absolute;
-    bottom: -5px;
-    width: 42px;
-    height: 21px;
-    border-radius: 9999px;
-    background: #f4c7a8;
-    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.55);
+    bottom: -4px;
+    width: 44px;
+    height: 38px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-radius: 50%;
   }
 
-  .cat-paw-left { left: 20px; }
-  .cat-paw-right { right: 20px; }
+  .cat-arm-left {
+    left: 18px;
+    transform: rotate(-8deg);
+  }
+
+  .cat-arm-right {
+    right: 18px;
+    transform: scaleX(-1) rotate(-8deg);
+  }
 
   .cat-tail {
     position: absolute;
-    right: -18px;
-    bottom: 16px;
-    width: 66px;
-    height: 42px;
-    border: 9px solid #d98d6d;
+    right: -26px;
+    bottom: 8px;
+    width: 82px;
+    height: 48px;
+    border: 12px solid #25211f;
     border-left-color: transparent;
     border-bottom-color: transparent;
     border-radius: 50%;
-    transform: rotate(-18deg);
+    transform: rotate(-16deg);
+    animation: cat-tail-sway 5s ease-in-out infinite;
+    transform-origin: left bottom;
   }
 
   .cat-ear {
     position: absolute;
-    top: -18px;
-    width: 48px;
-    height: 64px;
+    top: -8px;
+    width: 58px;
+    height: 74px;
     z-index: 1;
-    background: linear-gradient(160deg, #f7d6ba 0%, #e9b48a 100%);
+    background: #25211f;
     clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
   }
 
-  .cat-ear-left { left: 22px; transform: rotate(-9deg); }
-  .cat-ear-right { right: 22px; transform: rotate(9deg); animation: cat-ear-twitch 7s ease-in-out infinite; }
+  .cat-ear-left {
+    left: 12px;
+    transform: rotate(-11deg);
+  }
+
+  .cat-ear-right {
+    right: 12px;
+    transform: rotate(11deg);
+    animation: cat-ear-twitch 7s ease-in-out infinite;
+  }
 
   .cat-ear-inner {
     position: absolute;
-    inset: 13px 11px 5px;
-    background: #f2bfa2;
+    inset: 15px 12px 6px;
+    background: #f3b6be;
     clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
   }
 
   .cat-head {
     position: absolute;
     left: 50%;
-    top: 26px;
-    width: 148px;
-    height: 124px;
+    top: 22px;
+    width: 160px;
+    height: 138px;
     transform: translateX(-50%);
     z-index: 2;
-    border-radius: 48% 48% 44% 44%;
-    background: linear-gradient(155deg, #f7d6ba 0%, #e9b48a 100%);
-    box-shadow: inset 0 8px 14px rgba(255, 255, 255, 0.55), 0 16px 30px -22px rgba(94, 42, 30, 0.5);
+    border-radius: 100% / 120% 120% 80% 80%;
+    background: #25211f;
+    box-shadow: inset 0 6px 12px rgba(255, 255, 255, 0.05);
+    animation: cat-head-tilt 7s ease-in-out infinite;
+    transform-origin: 50% 92%;
   }
-
-  .cat-stripe {
-    position: absolute;
-    top: 8px;
-    width: 4px;
-    height: 19px;
-    border-radius: 9999px;
-    background: rgba(158, 76, 54, 0.22);
-  }
-
-  .cat-stripe-left { left: 55px; transform: rotate(-18deg); }
-  .cat-stripe-right { right: 55px; transform: rotate(18deg); }
 
   .cat-eye {
     position: absolute;
-    top: 55px;
-    width: 18px;
-    height: 22px;
+    top: 48px;
+    width: 48px;
+    height: 52px;
     border-radius: 50%;
-    background: #2e241f;
-    transform-origin: center;
+    background: #fff;
+    box-shadow: inset 0 -5px 8px rgba(36, 32, 30, 0.12);
     animation: cat-blink 6.5s infinite;
+    transform-origin: center;
   }
 
-  .cat-eye-left { left: 34px; }
-  .cat-eye-right { right: 34px; }
+  .cat-eye-left {
+    left: 15px;
+  }
 
-  .cat-cheek {
+  .cat-eye-right {
+    right: 15px;
+  }
+
+  .cat-pupil {
     position: absolute;
-    top: 79px;
-    width: 24px;
-    height: 18px;
-    border-radius: 9999px;
-    background: rgba(233, 180, 138, 0.35);
-    filter: blur(3px);
+    top: 14px;
+    left: 16px;
+    width: 25px;
+    height: 30px;
+    border-radius: 50%;
+    background: #1b1716;
   }
 
-  .cat-cheek-left { left: 17px; }
-  .cat-cheek-right { right: 17px; }
+  .cat-sparkle {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 15px 0 -2px rgba(255, 255, 255, 0.75);
+  }
 
   .cat-nose {
     position: absolute;
-    top: 91px;
+    top: 100px;
     left: 50%;
-    width: 13px;
+    width: 14px;
     height: 9px;
     transform: translateX(-50%);
-    background: #b4553a;
-    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
-  }
-
-  .cat-mouth {
-    position: absolute;
-    top: 102px;
-    width: 13px;
-    height: 9px;
-    border-bottom: 1.5px solid #6b4a3c;
     border-radius: 50%;
+    background: #f3a9b4;
+    z-index: 3;
   }
-
-  .cat-mouth-left { left: 61px; transform: rotate(8deg); }
-  .cat-mouth-right { right: 61px; transform: rotate(-8deg); }
 
   .cat-whisker {
     position: absolute;
-    top: 94px;
-    width: 30px;
-    height: 1px;
-    border-radius: 9999px;
-    background: rgba(94, 60, 44, 0.35);
+    top: 96px;
+    width: 38px;
+    height: 16px;
+    border-top: 2px solid #2a2320;
+    border-radius: 50%;
+    opacity: 0.9;
   }
 
-  .cat-whisker-left { left: 2px; }
-  .cat-whisker-right { right: 2px; }
-  .cat-whisker-1 { transform: rotate(-8deg); }
-  .cat-whisker-2 { top: 102px; }
-  .cat-whisker-3 { top: 110px; transform: rotate(8deg); }
+  .cat-whisker-left {
+    left: -16px;
+  }
+
+  .cat-whisker-right {
+    right: -16px;
+    transform: scaleX(-1);
+  }
+
+  .cat-whisker-1 {
+    transform: rotate(-16deg);
+  }
+
+  .cat-whisker-2 {
+    top: 104px;
+  }
+
+  .cat-whisker-3 {
+    top: 112px;
+    transform: rotate(16deg);
+  }
 
   @keyframes cat-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
   }
 
   @keyframes cat-blink {
-    0%, 90%, 96%, 100% { transform: scaleY(1); }
-    93% { transform: scaleY(0.08); }
+    0%,
+    90%,
+    96%,
+    100% {
+      transform: scaleY(1);
+    }
+    93% {
+      transform: scaleY(0.08);
+    }
   }
 
   @keyframes cat-ear-twitch {
-    0%, 88%, 100% { transform: rotate(9deg); }
-    92% { transform: rotate(15deg); }
-    96% { transform: rotate(7deg); }
+    0%,
+    88%,
+    100% {
+      transform: rotate(11deg);
+    }
+    92% {
+      transform: rotate(17deg);
+    }
+    96% {
+      transform: rotate(8deg);
+    }
   }
 
+  @keyframes cat-tail-sway {
+    0%,
+    100% {
+      transform: rotate(-16deg);
+    }
+    50% {
+      transform: rotate(-8deg);
+    }
+  }
+
+  @keyframes cat-head-tilt {
+    0%,
+    100% {
+      transform: translateX(-50%) rotate(0deg);
+    }
+    50% {
+      transform: translateX(-50%) rotate(2deg);
+    }
+  }
   .glass {
     background-color: rgba(255, 252, 246, 0.42);
     background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 46%);
