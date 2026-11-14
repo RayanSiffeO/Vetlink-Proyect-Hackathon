@@ -2,7 +2,8 @@
 
 > **Documento maestro de trabajo y ritmo del equipo.**  
 > Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
-> Versión 1.3 · 14/11/2026 01:50 · Lead (agente) para el equipo Joniha.  
+> Versión 1.4 · 14/11/2026 02:05 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.4: **equipo real = 2 personas**; roles y liderazgos reescritos (§7), ritmo ajustado (§8.5) y paquete de **los 3 checkpoints oficiales** en `docs/checkpoints/` (§13).  
 > Cambios v1.3: **stack rápido aprobado** — React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico y sin LLM en la demo; Postgres-ready. Elimina ~4–6 h de infra.  
 > Cambios v1.2: cierra las decisiones abiertas con Data (`docs/02-modelo-datos.md`): congelar nombres v1 + `fhir_profile`, gate de revisión con banner, alcance del resumen pre-aceptación y fixture CSV de robustez.  
 > Cambios v1.1: integra el debate red-team (`docs/03-debate-diseno.md`) y la investigación (`docs/06-investigacion-mercado.md`): recorte a **C'** (5 pantallas), briefing determinista, resumen no identificativo antes de aceptar, demo local-first y reloj de congelaciones.
@@ -16,7 +17,7 @@
 - **Nuestra apuesta:** **VetLink** = la historia clínica en un formato único + la red de especialistas + el **briefing pre-visita**. Pitch: *"La historia clínica de tu paciente llega completa al especialista antes de la visita."*
 - **Decisiones clave del debate:** alcance **C' recortado** (5 pantallas, ~40–48 h-persona), **briefing determinista** (la IA solo extrae), **resumen no identificativo antes de aceptar**, **demo local-first** con seed y vídeo.
 - **Stack rápido (v1.3):** React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico, sin LLM en la demo. Postgres-ready.
-- **Estado:** repo con documentación y estructura (0 código de app), ~36 h de reloj, equipo pequeño. Plan por bloques con hitos demoables y congelación progresiva.
+- **Estado:** repo con documentación, checkpoints y estructura (0 código de app), ~36 h de reloj, **equipo de 2 personas**. Plan por bloques con hitos demoables y congelación progresiva.
 
 ---
 
@@ -233,17 +234,22 @@ Joniha/
 
 ## 7. Estructura de trabajo: equipo, roles y reglas
 
-### Roles (5 funciones; adaptables si sois menos)
+### Roles para un equipo de 2 personas (situación real)
 
-| Rol | Dueño de | Entregable del día | Persona sugerida |
+| Persona | Rol y liderazgo | Dueña de | Entregable del día |
 |---|---|---|---|
-| **Capitán / PM + pitch** | Playbook, decisiones, tiempos, GitHub/entrega, guion | Daily status + demo script | Lead del equipo |
-| **Data / AI** | `docs/02`, adaptadores, canónico, alertas, mapeador, briefing | 4 fichas normalizadas + briefing | Perfil datos/IA |
-| **Backend** | API FastAPI, roles, SQLite, solicitudes, agenda, seed | API viva + seed reproducible | Perfil back |
-| **Frontend** | 5 pantallas MVP, design system VetLink, estados vacío/error | Pantallas demoables | Perfil front |
-| **Demo / UX / QA** | Datos demo, guion visual, vídeo, README, QA cruzada, métricas | Vídeo + README + bugs P0 | Perfil producto/QA |
+| **A · Jose Miguel** | **Líder de proyecto + Backend/Data** | Alcance, tiempos, GitHub/entrega, pitch; API FastAPI, SQLite, extractores, modelo canónico, seed | API viva + seed reproducible + 3 fichas normalizadas |
+| **B · [nombre real pendiente]** | **Líder técnica de producto + Frontend/Demo/QA** | UI/UX, las 5 pantallas, marca VetLink, guion de demo, vídeo, QA cruzada | 5 pantallas demoables + vídeo + README |
 
-*Si sois 3:* capitán+frontend, data+backend, demo/QA/pitch. *Si sois 4:* capitán+demo, data, backend, frontend.
+**Reglas de decisión:**
+- **A cierra** alcance, prioridades, entrega y relación con la organización.
+- **B cierra** UX, pantallas, narrativa y guion de demo.
+- **Cambio de contrato API o de modelo canónico:** consenso de A y B y se anota en el canal.
+- **Nadie mergea su propia feature sin revisión del otro** (5 minutos de ojo ajeno).
+- **Los agentes IA no deciden:** generan; el humano revisa, prueba y firma.
+- **Bus factor:** todo lo que no esté en el repo no existe → documentación, seed y vídeo siempre actualizados.
+
+*Si en algún momento sois 3:* A = proyecto+backend, B = frontend, C = demo/QA/pitch. *Si queda 1 persona:* versión comprimida de §8.3 con seed + vídeo.
 
 ### Reglas del repo (se votan y no se cambian el domingo)
 
@@ -319,6 +325,8 @@ Joniha/
 ### 8.5 Modo agentes (si la implementación la hacen agentes en paralelo, ~6 h)
 
 **Condiciones no negociables:** contrato API congelado a los 30 min · 3 workstreams con ficheros disjuntos (backend / frontend / seed-demo) · 1 humano integrando y aceptando gates cada 60–90 min. Si dos agentes tocan el mismo fichero, los 6 h no se cumplen.
+
+**Con 2 personas (situación real):** A = backend/integración, B = frontend/demo+QA; el paralelismo humano es menor → presupuestad **8 h** (6 h solo si ambas están a tiempo completo y sin bloqueos) y aplicad la tabla de recorte sin dudar. El material de los 3 checkpoints oficiales ya está en `docs/checkpoints/`.
 
 | Reloj | Bloque | Entregable / gate |
 |---|---|---|
@@ -416,11 +424,21 @@ Joniha/
 | # | Supuesto | Si es distinto |
 |---|---|---|
 | 1 | Deadline domingo 15/11 ~15:00 CET; tratamos 13:30 como real | Confirmar y recomprimir §8 |
-| 2 | Equipo de 4–5 personas (~40–48 h-persona) | Si menos, usar versión comprimida §8.3 y bajar a A+D sin llamarlo marketplace |
+| 2 | **Equipo de 2 personas** (A: proyecto+backend; B: producto+frontend/demo) | Plan de 8 h (§8.5); si queda 1 persona, versión comprimida §8.3 con seed + vídeo |
 | 3 | SQLite local basta para la demo; no hace falta Supabase | Si se pide Postgres, cambiar la URL de conexión (modelo portable) |
 | 4 | Push a `HackathonBoehringerIT/Joniha` operativo | Probar hoy; si no, escalar a organización |
 | 5 | Se mantiene marca VetLink; tagline de pitch descriptivo | Ya hay logo; no invertir en naming ni dominio |
 | 6 | Demo en directo el domingo ante jurado | Si es vídeo obligatorio, invertir el orden: grabar antes |
 | 7 | El jurado premia prototipo funcional | El guion cubre también narrativa de impacto para minimizar riesgo |
 
-**Siguiente acción inmediata del Lead:** integrar el modelo de datos (`02`) y los diagramas, revisar coherencia entre documentos, commitear todo en `main` y pasar el playbook al equipo con el reparto de roles.
+## 13. Checkpoints oficiales (los 3 del jurado)
+
+| # | Criterio evaluado | Qué preparamos | Documento |
+|---|---|---|---|
+| 1 | **Organización del equipo:** roles claros, líderes identificados y plan de trabajo coordinado | Equipo de 2 con liderazgo A/B, reglas de decisión, cadencia de 90 min, reparto por bloques y plan de bus factor | [`docs/checkpoints/CP1-organizacion-equipo.md`](docs/checkpoints/CP1-organizacion-equipo.md) |
+| 2 | **Propuesta de solución:** idea clara, alineada con el reto y lista para desarrollar | Pitch de 1 página + matriz requisito→cumplimiento→demo + alcance 5 pantallas + evidencias ya construidas | [`docs/checkpoints/CP2-propuesta-solucion.md`](docs/checkpoints/CP2-propuesta-solucion.md) |
+| 3 | **Solución y demo:** resuelve, aporta valor y demo funcional con buen nivel técnico | Guion de 3/6 min + dossier técnico + checklist pre-demo + preguntas del jurado + valor y métricas | [`docs/checkpoints/CP3-solucion-demo.md`](docs/checkpoints/CP3-solucion-demo.md) |
+
+**Regla:** cada checkpoint se defiende en 2 minutos con su documento y el repo abierto; si es llamada, se usa la sección "Guion de 90 segundos"; si es formulario, se copia el bloque "Para copiar/pegar". **No se improvisa nada en la llamada.**
+
+**Siguiente acción inmediata del Lead:** con el paquete de checkpoints listo y el equipo confirmado (2 personas), arrancar el bloque H+0 del §8.5 (scaffold + contrato congelado + seed) en cuanto se confirmen formato y fecha de los checkpoints.

@@ -39,6 +39,7 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 | [`docs/04-flujos-usuarios.md`](docs/04-flujos-usuarios.md) | Flujos de usuario y de uso de la aplicación (pantalla a pantalla) |
 | [`docs/05-arquitectura-mvp.md`](docs/05-arquitectura-mvp.md) | Arquitectura, pipeline, contrato de API, seguridad y despliegue |
 | [`docs/06-investigacion-mercado.md`](docs/06-investigacion-mercado.md) | Mercado, estándares, competencia y encaje con Boehringer |
+| [`docs/checkpoints/`](docs/checkpoints/README.md) | Paquete de los 3 checkpoints oficiales: organización, propuesta de solución y demo |
 | `docs/diagramas/` | Flujos y arquitectura en HTML navegable |
 
 ## Diagramas navegables
