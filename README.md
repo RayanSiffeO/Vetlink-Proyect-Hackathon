@@ -26,8 +26,8 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 | Datos de ejemplo (3 pacientes, 3 formatos + CSV de robustez) | ✅ |
 | Modelo canónico + reglas de normalización | ✅ 3 registros JSON canónicos validados (1.785 campos, 22 alertas con evidencia) |
 | Aplicación (React + FastAPI + SQLite) | ✅ **MVP C' funcional**: 5 pantallas (9 rutas), login demo, seed, import cache, ficha con alertas, marketplace, solicitud, briefing con niveles de acceso, agenda y auditoría. Backend limpio (`ruff` 0, `pytest` 5/5) y contrato de 23 endpoints congelado |
-| Cumplimiento estimado del reto (14/11 03:15) | 🟢 **~84 %**: normalización 65 % (demo vía cache; falta extracción real), marketplace 95 %, briefing/conexión 92 %, prototipo/ops 90 %, documentación 100 %, entrega final 40 % |
-| Entrega final | 🟡 Aplazada al cierre: pasada E2E en navegador, vídeo de 3 min, README de cierre y paquete local. GitHub congelado por indicación del equipo |
+| Estado de la demo | ✅ SPA compilada y servida por FastAPI en un solo proceso (`:8000`); seed/reset verificado; pasada E2E de navegador y vídeo de 3 min planificados para el cierre (D-07) |
+| Entrega final | 🟡 Pendiente de cierre: E2E en navegador, vídeo, README final y paquete local. GitHub congelado por indicación del equipo |
 
 ## Documentación
 
