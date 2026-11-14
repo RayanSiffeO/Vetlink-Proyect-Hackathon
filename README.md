@@ -114,6 +114,7 @@ El botón **Cargar demo** de la cabecera reinicia los datos de ejemplo.
 | Revisión del mapeo de columnas | Mi disponibilidad |
 |---|---|
 | ![Mapeo de columnas](screenshots/10-mapeo-columnas.png) | ![Disponibilidad](screenshots/11-disponibilidad.png) |
+
 ### Móvil
 
 La ficha, las alertas y la navegación están preparadas para móvil:
@@ -122,16 +123,16 @@ La ficha, las alertas y la navegación están preparadas para móvil:
 
 ## Funcionalidades
 
-- **Importación multi-formato:** Word, Excel, JSON y CSV; los cuatro ejemplos del reto se cargan desde la caché de importación.
+- **Importación multi-formato:** Word, Excel, JSON y CSV; los cuatro ejemplos del reto entran por la misma API.
 - **Variantes de Word, Excel y JSON:** mapeadores genéricos que extraen paciente, visitas, alergias y datos clínicos, y marcan la ficha para revisión.
 - **CSV genérico:** las variantes de CSV se mapean por reglas y sinónimos, con conversión de fechas y pesos (kg/lb) y marca de revisión humana.
 - **Registro canónico:** paciente, tutores, encuentros, problemas, alertas, vacunas, tratamientos y procedencia.
 - **Alertas clínicas:** severidad ordenada (crítica → alta → media → baja → info), evidencia y acción recomendada.
-- **Revisión humana:** campos dudosos señalados, mapeo de columnas editable y confirmación de la ficha antes de compartirla.
+- **Revisión humana:** campos dudosos señalados, mapeo de columnas editable y confirmación de la ficha antes de compartirla. Nombre y microchip no se pueden perder al confirmar.
 - **Marketplace:** búsqueda por especialidad y zona, tarifa orientativa y siguiente hueco.
 - **Derivación con consentimiento:** resumen no identificativo antes de aceptar; historia completa y briefing después.
-- **Agenda:** cita confirmada al aceptar una franja; el especialista puede añadir o retirar sus franjas.
-- **Cierre de visita:** nota del especialista que vuelve a la ficha de la clínica.
+- **Agenda:** cita confirmada al aceptar una franja; el especialista puede añadir o retirar sus franjas, y se bloquean citas duplicadas.
+- **Cierre de visita:** nota del especialista que vuelve a la ficha de la clínica, con recomendaciones y próxima revisión.
 - **Auditoría:** accesos y acciones relevantes registrados.
 
 ## Datos de ejemplo
@@ -145,17 +146,19 @@ En `data/samples/` están las historias anonimizadas del reto:
 | `historial.json` | Kira | API VetNexo Cloud |
 | `export_clinica_norte.csv` | Nala | Export de otra clínica (4º formato) |
 
-> Los cuatro ficheros exactos se resuelven por caché. Las **variantes de CSV, JSON, Excel y Word** se procesan con mapeadores heurísticos y quedan marcadas para revisión humana.
+> Los ficheros exactos DOCX, XLSX y JSON se resuelven por caché y devuelven **Listo** sin duplicar datos. El CSV exacto entra por el mapeador genérico, crea a **Nala** y queda en **Revisar**.
+>
+> Las **variantes de CSV, JSON, Excel y Word** se procesan con mapeadores heurísticos y quedan marcadas para revisión humana.
 >
 > Prueba rápida del mapeador: sube `export_clinica_norte.csv` o cambia sus cabeceras (`nombre` → `nombre_completo`, `peso_lb` → `weight_lb`) y vuelve a subirlo. Se crea o actualiza **Nala** y queda en revisión.
 
 ## Arquitectura
 
-Un solo proceso FastAPI sirve la SPA compilada y la API sobre SQLite y disco local; sin servicios externos en la demo.
+Un solo proceso FastAPI sirve la SPA compilada y la API sobre SQLite y disco local; sin servicios externos en la demo. La API expone **27 rutas** en el contrato OpenAPI.
 
 ![Arquitectura](screenshots/arquitectura.png)
 
-Flujo completo de usuarios:
+Flujo completo de usuarios, desde la revisión del mapeo hasta la nota de cierre:
 
 ![Flujo de usuarios](screenshots/flujo-usuarios.png)
 
@@ -202,7 +205,7 @@ powershell -ExecutionPolicy Bypass -File scripts/e2e-api.ps1
 pwsh -File scripts/e2e-api.ps1
 ```
 
-Puertas de calidad: `ruff` sin avisos, `pytest` en verde, 0 comentarios/TODO en el código (`scripts/check-code.ps1`) y E2E de API con todas las comprobaciones en verde.
+Puertas de calidad: `ruff` sin avisos, **pytest 70/70**, 0 comentarios/TODO en el código (`scripts/check-code.ps1`) y **E2E 34/34**. También se verifican en navegador los cuatro formatos, la corrección de mapeo, la doble reserva, el cierre de visita y la disponibilidad.
 
 ## Estructura
 
