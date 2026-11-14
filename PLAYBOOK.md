@@ -2,7 +2,8 @@
 
 > **Documento maestro de trabajo y ritmo del equipo.**  
 > Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
-> Versión 1.9 · 14/11/2026 11:00 · Lead (agente) para el equipo Joniha.  
+> Versión 1.10 · 14/11/2026 11:05 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.10: **trabajo restante en lenguaje simple** (§14), rama `feat/r1-extractores` para no tocar la demo congelada de CP2 y arranque del motor de alertas + dedupe de pacientes.  
 > Cambios v1.9: **build de CP2 congelada** en `releases/cp2` (tag local `cp2-build`, servidor `scripts\serve-cp2.ps1`) y **E2E verdes**: API 27/27 y navegador Edge 10/10 con capturas. Corregido el importador para aceptar CSV (4º formato) y regenerada la build.  
 > Cambios v1.8: **refactor clean-code completado y verificado** — backend `ruff` 0, `pytest` 5/5 y contrato OpenAPI deep-equal; frontend build OK con 0 comentarios y 0 ifs anidados; 165 violaciones del gate → 0/74 ficheros. Añadido `scripts\check-code.ps1` como gate de §7.1.  
 > Cambios v1.7: **H+0 validado por el equipo en navegador** (login, importación, ficha, marketplace, solicitud, briefing con niveles de acceso y agenda) y **reglas de código obligatorias** añadidas (§7.1): DRY, clean code sin comentarios, cero `ifs` imbricados, una función un propósito y sin funciones complejas.  
@@ -488,4 +489,27 @@ powershell -ExecutionPolicy Bypass -File scripts\check-code.ps1
 
 **Regla:** cada checkpoint se defiende en 2 minutos con su documento y el repo abierto; si es llamada, se usa la sección "Guion de 90 segundos"; si es formulario, se copia el bloque "Para copiar/pegar". **No se improvisa nada en la llamada.**
 
-**Siguiente acción inmediata del Lead:** con el paquete de checkpoints listo y el equipo confirmado (2 personas), arrancar el bloque H+0 del §8.5 (scaffold + contrato congelado + seed) en cuanto se confirmen formato y fecha de los checkpoints.
+## 14. Qué queda por hacer (versión simple)
+
+> La demo congelada de CP2 ya está lista. Esto es lo que falta para que el producto esté **completo y funcional con cualquier ficha**, no solo con los 3 ficheros del reto. Detalle técnico: [`docs/pendientes-codigo.md`](docs/pendientes-codigo.md).
+
+| # | Qué falta (en simple) | Qué gana la demo | Quién | Tiempo |
+|---|---|---|---|---|
+| 1 | **Leer cualquier ficha**, no solo las 3 exactas (Word/Excel/JSON/CSV) | Subes una versión modificada y no se rompe | Rayan | 2–3 h |
+| 2 | **Alertas automáticas en fichas nuevas** (alergias, vencimientos, controles) | Las fichas nuevas avisan igual que las de demo | Nosotros | 2–3 h |
+| 3 | **No duplicar mascotas** al subir otra versión del mismo perro | La ficha se actualiza, no se crea otra | Nosotros | 1–2 h |
+| 4 | **Confirmar datos dudosos** (pantalla de revisión) | El veterinario valida lo que la máquina no tiene claro | Nosotros | 1,5–2 h |
+| 5 | **Enchufar** lo nuevo (1) a la app | Todo funciona desde la interfaz, no solo en scripts | Nosotros | 1 h |
+| 6 | **Cerrar la visita** del especialista (nota que vuelve a la clínica) | La historia vuelve; el caso se completa | Nosotros | 2–3 h |
+| 7 | **Briefing bien en móvil** | El especialista lo lee desde el teléfono | Nosotros | 0,5–1 h |
+| 8 | **Tests + nueva demo congelada para CP3** | Llegamos al CP3 con build propia y probada | Nosotros | 1–2 h |
+| 9 | (Opcional) que el especialista gestione sus franjas | Cubre "organizar su actividad" al 100% | Nosotros | 1–2 h |
+
+**Orden correcto:** 2 → 3 → 1+5 → 4 → 6 → 7 → 8. Si se enchufa (1) sin 2 y 3, la demo empeora (fichas sin alertas o duplicadas).
+
+**Reglas mientras se trabaja:**
+- Todo va a la rama `feat/r1-extractores`. **`main` y `releases/cp2` no se tocan hasta después de CP2.**
+- Gate antes de mergear: `ruff` 0 · `pytest` verde · `check-code` 0 · E2E API 27/27 y navegador 10/10.
+- El vídeo de 3 min y la build de CP3 se hacen después de CP2, no antes.
+
+**Siguiente acción inmediata del Lead:** con la tabla acordada, arrancar el motor de alertas y el dedupe de pacientes en la rama (piezas 2 y 3) mientras el equipo prepara CP1/CP2; a las 13:45 se integra la pieza 1 de Rayan y se valida todo junto.
