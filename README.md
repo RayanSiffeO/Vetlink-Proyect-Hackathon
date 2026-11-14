@@ -94,6 +94,42 @@ powershell -File scripts\build.ps1   # compila la SPA
 powershell -File scripts\stop.ps1    # libera los puertos de la demo
 ```
 
+## Despliegue
+
+La app está preparada para desplegarse como **un solo servicio** (FastAPI sirve la SPA y la API).
+
+### Render (recomendado)
+
+1. Crea una cuenta en <https://render.com> y conecta tu GitHub.
+2. **New → Blueprint** y selecciona este repositorio: Render detecta `render.yaml`.
+3. Espera al build (Docker multi-stage: Node compila la SPA y Python sirve todo).
+4. La URL pública queda en `https://<servicio>.onrender.com`.
+
+Notas del plan gratuito: el servicio se duerme por inactividad (el primer acceso tarda unos segundos) y la base SQLite es **efímera**: se vuelve a sembrar en cada arranque. Es un entorno de demostración con datos ficticios, no un entorno clínico real.
+
+### Docker
+
+```powershell
+docker build -t vetlink .
+docker run --rm -p 8000:8000 -e VETLINK_SECRET_KEY=cambia-esta-clave vetlink
+```
+
+### URL pública rápida para una demo (sin desplegar)
+
+Con la demo arrancada en `:8000`:
+
+```powershell
+powershell -File scripts\tunnel.ps1
+```
+
+Abre un túnel temporal (`https://*.trycloudflare.com`) válido mientras el proceso siga vivo.
+
+### Comprobación remota
+
+```powershell
+powershell -File scripts\smoke-remote.ps1 -BaseUrl https://<servicio>.onrender.com
+```
+
 ## Acceso a la demo
 
 Login sin contraseña, con dos roles:

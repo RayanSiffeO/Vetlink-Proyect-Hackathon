@@ -1,0 +1,17 @@
+.git
+.gitignore
+.github
+**/node_modules
+**/.venv
+**/__pycache__
+**/*.pyc
+**/dist
+data/vetlink.db
+data/vetlink.db-*
+data/uploads
+releases
+artifacts
+.archify
+screenshots
+*.log
+*.zip
