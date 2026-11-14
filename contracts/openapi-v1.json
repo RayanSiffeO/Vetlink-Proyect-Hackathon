@@ -370,6 +370,102 @@
         }
       }
     },
+    "/api/imports/{job_id}/mapping": {
+      "get": {
+        "tags": [
+          "imports"
+        ],
+        "summary": "Mapeo propuesto para una importación",
+        "operationId": "get_mapping_api_imports__job_id__mapping_get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Mapping Api Imports  Job Id  Mapping Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "imports"
+        ],
+        "summary": "Confirmar o corregir el mapeo de columnas",
+        "operationId": "confirm_mapping_api_imports__job_id__mapping_post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MappingConfirmIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Confirm Mapping Api Imports  Job Id  Mapping Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/specialists": {
       "get": {
         "tags": [
@@ -468,6 +564,60 @@
                   "type": "object",
                   "additionalProperties": true,
                   "title": "Response Get Specialist Api Specialists  Specialist Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/specialists/{specialist_id}/availability": {
+      "patch": {
+        "tags": [
+          "specialists"
+        ],
+        "summary": "Actualizar la disponibilidad del especialista",
+        "operationId": "update_availability_api_specialists__specialist_id__availability_patch",
+        "parameters": [
+          {
+            "name": "specialist_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Specialist Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailabilityIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Update Availability Api Specialists  Specialist Id  Availability Patch"
                 }
               }
             }
@@ -1132,6 +1282,19 @@
         "type": "object",
         "title": "AcceptIn"
       },
+      "AvailabilityIn": {
+        "properties": {
+          "slots": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Slots"
+          }
+        },
+        "type": "object",
+        "title": "AvailabilityIn"
+      },
       "Body_upload_files_api_imports_post": {
         "properties": {
           "files": {
@@ -1245,6 +1408,44 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "MappingConfirmIn": {
+        "properties": {
+          "mapping": {
+            "items": {
+              "$ref": "#/components/schemas/MappingItemIn"
+            },
+            "type": "array",
+            "title": "Mapping"
+          }
+        },
+        "type": "object",
+        "title": "MappingConfirmIn"
+      },
+      "MappingItemIn": {
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Index"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          }
+        },
+        "type": "object",
+        "required": [
+          "index"
+        ],
+        "title": "MappingItemIn"
       },
       "RequestCreateIn": {
         "properties": {
