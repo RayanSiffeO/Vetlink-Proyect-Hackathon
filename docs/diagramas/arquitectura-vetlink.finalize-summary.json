@@ -6,14 +6,14 @@
   "type": "architecture",
   "quality": "showcase",
   "specification": {
-    "path": "D:\\hackaton\\Programa\\Joniha\\.archify\\architecture-arquitectura-vetlink-20261114-011538\\candidate.json",
-    "sha256": "15bb9174b11fb378ca8eae7c175ad98afbe6b9f3fce1575b2f5ccbbcd2430c78",
-    "bytes": 7357
+    "path": "D:\\hackaton\\Programa\\Joniha\\.archify\\architecture-arquitectura-vetlink-20261114-015957\\candidate.json",
+    "sha256": "200175cf7446054d687375fe68a172a51466bfba53a9cd7194d65f3de132068e",
+    "bytes": 7650
   },
   "artifact": {
     "path": "D:\\hackaton\\Programa\\Joniha\\docs\\diagramas\\arquitectura-vetlink.html",
-    "sha256": "3f14293a13695cdcb03d6c029113ab670f16820cc267ca5e1dd0c25d4aefff53",
-    "bytes": 874482
+    "sha256": "da9e85cc187c111b242d47e99bb231575207ab9f8fd083b262525fa7527e7383",
+    "bytes": 874263
   },
   "gates": {
     "validate": "pass",
@@ -28,9 +28,9 @@
     "truncated": false
   },
   "evidence": {
-    "receipt": "D:\\hackaton\\Programa\\Joniha\\docs\\diagramas\\arquitectura-vetlink.finalize.json",
-    "summaryReceipt": "D:\\hackaton\\Programa\\Joniha\\docs\\diagramas\\arquitectura-vetlink.finalize-summary.json",
-    "browserCheckReceipt": "D:\\hackaton\\Programa\\Joniha\\docs\\diagramas\\arquitectura-vetlink.browser-check.json"
+    "receipt": "D:\\hackaton\\Programa\\Joniha\\.archify\\architecture-arquitectura-vetlink-20261114-015957\\review-1\\arquitectura-vetlink.finalize.json",
+    "summaryReceipt": "D:\\hackaton\\Programa\\Joniha\\.archify\\architecture-arquitectura-vetlink-20261114-015957\\review-1\\arquitectura-vetlink.finalize-summary.json",
+    "browserCheckReceipt": "D:\\hackaton\\Programa\\Joniha\\.archify\\architecture-arquitectura-vetlink-20261114-015957\\review-1\\arquitectura-vetlink.browser-check.json"
   },
   "update": {
     "status": "current",
@@ -43,38 +43,9 @@
     "noticeText": null
   },
   "visualReview": "not-requested",
-  "durationMs": 4575,
+  "durationMs": 4522,
   "browserCheck": {
     "requested": true,
     "ran": true
-  },
-  "visualReviewRecommendation": {
-    "action": "inspect-route-readability",
-    "signals": {
-      "routesOverSuggestedBends": 1
-    },
-    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
-    "affectedRoutes": {
-      "crossings": [],
-      "detours": [
-        {
-          "relationship": {
-            "id": "ext-det-canonical",
-            "from": "ext_det",
-            "to": "canonical",
-            "label": "campos + confidence",
-            "collectionIndex": 6,
-            "artifactIndex": 7
-          },
-          "bends": 3,
-          "stretch": 1
-        }
-      ],
-      "truncated": false
-    },
-    "hints": [
-      "ext_det → canonical needs 3 bends: move node ext_det or canonical so they share a row or column with matching centers, or sit diagonally with a clear corner."
-    ],
-    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
   }
 }

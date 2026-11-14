@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 3.2.0">
   <meta name="archify-reader-contract" content="declared-wide-v1">
-  <title>VetLink · arquitectura de componentes · Diagrama</title>
+  <title>VetLink · arquitectura del MVP v1.3 · un proceso, datos locales · Diagrama</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -5194,7 +5194,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
            data-preset-badge-blueprint="PLANO / REV 01"
            data-preset-badge-editorial="EDITORIAL / NOTA DE CAMPO">
         <div class="pulse-dot"></div>
-        <h1>VetLink · arquitectura de componentes</h1>
+        <h1>VetLink · arquitectura del MVP v1.3 · un proceso, datos locales</h1>
       </div>
     </div>
 
@@ -5203,8 +5203,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / LÁMINA 04">
-      <svg viewBox="0 0 1440 912" role="img" lang="es" aria-labelledby="archify-diagram-title archify-diagram-description" data-animation="trace" data-preset="classic" data-quality-profile="showcase" data-node-ui="" data-reader-fit="intrinsic-height" data-reader-min-text="7.5" data-reader-primary-text="14">
-        <title id="archify-diagram-title">VetLink · arquitectura de componentes</title>
+      <svg viewBox="0 0 1420 872" role="img" lang="es" aria-labelledby="archify-diagram-title archify-diagram-description" data-animation="trace" data-preset="classic" data-quality-profile="showcase" data-node-ui="" data-reader-fit="intrinsic-height" data-reader-min-text="7.5" data-reader-primary-text="14">
+        <title id="archify-diagram-title">VetLink · arquitectura del MVP v1.3 · un proceso, datos locales</title>
         <desc id="archify-diagram-description">Un diagrama de arquitectura generado por Archify.</desc>
         <!-- Definitions -->
         <defs>
@@ -5250,423 +5250,404 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <rect width="100%" height="100%" fill="url(#grid)" />
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="API FastAPI · Python 3.12 · Pydantic v2" x="240" y="290" width="905" height="394" rx="12" class="c-region" stroke-width="1"/>
-
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" data-composition-frame-label="Supabase · PostgreSQL + Auth + Storage" x="240" y="696" width="905" height="148" rx="12" class="c-region" stroke-width="1"/>
-
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="2" data-composition-frame-label="Datos clínicos · CLINICAL / FULL · URL firmada" x="240" y="710" width="435" height="134" rx="8" class="c-security-group" stroke-width="1"/>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="0" data-composition-frame-label="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" x="60" y="248" width="1060" height="418" rx="12" class="c-region" stroke-width="1"/>
 
         <!-- Connection paths (before components for correct z-order) -->
         <g data-graph-role="automatic-crossover" style="--step:0">
-          <path data-graph-role="automatic-crossover-underlay" d="M 145 94 L 145 140" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="laura" data-edge-to="spa" data-edge-label="Word · Excel · JSON" data-edge-key="0" data-edge-id="laura-ficheros" data-composition-points="145,94;145,140" data-composition-crossover="halo" data-composition-independent="true" d="M 145 94 L 145 140" class="a-emphasis" data-animate="edge" style="--step:0" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 214 78 L 214 118" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="laura" data-edge-to="spa" data-edge-label="docx · xlsx · json" data-edge-key="0" data-edge-id="laura-spa" data-composition-points="214,78;214,118" data-composition-crossover="halo" data-composition-independent="true" d="M 214 78 L 214 118" class="a-emphasis" data-animate="edge" style="--step:0" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:1">
-          <path data-graph-role="automatic-crossover-underlay" d="M 394 220 L 394 320" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="spa" data-edge-to="imports" data-edge-label="POST /imports" data-edge-key="1" data-edge-id="spa-imports" data-composition-points="394,220;394,320" data-composition-crossover="halo" data-composition-independent="true" d="M 394 220 L 394 320" class="a-emphasis" data-animate="edge" style="--step:1" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 234 208 L 234 278" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="spa" data-edge-to="imports" data-edge-label="POST /imports" data-edge-key="1" data-edge-id="spa-imports" data-composition-points="234,208;234,278" data-composition-crossover="halo" data-composition-independent="true" d="M 234 208 L 234 278" class="a-emphasis" data-animate="edge" style="--step:1" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:2">
-          <path data-graph-role="automatic-crossover-underlay" d="M 991 220 L 991 320" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="spa" data-edge-to="marketplace" data-edge-label="GET /specialists" data-edge-key="2" data-edge-id="spa-marketplace" data-composition-points="991,220;991,320" data-composition-crossover="halo" data-composition-independent="true" d="M 991 220 L 991 320" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 553.95 208 L 553.95 235 Q 553.95 243 545.95 243 L 458 243 Q 450 243 450 251 L 450 278" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="spa" data-edge-to="auth" data-edge-label="login · rol" data-edge-key="2" data-edge-id="spa-auth" data-composition-points="553.95,208;553.95,243;450,243;450,278" data-composition-crossover="halo" data-composition-independent="true" d="M 553.95 208 L 553.95 235 Q 553.95 243 545.95 243 L 458 243 Q 450 243 450 251 L 450 278" class="a-default" data-animate="edge" style="--step:2" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:3">
-          <path data-graph-role="automatic-crossover-underlay" d="M 340 404 L 340 450" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="imports" data-edge-to="ext_llm" data-edge-label="sniff formato" data-edge-key="3" data-edge-id="imports-ext-llm" data-composition-points="340,404;340,450" data-composition-crossover="halo" data-composition-independent="true" d="M 340 404 L 340 450" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 597 208 L 597 235 Q 597 243 605 243 L 722 243 Q 730 243 730 251 L 730 278" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="spa" data-edge-to="marketplace" data-edge-label="GET /specialists" data-edge-key="3" data-edge-id="spa-marketplace" data-composition-points="597,208;597,243;730,243;730,278" data-composition-crossover="halo" data-composition-independent="true" d="M 597 208 L 597 235 Q 597 243 605 243 L 722 243 Q 730 243 730 251 L 730 278" class="a-default" data-animate="edge" style="--step:3" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:4">
-          <path data-graph-role="automatic-crossover-underlay" d="M 410 362 L 449.5 362 Q 457.5 362 457.5 370 L 457.5 484 Q 457.5 492 465.5 492 L 505 492" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="imports" data-edge-to="ext_det" data-edge-label="adaptador" data-edge-key="4" data-edge-id="imports-ext-det" data-composition-points="410,362;457.5,362;457.5,492;505,492" data-composition-crossover="halo" data-composition-independent="true" d="M 410 362 L 449.5 362 Q 457.5 362 457.5 370 L 457.5 484 Q 457.5 492 465.5 492 L 505 492" class="a-default" data-animate="edge" style="--step:4" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 946 208 L 946 278" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="spa" data-edge-to="serve" data-edge-label="GET /api" data-edge-key="4" data-edge-id="spa-serve" data-composition-points="946,208;946,278" data-composition-crossover="halo" data-composition-independent="true" d="M 946 208 L 946 278" class="a-default" data-animate="edge" style="--step:4" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:5">
-          <path data-graph-role="automatic-crossover-underlay" d="M 333 534 L 333 580" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="ext_llm" data-edge-to="canonical" data-edge-label="JSON Schema" data-edge-key="5" data-edge-id="ext-llm-canonical" data-composition-points="333,534;333,580" data-composition-crossover="halo" data-composition-independent="true" d="M 333 534 L 333 580" class="a-default" data-animate="edge" style="--step:5" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 170 366 L 170 418" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="imports" data-edge-to="extractors" data-edge-label="sniff" data-edge-key="5" data-edge-id="imports-extractors" data-composition-points="170,366;170,418" data-composition-crossover="halo" data-composition-independent="true" d="M 170 366 L 170 418" class="a-default" data-animate="edge" style="--step:5" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:6">
-          <path data-graph-role="automatic-crossover-underlay" d="M 575 534 L 575 549 Q 575 557 567 557 L 355 557 Q 347 557 347 565 L 347 580" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="ext_det" data-edge-to="canonical" data-edge-label="campos + confidence" data-edge-key="6" data-edge-id="ext-det-canonical" data-composition-points="575,534;575,557;347,557;347,580" data-composition-crossover="halo" data-composition-independent="true" d="M 575 534 L 575 549 Q 575 557 567 557 L 355 557 Q 347 557 347 565 L 347 580" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 250 462 L 370 462" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="extractors" data-edge-to="mapper" data-edge-label="tabular nuevo" data-edge-key="6" data-edge-id="extractors-mapper" data-composition-points="250,462;370,462" data-composition-crossover="halo" data-composition-independent="true" d="M 250 462 L 370 462" class="a-default" data-animate="edge" style="--step:6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:7">
-          <path data-graph-role="automatic-crossover-underlay" d="M 270 492 L 160 492" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="ext_llm" data-edge-to="llm" data-edge-label="JSON estricto" data-edge-key="7" data-edge-id="ext-llm-api" data-composition-points="270,492;160,492" data-composition-crossover="halo" data-composition-independent="true" d="M 270 492 L 160 492" class="a-default" data-animate="edge" style="--step:7" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 450 506 L 450 558" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="mapper" data-edge-to="canonical" data-edge-label="columnas" data-edge-key="7" data-edge-id="mapper-canonical" data-composition-points="450,506;450,558" data-composition-crossover="halo" data-composition-independent="true" d="M 450 506 L 450 558" class="a-default" data-animate="edge" style="--step:7" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:8">
-          <path data-graph-role="automatic-crossover-underlay" d="M 331.95 664 L 331.95 740" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="canonical" data-edge-to="pg" data-edge-label="merge + provenance" data-edge-key="8" data-edge-id="canonical-pg" data-composition-points="331.95,664;331.95,740" data-composition-crossover="halo" data-composition-independent="true" d="M 331.95 664 L 331.95 740" class="a-emphasis" data-animate="edge" style="--step:8" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 170 506 L 170 587 Q 170 595 178 595 L 370 595" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="extractors" data-edge-to="canonical" data-edge-label="partial" data-edge-key="8" data-edge-id="extractors-canonical" data-composition-points="170,506;170,595;370,595" data-composition-crossover="halo" data-composition-independent="true" d="M 170 506 L 170 587 Q 170 595 178 595 L 370 595" class="a-default" data-animate="edge" style="--step:8" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:9">
-          <path data-graph-role="automatic-crossover-underlay" d="M 347 664 L 347 694 Q 347 702 355 702 L 567 702 Q 575 702 575 710 L 575 740" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="canonical" data-edge-to="storage" data-edge-label="documentos" data-edge-key="9" data-edge-id="canonical-storage" data-composition-points="347,664;347,702;575,702;575,740" data-composition-crossover="halo" data-composition-independent="true" d="M 347 664 L 347 694 Q 347 702 355 702 L 567 702 Q 575 702 575 710 L 575 740" class="a-default" data-animate="edge" style="--step:9" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 530 595 L 546 595 Q 554 595 554 587 L 554 470 Q 554 462 562 462 L 650 462" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="canonical" data-edge-to="alerts" data-edge-label="R01–R11" data-edge-key="9" data-edge-id="canonical-alerts" data-composition-points="530,595;554,595;554,462;650,462" data-composition-crossover="halo" data-composition-independent="true" d="M 530 595 L 546 595 Q 554 595 554 587 L 554 470 Q 554 462 562 462 L 650 462" class="a-default" data-animate="edge" style="--step:9" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:10">
-          <path data-graph-role="automatic-crossover-underlay" d="M 410 622 L 505 622" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="canonical" data-edge-to="patients" data-edge-label="microchip" data-edge-key="10" data-edge-id="canonical-patients" data-composition-points="410,622;505,622" data-composition-crossover="halo" data-composition-independent="true" d="M 410 622 L 505 622" class="a-default" data-animate="edge" style="--step:10" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 530 609 L 650 609" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="canonical" data-edge-to="patients" data-edge-label="microchip" data-edge-key="10" data-edge-id="canonical-patients" data-composition-points="530,609;650,609" data-composition-crossover="halo" data-composition-independent="true" d="M 530 609 L 650 609" class="a-default" data-animate="edge" style="--step:10" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:11">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1045 404 L 1045 450" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="marketplace" data-edge-to="requests" data-edge-label="solicitud" data-edge-key="11" data-edge-id="marketplace-requests" data-composition-points="1045,404;1045,450" data-composition-crossover="halo" data-composition-independent="true" d="M 1045 404 L 1045 450" class="a-default" data-animate="edge" style="--step:11" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 810 462 L 862 462 Q 870 462 870 470 L 870 594 Q 870 602 878 602 L 930 602" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="alerts" data-edge-to="briefing" data-edge-label="alertas críticas" data-edge-key="11" data-edge-id="alerts-briefing" data-composition-points="810,462;870,462;870,602;930,602" data-composition-crossover="halo" data-composition-independent="true" d="M 810 462 L 862 462 Q 870 462 870 470 L 870 594 Q 870 602 878 602 L 930 602" class="a-default" data-animate="edge" style="--step:11" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:12">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1045 534 L 1045 580" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="requests" data-edge-to="briefing" data-edge-label="briefing · según nivel" data-edge-key="12" data-edge-id="requests-briefing" data-composition-points="1045,534;1045,580" data-composition-crossover="halo" data-composition-independent="true" d="M 1045 534 L 1045 580" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 730 366 L 730 384 Q 730 392 738 392 L 1002 392 Q 1010 392 1010 400 L 1010 418" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="marketplace" data-edge-to="requests" data-edge-label="solicitud" data-edge-key="12" data-edge-id="marketplace-requests" data-composition-points="730,366;730,392;1010,392;1010,418" data-composition-crossover="halo" data-composition-independent="true" d="M 730 366 L 730 384 Q 730 392 738 392 L 1002 392 Q 1010 392 1010 400 L 1010 418" class="a-emphasis" data-animate="edge" style="--step:12" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:13">
-          <path data-graph-role="automatic-crossover-underlay" d="M 975 492 L 880 492" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="requests" data-edge-to="chat" data-edge-label="chat" data-edge-key="13" data-edge-id="requests-chat" data-composition-points="975,492;880,492" data-composition-crossover="halo" data-composition-independent="true" d="M 975 492 L 880 492" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 1010 506 L 1010 558" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="requests" data-edge-to="briefing" data-edge-label="share_level" data-edge-key="13" data-edge-id="requests-briefing" data-composition-points="1010,506;1010,558" data-composition-crossover="halo" data-composition-independent="true" d="M 1010 506 L 1010 558" class="a-security" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:14">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1115 492 L 1230 492" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="requests" data-edge-to="mail" data-edge-label="aviso mock" data-edge-key="14" data-edge-id="requests-mail" data-composition-points="1115,492;1230,492" data-composition-crossover="halo" data-composition-independent="true" d="M 1115 492 L 1230 492" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 1090 602 L 1190 602" fill="none" stroke="var(--mask)" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="briefing" data-edge-to="marc" data-edge-label="pre-visita" data-edge-key="14" data-edge-id="briefing-marc" data-composition-points="1090,602;1190,602" data-composition-crossover="halo" data-composition-independent="true" d="M 1090 602 L 1190 602" class="a-emphasis" data-animate="edge" style="--step:12" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:15">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1115 622 L 1230 622" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="briefing" data-edge-to="marc" data-edge-label="lo abre antes" data-edge-key="15" data-edge-id="briefing-marc" data-composition-points="1115,622;1230,622" data-composition-crossover="halo" data-composition-independent="true" d="M 1115 622 L 1230 622" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 1010 646 L 1010 716" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="briefing" data-edge-to="audit" data-edge-label="quién vio qué" data-edge-key="15" data-edge-id="briefing-audit" data-composition-points="1010,646;1010,716" data-composition-crossover="halo" data-composition-independent="true" d="M 1010 646 L 1010 716" class="a-security" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:16">
-          <path data-graph-role="automatic-crossover-underlay" d="M 810 664 L 810 740" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="auth" data-edge-to="supa_auth" data-edge-label="verifica JWT" data-edge-key="16" data-edge-id="auth-supa" data-composition-points="810,664;810,740" data-composition-crossover="halo" data-composition-independent="true" d="M 810 664 L 810 740" class="a-security" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 450 646 L 450 716" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="canonical" data-edge-to="sqlite" data-edge-label="canonical_json" data-edge-key="16" data-edge-id="canonical-sqlite" data-composition-points="450,646;450,716" data-composition-crossover="halo" data-composition-independent="true" d="M 450 646 L 450 716" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
         <g data-graph-role="automatic-crossover" style="--step:17">
-          <path data-graph-role="automatic-crossover-underlay" d="M 1045 664 L 1045 740" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
-          <path data-edge-from="briefing" data-edge-to="audit" data-edge-label="quién vio qué" data-edge-key="17" data-edge-id="briefing-audit" data-composition-points="1045,664;1045,740" data-composition-crossover="halo" data-composition-independent="true" d="M 1045 664 L 1045 740" class="a-security" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead-security)"/>
+          <path data-graph-role="automatic-crossover-underlay" d="M 370 609 L 178 609 Q 170 609 170 617 L 170 716" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="canonical" data-edge-to="uploads" data-edge-label="originales" data-edge-key="17" data-edge-id="canonical-uploads" data-composition-points="370,609;170,609;170,716" data-composition-crossover="halo" data-composition-independent="true" d="M 370 609 L 178 609 Q 170 609 170 617 L 170 716" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        </g>
+        <g data-graph-role="automatic-crossover" style="--step:18">
+          <path data-graph-role="automatic-crossover-underlay" d="M 650 760 L 530 760" fill="none" stroke="var(--mask)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" pointer-events="none"/>
+          <path data-edge-from="seed" data-edge-to="sqlite" data-edge-label="seed + reset" data-edge-key="18" data-edge-id="seed-sqlite" data-composition-points="650,760;530,760" data-composition-crossover="halo" data-composition-independent="true" d="M 650 760 L 530 760" class="a-default" data-animate="edge" style="--step:12" stroke-width="1.5" marker-end="url(#arrowhead)"/>
         </g>
 
         <!-- Components -->
-        <g id="node-laura" data-node-id="laura" data-node-label="Laura · clínica" tabindex="0" role="button" aria-label="Enfocar Laura · clínica, Vall del Sol · Sant Cugat, Componente de arquitectura" aria-pressed="false" data-node-kind="external" data-node-sublabel="Vall del Sol · Sant Cugat" data-node-context="Componente de arquitectura">
-          <title>Laura · clínica · Vall del Sol · Sant Cugat · Componente de arquitectura</title>
-          <rect x="60" y="30" width="170" height="64" rx="8" class="c-mask"/>
-          <rect x="60" y="30" width="170" height="64" rx="8" class="c-external" data-animate="node" style="--step:0" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="person" class="semantic-sigil s-external" transform="translate(66 36) scale(0.6875)">
+        <g id="node-laura" data-node-id="laura" data-node-label="Laura · clínica" tabindex="0" role="button" aria-label="Enfocar Laura · clínica, rol CLINIC · Vall del Sol, Componente de arquitectura" aria-pressed="false" data-node-kind="external" data-node-sublabel="rol CLINIC · Vall del Sol" data-node-context="Componente de arquitectura">
+          <title>Laura · clínica · rol CLINIC · Vall del Sol · Componente de arquitectura</title>
+          <rect x="40" y="14" width="190" height="64" rx="8" class="c-mask"/>
+          <rect x="40" y="14" width="190" height="64" rx="8" class="c-external" data-animate="node" style="--step:0" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="person" class="semantic-sigil s-external" transform="translate(46 20) scale(0.6875)">
             <circle cx="8" cy="4.5" r="2.5"/><path d="M3 14v-2a5 5 0 0 1 10 0v2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="145" y="60" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Laura · clínica</text>
-        <text data-detail="context" x="145" y="76" class="t-muted" font-size="9" text-anchor="middle">Vall del Sol · Sant Cugat</text>
+          <text data-node-label="" data-detail-anchor="" x="135" y="44" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Laura · clínica</text>
+        <text data-detail="context" x="135" y="60" class="t-muted" font-size="9" text-anchor="middle">rol CLINIC · Vall del Sol</text>
         </g>
 
-        <g id="node-spa" data-node-id="spa" data-node-label="Web SPA" tabindex="0" role="button" aria-label="Enfocar Web SPA, React · Vite · TypeScript · Tailwind · S1–S13, Componente de arquitectura" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="React · Vite · TypeScript · Tailwind · S1–S13" data-node-context="Componente de arquitectura">
-          <title>Web SPA · React · Vite · TypeScript · Tailwind · S1–S13 · Componente de arquitectura</title>
-          <rect x="30" y="140" width="1120" height="80" rx="8" class="c-mask"/>
-          <rect x="30" y="140" width="1120" height="80" rx="8" class="c-frontend" data-animate="node" style="--step:1" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(36 146) scale(0.6875)">
+        <g id="node-spa" data-node-id="spa" data-node-label="Web SPA responsive" tabindex="0" role="button" aria-label="Enfocar Web SPA responsive, React 18 + Vite + TypeScript · Tailwind + DaisyUI + TanStack Query · 5 pantallas: login/rol · paciente+subida · búsqueda+ficha · reserva+agenda · briefing, Componente de arquitectura" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="React 18 + Vite + TypeScript · Tailwind + DaisyUI + TanStack Query · 5 pantallas: login/rol · paciente+subida · búsqueda+ficha · reserva+agenda · briefing" data-node-context="Componente de arquitectura">
+          <title>Web SPA responsive · React 18 + Vite + TypeScript · Tailwind + DaisyUI + TanStack Query · 5 pantallas: login/rol · paciente+subida · búsqueda+ficha · reserva+agenda · briefing · Componente de arquitectura</title>
+          <rect x="60" y="118" width="1060" height="90" rx="8" class="c-mask"/>
+          <rect x="60" y="118" width="1060" height="90" rx="8" class="c-frontend" data-animate="node" style="--step:1" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(66 124) scale(0.6875)">
             <rect x="2" y="3" width="12" height="10" rx="2"/>
             <path d="M2 6.5h12"/>
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="590" y="178" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Web SPA</text>
-        <text data-detail="context" x="590" y="194" class="t-muted" font-size="9" text-anchor="middle">React · Vite · TypeScript · Tailwind · S1–S13</text>
+          <text data-node-label="" data-detail-anchor="" x="590" y="161" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Web SPA responsive</text>
+        <text data-detail="context" x="590" y="177" class="t-muted" font-size="9" text-anchor="middle">React 18 + Vite + TypeScript · Tailwind + DaisyUI + TanStack Query · 5 pantallas: login/rol · paciente+subida · búsqueda+ficha · reserva+agenda · briefing</text>
         </g>
 
-        <g id="node-imports" data-node-id="imports" data-node-label="Imports" tabindex="0" role="button" aria-label="Enfocar Imports, POST /imports, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="POST /imports" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Imports · POST /imports · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="270" y="320" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="270" y="320" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:2" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(276 326) scale(0.6875)">
+        <g id="node-imports" data-node-id="imports" data-node-label="Imports" tabindex="0" role="button" aria-label="Enfocar Imports, subida 1..N · cache, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="subida 1..N · cache" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Imports · subida 1..N · cache · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</title>
+          <rect x="90" y="278" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="90" y="278" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:2" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(96 284) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="340" y="360" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Imports</text>
-        <text data-detail="context" x="340" y="376" class="t-muted" font-size="9" text-anchor="middle">POST /imports</text>
+          <text data-node-label="" data-detail-anchor="" x="170" y="320" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Imports</text>
+        <text data-detail="context" x="170" y="336" class="t-muted" font-size="9" text-anchor="middle">subida 1..N · cache</text>
         </g>
 
-        <g id="node-ext_llm" data-node-id="ext_llm" data-node-label="Extractor LLM" tabindex="0" role="button" aria-label="Enfocar Extractor LLM, structured output, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="structured output" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Extractor LLM · structured output · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="270" y="450" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="270" y="450" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:4" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(276 456) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="340" y="490" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Extractor LLM</text>
-        <text data-detail="context" x="340" y="506" class="t-muted" font-size="9" text-anchor="middle">structured output</text>
-        </g>
-
-        <g id="node-canonical" data-node-id="canonical" data-node-label="Canonical/Alerts" tabindex="0" role="button" aria-label="Enfocar Canonical/Alerts, merge · alertas, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="merge · alertas" data-node-tag="provenance" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Canonical/Alerts · merge · alertas · API FastAPI · Python 3.12 · Pydantic v2 · provenance</title>
-          <rect x="270" y="580" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="270" y="580" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:6" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(276 586) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="340" y="620" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Canonical/Alerts</text>
-        <text data-detail="context" x="340" y="636" class="t-muted" font-size="9" text-anchor="middle">merge · alertas</text>
-        <text data-detail="fine" x="340" y="656" class="t-backend" font-size="7" text-anchor="middle">provenance</text>
-        </g>
-
-        <g id="node-ext_det" data-node-id="ext_det" data-node-label="Extractores" tabindex="0" role="button" aria-label="Enfocar Extractores, docx · xlsx · json, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="docx · xlsx · json" data-node-tag="registry" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Extractores · docx · xlsx · json · API FastAPI · Python 3.12 · Pydantic v2 · registry</title>
-          <rect x="505" y="450" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="505" y="450" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:5" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(511 456) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="575" y="490" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Extractores</text>
-        <text data-detail="context" x="575" y="506" class="t-muted" font-size="9" text-anchor="middle">docx · xlsx · json</text>
-        <text data-detail="fine" x="575" y="526" class="t-backend" font-size="7" text-anchor="middle">registry</text>
-        </g>
-
-        <g id="node-patients" data-node-id="patients" data-node-label="Patients" tabindex="0" role="button" aria-label="Enfocar Patients, fichas · matching, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="fichas · matching" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Patients · fichas · matching · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="505" y="580" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="505" y="580" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:11" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(511 586) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="575" y="620" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Patients</text>
-        <text data-detail="context" x="575" y="636" class="t-muted" font-size="9" text-anchor="middle">fichas · matching</text>
-        </g>
-
-        <g id="node-chat" data-node-id="chat" data-node-label="Chat" tabindex="0" role="button" aria-label="Enfocar Chat, hilo del caso, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="hilo del caso" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Chat · hilo del caso · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="740" y="450" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="740" y="450" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(746 456) scale(0.6875)">
-            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="810" y="490" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Chat</text>
-        <text data-detail="context" x="810" y="506" class="t-muted" font-size="9" text-anchor="middle">hilo del caso</text>
-        </g>
-
-        <g id="node-auth" data-node-id="auth" data-node-label="Auth/RBAC" tabindex="0" role="button" aria-label="Enfocar Auth/RBAC, JWT · roles, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="security" data-node-sublabel="JWT · roles" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Auth/RBAC · JWT · roles · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="740" y="580" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="740" y="580" width="140" height="84" rx="8" class="c-security" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(746 586) scale(0.6875)">
+        <g id="node-auth" data-node-id="auth" data-node-label="Auth demo" tabindex="0" role="button" aria-label="Enfocar Auth demo, CLINIC / SPECIALIST, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="security" data-node-sublabel="CLINIC / SPECIALIST" data-node-tag="cookie firmada" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Auth demo · CLINIC / SPECIALIST · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel · cookie firmada</title>
+          <rect x="370" y="278" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="370" y="278" width="160" height="88" rx="8" class="c-security" data-animate="node" style="--step:3" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(376 284) scale(0.6875)">
             <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="810" y="620" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Auth/RBAC</text>
-        <text data-detail="context" x="810" y="636" class="t-muted" font-size="9" text-anchor="middle">JWT · roles</text>
+          <text data-node-label="" data-detail-anchor="" x="450" y="320" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Auth demo</text>
+        <text data-detail="context" x="450" y="336" class="t-muted" font-size="9" text-anchor="middle">CLINIC / SPECIALIST</text>
+        <text data-detail="fine" x="450" y="358" class="t-security" font-size="7" text-anchor="middle">cookie firmada</text>
         </g>
 
-        <g id="node-marketplace" data-node-id="marketplace" data-node-label="Marketplace" tabindex="0" role="button" aria-label="Enfocar Marketplace, especialidad · zona, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="especialidad · zona" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Marketplace · especialidad · zona · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="975" y="320" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="975" y="320" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:3" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(981 326) scale(0.6875)">
+        <g id="node-marketplace" data-node-id="marketplace" data-node-label="Marketplace" tabindex="0" role="button" aria-label="Enfocar Marketplace, especialidad · zona · fecha, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="especialidad · zona · fecha" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Marketplace · especialidad · zona · fecha · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</title>
+          <rect x="650" y="278" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="650" y="278" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:4" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(656 284) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1045" y="360" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Marketplace</text>
-        <text data-detail="context" x="1045" y="376" class="t-muted" font-size="9" text-anchor="middle">especialidad · zona</text>
+          <text data-node-label="" data-detail-anchor="" x="730" y="320" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Marketplace</text>
+        <text data-detail="context" x="730" y="336" class="t-muted" font-size="9" text-anchor="middle">especialidad · zona · fecha</text>
         </g>
 
-        <g id="node-requests" data-node-id="requests" data-node-label="Requests" tabindex="0" role="button" aria-label="Enfocar Requests, citas · estados, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="citas · estados" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Requests · citas · estados · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="975" y="450" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="975" y="450" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(981 456) scale(0.6875)">
+        <g id="node-serve" data-node-id="serve" data-node-label="FastAPI" tabindex="0" role="button" aria-label="Enfocar FastAPI, sirve / y /api · sin CORS, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="sirve / y /api · sin CORS" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>FastAPI · sirve / y /api · sin CORS · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</title>
+          <rect x="930" y="278" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="930" y="278" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:5" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(936 284) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1045" y="490" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Requests</text>
-        <text data-detail="context" x="1045" y="506" class="t-muted" font-size="9" text-anchor="middle">citas · estados</text>
+          <text data-node-label="" data-detail-anchor="" x="1010" y="320" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">FastAPI</text>
+        <text data-detail="context" x="1010" y="336" class="t-muted" font-size="9" text-anchor="middle">sirve / y /api · sin CORS</text>
         </g>
 
-        <g id="node-briefing" data-node-id="briefing" data-node-label="Briefing" tabindex="0" role="button" aria-label="Enfocar Briefing, pre-visita · 90 s, API FastAPI · Python 3.12 · Pydantic v2" aria-pressed="false" data-node-kind="backend" data-node-sublabel="pre-visita · 90 s" data-node-context="API FastAPI · Python 3.12 · Pydantic v2">
-          <title>Briefing · pre-visita · 90 s · API FastAPI · Python 3.12 · Pydantic v2</title>
-          <rect x="975" y="580" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="975" y="580" width="140" height="84" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(981 586) scale(0.6875)">
+        <g id="node-extractors" data-node-id="extractors" data-node-label="Extractores" tabindex="0" role="button" aria-label="Enfocar Extractores, docx · xlsx · json · csv, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="docx · xlsx · json · csv" data-node-tag="registry" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Extractores · docx · xlsx · json · csv · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel · registry</title>
+          <rect x="90" y="418" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="90" y="418" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:6" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(96 424) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1045" y="620" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Briefing</text>
-        <text data-detail="context" x="1045" y="636" class="t-muted" font-size="9" text-anchor="middle">pre-visita · 90 s</text>
+          <text data-node-label="" data-detail-anchor="" x="170" y="460" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Extractores</text>
+        <text data-detail="context" x="170" y="476" class="t-muted" font-size="9" text-anchor="middle">docx · xlsx · json · csv</text>
+        <text data-detail="fine" x="170" y="498" class="t-backend" font-size="7" text-anchor="middle">registry</text>
         </g>
 
-        <g id="node-pg" data-node-id="pg" data-node-label="PostgreSQL" tabindex="0" role="button" aria-label="Enfocar PostgreSQL, tablas + RLS, Supabase · PostgreSQL + Auth + Storage › Datos clínicos · CLINICAL / FULL · URL firmada" aria-pressed="false" data-node-kind="database" data-node-sublabel="tablas + RLS" data-node-context="Supabase · PostgreSQL + Auth + Storage › Datos clínicos · CLINICAL / FULL · URL firmada">
-          <title>PostgreSQL · tablas + RLS · Supabase · PostgreSQL + Auth + Storage › Datos clínicos · CLINICAL / FULL · URL firmada</title>
-          <rect x="270" y="740" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="270" y="740" width="140" height="84" rx="8" class="c-database" data-animate="node" style="--step:9" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(276 746) scale(0.6875)">
+        <g id="node-mapper" data-node-id="mapper" data-node-label="Mapeador" tabindex="0" role="button" aria-label="Enfocar Mapeador, columnas → confirmar, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="columnas → confirmar" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Mapeador · columnas → confirmar · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</title>
+          <rect x="370" y="418" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="370" y="418" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:7" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(376 424) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="450" y="460" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Mapeador</text>
+        <text data-detail="context" x="450" y="476" class="t-muted" font-size="9" text-anchor="middle">columnas → confirmar</text>
+        </g>
+
+        <g id="node-alerts" data-node-id="alerts" data-node-label="Alerts" tabindex="0" role="button" aria-label="Enfocar Alerts, proyección R01–R11, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="database" data-node-sublabel="proyección R01–R11" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Alerts · proyección R01–R11 · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</title>
+          <rect x="650" y="418" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="650" y="418" width="160" height="88" rx="8" class="c-database" data-animate="node" style="--step:10" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(656 424) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="340" y="780" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">PostgreSQL</text>
-        <text data-detail="context" x="340" y="796" class="t-muted" font-size="9" text-anchor="middle">tablas + RLS</text>
+          <text data-node-label="" data-detail-anchor="" x="730" y="460" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Alerts</text>
+        <text data-detail="context" x="730" y="476" class="t-muted" font-size="9" text-anchor="middle">proyección R01–R11</text>
         </g>
 
-        <g id="node-storage" data-node-id="storage" data-node-label="Storage" tabindex="0" role="button" aria-label="Enfocar Storage, documentos, Supabase · PostgreSQL + Auth + Storage › Datos clínicos · CLINICAL / FULL · URL firmada" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="documentos" data-node-context="Supabase · PostgreSQL + Auth + Storage › Datos clínicos · CLINICAL / FULL · URL firmada">
-          <title>Storage · documentos · Supabase · PostgreSQL + Auth + Storage › Datos clínicos · CLINICAL / FULL · URL firmada</title>
-          <rect x="505" y="740" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="505" y="740" width="140" height="84" rx="8" class="c-cloud" data-animate="node" style="--step:10" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(511 746) scale(0.6875)">
-            <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
+        <g id="node-requests" data-node-id="requests" data-node-label="Requests" tabindex="0" role="button" aria-label="Enfocar Requests, solicitud · estados · cita, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="solicitud · estados · cita" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Requests · solicitud · estados · cita · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</title>
+          <rect x="930" y="418" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="930" y="418" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(936 424) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="575" y="780" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Storage</text>
-        <text data-detail="context" x="575" y="796" class="t-muted" font-size="9" text-anchor="middle">documentos</text>
+          <text data-node-label="" data-detail-anchor="" x="1010" y="460" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Requests</text>
+        <text data-detail="context" x="1010" y="476" class="t-muted" font-size="9" text-anchor="middle">solicitud · estados · cita</text>
         </g>
 
-        <g id="node-supa_auth" data-node-id="supa_auth" data-node-label="Supabase Auth" tabindex="0" role="button" aria-label="Enfocar Supabase Auth, JWT emitido, Supabase · PostgreSQL + Auth + Storage" aria-pressed="false" data-node-kind="security" data-node-sublabel="JWT emitido" data-node-context="Supabase · PostgreSQL + Auth + Storage">
-          <title>Supabase Auth · JWT emitido · Supabase · PostgreSQL + Auth + Storage</title>
-          <rect x="740" y="740" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="740" y="740" width="140" height="84" rx="8" class="c-security" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(746 746) scale(0.6875)">
+        <g id="node-canonical" data-node-id="canonical" data-node-label="Canonical" tabindex="0" role="button" aria-label="Enfocar Canonical, merge · provenance, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="merge · provenance" data-node-tag="determinista" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Canonical · merge · provenance · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel · determinista</title>
+          <rect x="370" y="558" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="370" y="558" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:8" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(376 564) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="450" y="600" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Canonical</text>
+        <text data-detail="context" x="450" y="616" class="t-muted" font-size="9" text-anchor="middle">merge · provenance</text>
+        <text data-detail="fine" x="450" y="638" class="t-backend" font-size="7" text-anchor="middle">determinista</text>
+        </g>
+
+        <g id="node-patients" data-node-id="patients" data-node-label="Patients" tabindex="0" role="button" aria-label="Enfocar Patients, fichas · microchip, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="fichas · microchip" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Patients · fichas · microchip · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</title>
+          <rect x="650" y="558" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="650" y="558" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:11" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(656 564) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="730" y="600" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Patients</text>
+        <text data-detail="context" x="730" y="616" class="t-muted" font-size="9" text-anchor="middle">fichas · microchip</text>
+        </g>
+
+        <g id="node-briefing" data-node-id="briefing" data-node-label="Briefing" tabindex="0" role="button" aria-label="Enfocar Briefing, plantilla determinista, Un proceso · uvicorn :8000 · Python 3.12 · SQLModel" aria-pressed="false" data-node-kind="backend" data-node-sublabel="plantilla determinista" data-node-tag="sin LLM" data-node-context="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <title>Briefing · plantilla determinista · Un proceso · uvicorn :8000 · Python 3.12 · SQLModel · sin LLM</title>
+          <rect x="930" y="558" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="930" y="558" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(936 564) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="1010" y="600" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Briefing</text>
+        <text data-detail="context" x="1010" y="616" class="t-muted" font-size="9" text-anchor="middle">plantilla determinista</text>
+        <text data-detail="fine" x="1010" y="638" class="t-backend" font-size="7" text-anchor="middle">sin LLM</text>
+        </g>
+
+        <g id="node-uploads" data-node-id="uploads" data-node-label="Disco local" tabindex="0" role="button" aria-label="Enfocar Disco local, data/uploads/ · originales, Componente de arquitectura" aria-pressed="false" data-node-kind="database" data-node-sublabel="data/uploads/ · originales" data-node-context="Componente de arquitectura">
+          <title>Disco local · data/uploads/ · originales · Componente de arquitectura</title>
+          <rect x="90" y="716" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="90" y="716" width="160" height="88" rx="8" class="c-database" data-animate="node" style="--step:12" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(96 722) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="170" y="758" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Disco local</text>
+        <text data-detail="context" x="170" y="774" class="t-muted" font-size="9" text-anchor="middle">data/uploads/ · originales</text>
+        </g>
+
+        <g id="node-sqlite" data-node-id="sqlite" data-node-label="SQLite" tabindex="0" role="button" aria-label="Enfocar SQLite, data/vetlink.db + tablas, Componente de arquitectura" aria-pressed="false" data-node-kind="database" data-node-sublabel="data/vetlink.db + tablas" data-node-tag="Postgres-ready" data-node-context="Componente de arquitectura">
+          <title>SQLite · data/vetlink.db + tablas · Componente de arquitectura · Postgres-ready</title>
+          <rect x="370" y="716" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="370" y="716" width="160" height="88" rx="8" class="c-database" data-animate="node" style="--step:12" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(376 722) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="450" y="758" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">SQLite</text>
+        <text data-detail="context" x="450" y="774" class="t-muted" font-size="9" text-anchor="middle">data/vetlink.db + tablas</text>
+        <text data-detail="fine" x="450" y="796" class="t-database" font-size="7" text-anchor="middle">Postgres-ready</text>
+        </g>
+
+        <g id="node-seed" data-node-id="seed" data-node-label="Seed + reset" tabindex="0" role="button" aria-label="Enfocar Seed + reset, create_all · 3 ejemplos, Componente de arquitectura" aria-pressed="false" data-node-kind="backend" data-node-sublabel="create_all · 3 ejemplos" data-node-context="Componente de arquitectura">
+          <title>Seed + reset · create_all · 3 ejemplos · Componente de arquitectura</title>
+          <rect x="650" y="716" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="650" y="716" width="160" height="88" rx="8" class="c-backend" data-animate="node" style="--step:12" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(656 722) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="730" y="758" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Seed + reset</text>
+        <text data-detail="context" x="730" y="774" class="t-muted" font-size="9" text-anchor="middle">create_all · 3 ejemplos</text>
+        </g>
+
+        <g id="node-audit" data-node-id="audit" data-node-label="Auditoría" tabindex="0" role="button" aria-label="Enfocar Auditoría, audit_events · quién vio, Componente de arquitectura" aria-pressed="false" data-node-kind="security" data-node-sublabel="audit_events · quién vio" data-node-context="Componente de arquitectura">
+          <title>Auditoría · audit_events · quién vio · Componente de arquitectura</title>
+          <rect x="930" y="716" width="160" height="88" rx="8" class="c-mask"/>
+          <rect x="930" y="716" width="160" height="88" rx="8" class="c-security" data-animate="node" style="--step:12" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(936 722) scale(0.6875)">
             <path d="M8 2.2 13 4v3.5c0 3.1-1.8 5.4-5 6.5-3.2-1.1-5-3.4-5-6.5V4Z"/>
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="810" y="780" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Supabase Auth</text>
-        <text data-detail="context" x="810" y="796" class="t-muted" font-size="9" text-anchor="middle">JWT emitido</text>
+          <text data-node-label="" data-detail-anchor="" x="1010" y="758" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Auditoría</text>
+        <text data-detail="context" x="1010" y="774" class="t-muted" font-size="9" text-anchor="middle">audit_events · quién vio</text>
         </g>
 
-        <g id="node-audit" data-node-id="audit" data-node-label="Auditoría" tabindex="0" role="button" aria-label="Enfocar Auditoría, audit_events, Supabase · PostgreSQL + Auth + Storage" aria-pressed="false" data-node-kind="database" data-node-sublabel="audit_events" data-node-context="Supabase · PostgreSQL + Auth + Storage">
-          <title>Auditoría · audit_events · Supabase · PostgreSQL + Auth + Storage</title>
-          <rect x="975" y="740" width="140" height="84" rx="8" class="c-mask"/>
-          <rect x="975" y="740" width="140" height="84" rx="8" class="c-database" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(981 746) scale(0.6875)">
-            <ellipse cx="8" cy="4" rx="5" ry="2"/>
-            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="1045" y="780" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Auditoría</text>
-        <text data-detail="context" x="1045" y="796" class="t-muted" font-size="9" text-anchor="middle">audit_events</text>
-        </g>
-
-        <g id="node-llm" data-node-id="llm" data-node-label="API LLM" tabindex="0" role="button" aria-label="Enfocar API LLM, DeepSeek · OpenAI, Componente de arquitectura" aria-pressed="false" data-node-kind="external" data-node-sublabel="DeepSeek · OpenAI" data-node-context="Componente de arquitectura">
-          <title>API LLM · DeepSeek · OpenAI · Componente de arquitectura</title>
-          <rect x="10" y="450" width="150" height="84" rx="8" class="c-mask"/>
-          <rect x="10" y="450" width="150" height="84" rx="8" class="c-external" data-animate="node" style="--step:8" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(16 456) scale(0.6875)">
-            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
-            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="85" y="490" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">API LLM</text>
-        <text data-detail="context" x="85" y="506" class="t-muted" font-size="9" text-anchor="middle">DeepSeek · OpenAI</text>
-        </g>
-
-        <g id="node-mail" data-node-id="mail" data-node-label="Avisos" tabindex="0" role="button" aria-label="Enfocar Avisos, email mock · campana, Componente de arquitectura" aria-pressed="false" data-node-kind="external" data-node-sublabel="email mock · campana" data-node-context="Componente de arquitectura">
-          <title>Avisos · email mock · campana · Componente de arquitectura</title>
-          <rect x="1230" y="450" width="170" height="84" rx="8" class="c-mask"/>
-          <rect x="1230" y="450" width="170" height="84" rx="8" class="c-external" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(1236 456) scale(0.6875)">
-            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
-            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
-          </g>
-          <text data-node-label="" data-detail-anchor="" x="1315" y="490" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Avisos</text>
-        <text data-detail="context" x="1315" y="506" class="t-muted" font-size="9" text-anchor="middle">email mock · campana</text>
-        </g>
-
-        <g id="node-marc" data-node-id="marc" data-node-label="Marc · especialista" tabindex="0" role="button" aria-label="Enfocar Marc · especialista, dermatología · ambulante, Componente de arquitectura" aria-pressed="false" data-node-kind="external" data-node-sublabel="dermatología · ambulante" data-node-context="Componente de arquitectura">
-          <title>Marc · especialista · dermatología · ambulante · Componente de arquitectura</title>
-          <rect x="1230" y="580" width="170" height="84" rx="8" class="c-mask"/>
-          <rect x="1230" y="580" width="170" height="84" rx="8" class="c-external" data-animate="node" style="--step:12" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="person" class="semantic-sigil s-external" transform="translate(1236 586) scale(0.6875)">
+        <g id="node-marc" data-node-id="marc" data-node-label="Marc · especialista" tabindex="0" role="button" aria-label="Enfocar Marc · especialista, rol SPECIALIST · ambulante, Componente de arquitectura" aria-pressed="false" data-node-kind="external" data-node-sublabel="rol SPECIALIST · ambulante" data-node-context="Componente de arquitectura">
+          <title>Marc · especialista · rol SPECIALIST · ambulante · Componente de arquitectura</title>
+          <rect x="1190" y="569" width="190" height="66" rx="8" class="c-mask"/>
+          <rect x="1190" y="569" width="190" height="66" rx="8" class="c-external" data-animate="node" style="--step:12" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="person" class="semantic-sigil s-external" transform="translate(1196 575) scale(0.6875)">
             <circle cx="8" cy="4.5" r="2.5"/><path d="M3 14v-2a5 5 0 0 1 10 0v2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="1315" y="620" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Marc · especialista</text>
-        <text data-detail="context" x="1315" y="636" class="t-muted" font-size="9" text-anchor="middle">dermatología · ambulante</text>
+          <text data-node-label="" data-detail-anchor="" x="1285" y="600" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Marc · especialista</text>
+        <text data-detail="context" x="1285" y="616" class="t-muted" font-size="9" text-anchor="middle">rol SPECIALIST · ambulante</text>
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="laura" data-edge-to="spa" data-edge-label="Word · Excel · JSON" data-edge-key="0" data-edge-id="laura-ficheros">
-          <rect x="37.800000000000004" y="110" width="101.2" height="14" rx="3" class="c-mask"/>
-          <text x="88.4" y="120" class="t-edge-emphasis" font-size="8" text-anchor="middle">Word · Excel · JSON</text>
+        <g data-detail="context" data-edge-from="laura" data-edge-to="spa" data-edge-label="docx · xlsx · json" data-edge-key="0" data-edge-id="laura-spa">
+          <rect x="111.60000000000002" y="91" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
+          <text x="159.8" y="101" class="t-edge-emphasis" font-size="8" text-anchor="middle">docx · xlsx · json</text>
         </g>
         <g data-detail="context" data-edge-from="spa" data-edge-to="imports" data-edge-label="POST /imports" data-edge-key="1" data-edge-id="spa-imports">
-          <rect x="315.6" y="263" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="351.8" y="273" class="t-edge-emphasis" font-size="8" text-anchor="middle">POST /imports</text>
+          <rect x="155.60000000000002" y="236" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="191.8" y="246" class="t-edge-emphasis" font-size="8" text-anchor="middle">POST /imports</text>
         </g>
-        <g data-detail="context" data-edge-from="spa" data-edge-to="marketplace" data-edge-label="GET /specialists" data-edge-key="2" data-edge-id="spa-marketplace">
-          <rect x="898.2" y="263" width="86.8" height="14" rx="3" class="c-mask"/>
-          <text x="941.6" y="273" class="t-edge-default" font-size="8" text-anchor="middle">GET /specialists</text>
+        <g data-detail="context" data-edge-from="spa" data-edge-to="auth" data-edge-label="login · rol" data-edge-key="2" data-edge-id="spa-auth">
+          <rect x="470.57500000000005" y="223" width="62.8" height="14" rx="3" class="c-mask"/>
+          <text x="501.975" y="233" class="t-edge-default" font-size="8" text-anchor="middle">login · rol</text>
         </g>
-        <g data-detail="context" data-edge-from="imports" data-edge-to="ext_llm" data-edge-label="sniff formato" data-edge-key="3" data-edge-id="imports-ext-llm">
-          <rect x="261.6" y="420" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="297.8" y="430" class="t-edge-default" font-size="8" text-anchor="middle">sniff formato</text>
+        <g data-detail="context" data-edge-from="spa" data-edge-to="marketplace" data-edge-label="GET /specialists" data-edge-key="3" data-edge-id="spa-marketplace">
+          <rect x="620.1" y="223" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="663.5" y="233" class="t-edge-default" font-size="8" text-anchor="middle">GET /specialists</text>
         </g>
-        <g data-detail="context" data-edge-from="imports" data-edge-to="ext_det" data-edge-label="adaptador" data-edge-key="4" data-edge-id="imports-ext-det">
-          <rect x="430.9" y="407" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
-          <text x="457.5" y="417" class="t-edge-default" font-size="8" text-anchor="middle">adaptador</text>
+        <g data-detail="context" data-edge-from="spa" data-edge-to="serve" data-edge-label="GET /api" data-edge-key="4" data-edge-id="spa-serve">
+          <rect x="891.5999999999999" y="236" width="48.4" height="14" rx="3" class="c-mask"/>
+          <text x="915.8" y="246" class="t-edge-default" font-size="8" text-anchor="middle">GET /api</text>
         </g>
-        <g data-detail="context" data-edge-from="ext_llm" data-edge-to="canonical" data-edge-label="JSON Schema" data-edge-key="5" data-edge-id="ext-llm-canonical">
-          <rect x="264.20000000000005" y="550" width="62.8" height="14" rx="3" class="c-mask"/>
-          <text x="295.6" y="560" class="t-edge-default" font-size="8" text-anchor="middle">JSON Schema</text>
+        <g data-detail="context" data-edge-from="imports" data-edge-to="extractors" data-edge-label="sniff" data-edge-key="5" data-edge-id="imports-extractors">
+          <rect x="130" y="385" width="34" height="14" rx="3" class="c-mask"/>
+          <text x="147" y="395" class="t-edge-default" font-size="8" text-anchor="middle">sniff</text>
         </g>
-        <g data-detail="context" data-edge-from="ext_det" data-edge-to="canonical" data-edge-label="campos + confidence" data-edge-key="6" data-edge-id="ext-det-canonical">
-          <rect x="410.4" y="537" width="101.2" height="14" rx="3" class="c-mask"/>
-          <text x="461" y="547" class="t-edge-default" font-size="8" text-anchor="middle">campos + confidence</text>
+        <g data-detail="context" data-edge-from="extractors" data-edge-to="mapper" data-edge-label="tabular nuevo" data-edge-key="6" data-edge-id="extractors-mapper">
+          <rect x="273.8" y="442" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="310" y="452" class="t-edge-default" font-size="8" text-anchor="middle">tabular nuevo</text>
         </g>
-        <g data-detail="context" data-edge-from="ext_llm" data-edge-to="llm" data-edge-label="JSON estricto" data-edge-key="7" data-edge-id="ext-llm-api">
-          <rect x="178.8" y="472" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="215" y="482" class="t-edge-default" font-size="8" text-anchor="middle">JSON estricto</text>
+        <g data-detail="context" data-edge-from="mapper" data-edge-to="canonical" data-edge-label="columnas" data-edge-key="7" data-edge-id="mapper-canonical">
+          <rect x="395.6" y="525" width="48.4" height="14" rx="3" class="c-mask"/>
+          <text x="419.8" y="535" class="t-edge-default" font-size="8" text-anchor="middle">columnas</text>
         </g>
-        <g data-detail="context" data-edge-from="canonical" data-edge-to="pg" data-edge-label="merge + provenance" data-edge-key="8" data-edge-id="canonical-pg">
-          <rect x="229.55" y="695" width="96.39999999999999" height="14" rx="3" class="c-mask"/>
-          <text x="277.75" y="705" class="t-edge-emphasis" font-size="8" text-anchor="middle">merge + provenance</text>
+        <g data-detail="context" data-edge-from="extractors" data-edge-to="canonical" data-edge-label="partial" data-edge-key="8" data-edge-id="extractors-canonical">
+          <rect x="248.2" y="575" width="43.6" height="14" rx="3" class="c-mask"/>
+          <text x="270" y="585" class="t-edge-default" font-size="8" text-anchor="middle">partial</text>
         </g>
-        <g data-detail="context" data-edge-from="canonical" data-edge-to="storage" data-edge-label="documentos" data-edge-key="9" data-edge-id="canonical-storage">
-          <rect x="432" y="682" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="461" y="692" class="t-edge-default" font-size="8" text-anchor="middle">documentos</text>
+        <g data-detail="context" data-edge-from="canonical" data-edge-to="alerts" data-edge-label="R01–R11" data-edge-key="9" data-edge-id="canonical-alerts">
+          <rect x="532.2" y="508.5" width="43.6" height="14" rx="3" class="c-mask"/>
+          <text x="554" y="518.5" class="t-edge-default" font-size="8" text-anchor="middle">R01–R11</text>
         </g>
         <g data-detail="context" data-edge-from="canonical" data-edge-to="patients" data-edge-label="microchip" data-edge-key="10" data-edge-id="canonical-patients">
-          <rect x="430.9" y="602" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
-          <text x="457.5" y="612" class="t-edge-default" font-size="8" text-anchor="middle">microchip</text>
+          <rect x="563.4" y="589" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
+          <text x="590" y="599" class="t-edge-default" font-size="8" text-anchor="middle">microchip</text>
         </g>
-        <g data-detail="context" data-edge-from="marketplace" data-edge-to="requests" data-edge-label="solicitud" data-edge-key="11" data-edge-id="marketplace-requests">
-          <rect x="985.8" y="420" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
-          <text x="1012.4" y="430" class="t-edge-default" font-size="8" text-anchor="middle">solicitud</text>
+        <g data-detail="context" data-edge-from="alerts" data-edge-to="briefing" data-edge-label="alertas críticas" data-edge-key="11" data-edge-id="alerts-briefing">
+          <rect x="826.6" y="512" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="870" y="522" class="t-edge-default" font-size="8" text-anchor="middle">alertas críticas</text>
         </g>
-        <g data-detail="context" data-edge-from="requests" data-edge-to="briefing" data-edge-label="briefing · según nivel" data-edge-key="12" data-edge-id="requests-briefing">
-          <rect x="923.4000000000001" y="550" width="115.6" height="14" rx="3" class="c-mask"/>
-          <text x="981.2" y="560" class="t-edge-default" font-size="8" text-anchor="middle">briefing · según nivel</text>
+        <g data-detail="context" data-edge-from="marketplace" data-edge-to="requests" data-edge-label="solicitud" data-edge-key="12" data-edge-id="marketplace-requests">
+          <rect x="843.4" y="372" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
+          <text x="870" y="382" class="t-edge-emphasis" font-size="8" text-anchor="middle">solicitud</text>
         </g>
-        <g data-detail="context" data-edge-from="requests" data-edge-to="chat" data-edge-label="chat" data-edge-key="13" data-edge-id="requests-chat">
-          <rect x="912.5" y="472" width="30" height="14" rx="3" class="c-mask"/>
-          <text x="927.5" y="482" class="t-edge-default" font-size="8" text-anchor="middle">chat</text>
+        <g data-detail="context" data-edge-from="requests" data-edge-to="briefing" data-edge-label="share_level" data-edge-key="13" data-edge-id="requests-briefing">
+          <rect x="941.2" y="525" width="62.8" height="14" rx="3" class="c-mask"/>
+          <text x="972.6" y="535" class="t-edge-security" font-size="8" text-anchor="middle">share_level</text>
         </g>
-        <g data-detail="context" data-edge-from="requests" data-edge-to="mail" data-edge-label="aviso mock" data-edge-key="14" data-edge-id="requests-mail">
-          <rect x="1143.5" y="472" width="58" height="14" rx="3" class="c-mask"/>
-          <text x="1172.5" y="482" class="t-edge-default" font-size="8" text-anchor="middle">aviso mock</text>
+        <g data-detail="context" data-edge-from="briefing" data-edge-to="marc" data-edge-label="pre-visita" data-edge-key="14" data-edge-id="briefing-marc">
+          <rect x="1111" y="582" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="1140" y="592" class="t-edge-emphasis" font-size="8" text-anchor="middle">pre-visita</text>
         </g>
-        <g data-detail="context" data-edge-from="briefing" data-edge-to="marc" data-edge-label="lo abre antes" data-edge-key="15" data-edge-id="briefing-marc">
-          <rect x="1136.3" y="602" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="1172.5" y="612" class="t-edge-default" font-size="8" text-anchor="middle">lo abre antes</text>
+        <g data-detail="context" data-edge-from="briefing" data-edge-to="audit" data-edge-label="quién vio qué" data-edge-key="15" data-edge-id="briefing-audit">
+          <rect x="931.5999999999999" y="674" width="72.4" height="14" rx="3" class="c-mask"/>
+          <text x="967.8" y="684" class="t-edge-security" font-size="8" text-anchor="middle">quién vio qué</text>
         </g>
-        <g data-detail="context" data-edge-from="auth" data-edge-to="supa_auth" data-edge-label="verifica JWT" data-edge-key="16" data-edge-id="auth-supa">
-          <rect x="816" y="695" width="67.6" height="14" rx="3" class="c-mask"/>
-          <text x="849.8" y="705" class="t-edge-security" font-size="8" text-anchor="middle">verifica JWT</text>
+        <g data-detail="context" data-edge-from="canonical" data-edge-to="sqlite" data-edge-label="canonical_json" data-edge-key="16" data-edge-id="canonical-sqlite">
+          <rect x="366.79999999999995" y="674" width="77.2" height="14" rx="3" class="c-mask"/>
+          <text x="405.4" y="684" class="t-edge-default" font-size="8" text-anchor="middle">canonical_json</text>
         </g>
-        <g data-detail="context" data-edge-from="briefing" data-edge-to="audit" data-edge-label="quién vio qué" data-edge-key="17" data-edge-id="briefing-audit">
-          <rect x="966.5999999999999" y="695" width="72.4" height="14" rx="3" class="c-mask"/>
-          <text x="1002.8" y="705" class="t-edge-security" font-size="8" text-anchor="middle">quién vio qué</text>
+        <g data-detail="context" data-edge-from="canonical" data-edge-to="uploads" data-edge-label="originales" data-edge-key="17" data-edge-id="canonical-uploads">
+          <rect x="141" y="642.5" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="170" y="652.5" class="t-edge-default" font-size="8" text-anchor="middle">originales</text>
+        </g>
+        <g data-detail="context" data-edge-from="seed" data-edge-to="sqlite" data-edge-label="seed + reset" data-edge-key="18" data-edge-id="seed-sqlite">
+          <rect x="556.2" y="740" width="67.6" height="14" rx="3" class="c-mask"/>
+          <text x="590" y="750" class="t-edge-default" font-size="8" text-anchor="middle">seed + reset</text>
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="region" data-composition-frame-label="API FastAPI · Python 3.12 · Pydantic v2">
-          <rect data-graph-role="structural-frame-label-mask" x="402" y="299" width="227.39357178709673" height="17" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="406" y="312.2903235806452" class="t-cloud" font-size="9.29032358064516" font-weight="600">API FastAPI · Python 3.12 · Pydantic v2</text>
-        </g>
-
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="1" data-composition-frame-kind="region" data-composition-frame-label="Supabase · PostgreSQL + Auth + Storage">
-          <rect data-graph-role="structural-frame-label-mask" x="580.1806223612904" y="700" width="221.81937763870962" height="17" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="584.1806223612904" y="713.2903235806451" class="t-cloud" font-size="9.29032358064516" font-weight="600">Supabase · PostgreSQL + Auth + Storage</text>
-        </g>
-
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="2" data-composition-frame-kind="security-group" data-composition-frame-label="Datos clínicos · CLINICAL / FULL · URL firmada">
-          <rect data-graph-role="structural-frame-label-mask" x="244" y="719" width="266.41293082580637" height="17" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="248" y="732.2903235806451" class="t-security" font-size="9.29032358064516" font-weight="600">Datos clínicos · CLINICAL / FULL · URL firmada</text>
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="region" data-composition-frame-label="Un proceso · uvicorn :8000 · Python 3.12 · SQLModel">
+          <rect data-graph-role="structural-frame-label-mask" x="64" y="257" width="290.33551447096767" height="17" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="68" y="270.16129132258067" class="t-cloud" font-size="9.161291322580643" font-weight="600">Un proceso · uvicorn :8000 · Python 3.12 · SQLModel</text>
         </g>
 
         <!-- Legend -->
         <g data-legend="" data-legend-bridge="">
-          <text x="40" y="876" class="t-primary" font-size="12" font-weight="650">Leyenda</text>
-          <g data-legend-semantic-kind="frontend" data-legend-kind="frontend" data-legend-label="Frontend" data-legend-x="40" data-legend-baseline="896" data-legend-width="93">
-            <rect x="40" y="887" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
-            <text x="62" y="896" class="t-muted" font-size="10" font-weight="500">Frontend</text>
+          <text x="40" y="836" class="t-primary" font-size="12" font-weight="650">Leyenda</text>
+          <g data-legend-semantic-kind="frontend" data-legend-kind="frontend" data-legend-label="Frontend" data-legend-x="40" data-legend-baseline="856" data-legend-width="93">
+            <rect x="40" y="847" width="16" height="10" rx="2.5" class="c-frontend" stroke-width="1"/>
+            <text x="62" y="856" class="t-muted" font-size="10" font-weight="500">Frontend</text>
           </g>
-          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="Backend" data-legend-x="155" data-legend-baseline="896" data-legend-width="87">
-            <rect x="155" y="887" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
-            <text x="177" y="896" class="t-muted" font-size="10" font-weight="500">Backend</text>
+          <g data-legend-semantic-kind="backend" data-legend-kind="backend" data-legend-label="Backend" data-legend-x="155" data-legend-baseline="856" data-legend-width="87">
+            <rect x="155" y="847" width="16" height="10" rx="2.5" class="c-backend" stroke-width="1"/>
+            <text x="177" y="856" class="t-muted" font-size="10" font-weight="500">Backend</text>
           </g>
-          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="Base de datos" data-legend-x="264" data-legend-baseline="896" data-legend-width="124">
-            <rect x="264" y="887" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
-            <text x="286" y="896" class="t-muted" font-size="10" font-weight="500">Base de datos</text>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="Base de datos" data-legend-x="264" data-legend-baseline="856" data-legend-width="124">
+            <rect x="264" y="847" width="16" height="10" rx="2.5" class="c-database" stroke-width="1"/>
+            <text x="286" y="856" class="t-muted" font-size="10" font-weight="500">Base de datos</text>
           </g>
-          <g data-legend-semantic-kind="cloud" data-legend-kind="cloud" data-legend-label="Nube" data-legend-x="410" data-legend-baseline="896" data-legend-width="68">
-            <rect x="410" y="887" width="16" height="10" rx="2.5" class="c-cloud" stroke-width="1"/>
-            <text x="432" y="896" class="t-muted" font-size="10" font-weight="500">Nube</text>
+          <g data-legend-semantic-kind="security" data-legend-kind="security" data-legend-label="Seguridad" data-legend-x="410" data-legend-baseline="856" data-legend-width="99">
+            <rect x="410" y="847" width="16" height="10" rx="2.5" class="c-security" stroke-width="1"/>
+            <text x="432" y="856" class="t-muted" font-size="10" font-weight="500">Seguridad</text>
           </g>
-          <g data-legend-semantic-kind="security" data-legend-kind="security" data-legend-label="Seguridad" data-legend-x="500" data-legend-baseline="896" data-legend-width="99">
-            <rect x="500" y="887" width="16" height="10" rx="2.5" class="c-security" stroke-width="1"/>
-            <text x="522" y="896" class="t-muted" font-size="10" font-weight="500">Seguridad</text>
-          </g>
-          <g data-legend-semantic-kind="external" data-legend-kind="external" data-legend-label="Externo" data-legend-x="621" data-legend-baseline="896" data-legend-width="87">
-            <rect x="621" y="887" width="16" height="10" rx="2.5" class="c-external" stroke-width="1"/>
-            <text x="643" y="896" class="t-muted" font-size="10" font-weight="500">Externo</text>
+          <g data-legend-semantic-kind="external" data-legend-kind="external" data-legend-label="Externo" data-legend-x="531" data-legend-baseline="856" data-legend-width="87">
+            <rect x="531" y="847" width="16" height="10" rx="2.5" class="c-external" stroke-width="1"/>
+            <text x="553" y="856" class="t-muted" font-size="10" font-weight="500">Externo</text>
           </g>
         </g>
       </svg>
@@ -5849,48 +5830,48 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <div class="card">
         <div class="card-header">
           <div class="card-dot cyan"></div>
-          <h3>Ingesta multi-formato</h3>
+          <h3>Un proceso, sin CORS</h3>
         </div>
         <ul>
-          <li>Los 3 ficheros del reto (Word, Excel, JSON) producen 3 fichas READY</li>
-          <li>El registry de adaptadores añade un formato sin tocar el core</li>
-          <li>Formato desconocido: extracción parcial + revisión, nunca error global</li>
+          <li>uvicorn sirve la SPA compilada en / y la API en /api: un puerto, un origen</li>
+          <li>La sesión demo viaja en cookie firmada (itsdangerous), no en Supabase Auth</li>
+          <li>En desarrollo, Vite con proxy /api; sin Docker ni servicios externos en el camino crítico</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot emerald"></div>
-          <h3>El puente: briefing pre-visita</h3>
+          <h3>Ingesta determinista</h3>
         </div>
         <ul>
-          <li>Plantilla determinista + resumen LLM opcional con guardrails</li>
-          <li>Se genera del registro canónico según el nivel autorizado</li>
-          <li>Marc lo lee antes de aceptar: 90 s en vez de 10–15 min</li>
+          <li>Registry de adaptadores: docx (python-docx), xlsx (openpyxl), json, csv</li>
+          <li>Mapeador asistido solo para tabulares con columnas nuevas: propone y el usuario confirma</li>
+          <li>Resultado parcial + NEEDS_REVIEW en vez de error global; cache por hash del fichero</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot rose"></div>
-          <h3>Privacidad y RGPD</h3>
+          <h3>Frontera de privacidad</h3>
         </div>
         <ul>
-          <li>Niveles CLINICAL (sin PII del tutor) y FULL (ficha + documentos)</li>
-          <li>RLS en Supabase: la clínica solo ve sus pacientes</li>
-          <li>audit_events registra quién vio qué; datos ficticios y seudonimizados</li>
+          <li>Antes de aceptar: resumen no identificativo, sin PII del tutor ni documentos</li>
+          <li>Tras aceptar: historia completa y adjuntos, según el share_level de la solicitud</li>
+          <li>audit_events registra quién vio qué y cuándo; datos sintéticos y banner de demo</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot violet"></div>
-          <h3>Stack y demo</h3>
+          <h3>Datos locales, Postgres-ready</h3>
         </div>
         <ul>
-          <li>Un repo, dos despliegues: SPA estática + API en contenedor</li>
-          <li>Fallback local con docker compose si falla la red del evento</li>
-          <li>Datos semilla, botón de carga demo y vídeo de respaldo</li>
+          <li>Un fichero SQLite (data/vetlink.db) y data/uploads/ en la propia máquina</li>
+          <li>Seed idempotente al arrancar y POST /api/demo/reset para repetir la demo</li>
+          <li>El modelo es Postgres-ready: las mismas clases SQLModel pasan a JSONB cambiando la URL</li>
         </ul>
       </div>
     </div>
