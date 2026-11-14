@@ -35,19 +35,28 @@ function SlotButton({
       type="button"
       onClick={onSelect}
       disabled={!iso}
-      className={`flex flex-col items-start rounded-xl border px-3 py-2.5 text-left transition duration-200 ease-smooth hover:-translate-y-px ${
+      aria-pressed={selected}
+      className={`flex flex-col items-start rounded-2xl border px-3.5 py-3 text-left transition duration-200 ease-smooth hover:-translate-y-px ${
         selected
-          ? 'border-indigo bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100'
-          : 'border-line bg-white/70 hover:border-indigo-300'
+          ? 'border-ink bg-ink text-cream shadow-lift'
+          : 'border-line bg-white/70 text-ink hover:border-indigo-300 hover:bg-white'
       } disabled:opacity-50`}
       title={iso || 'Franja sin fecha'}
     >
-      <span className="text-[9.5px] font-medium uppercase tracking-[0.08em] leading-3 text-caption">
+      <span
+        className={`text-[9.5px] font-medium uppercase tracking-[0.08em] leading-3 ${
+          selected ? 'text-cream/55' : 'text-caption'
+        }`}
+      >
         {iso ? formatWeekday(iso) : 'franja'}
       </span>
       <span className="mt-1 text-[12.5px] font-medium leading-4">{slotLabel(slot)}</span>
       {duration ? (
-        <span className="mt-0.5 text-[10.5px] leading-3 text-caption">{duration} min</span>
+        <span
+          className={`mt-0.5 text-[10.5px] leading-3 ${selected ? 'text-cream/55' : 'text-caption'}`}
+        >
+          {duration} min
+        </span>
       ) : null}
     </button>
   );
@@ -96,29 +105,16 @@ function SpecialistPriceBox({ priceFrom }: { priceFrom?: number | null }) {
   );
 }
 
-function SpecialistProfileHeader({
-  specialist,
-  requestHref,
-}: {
-  specialist: Specialist;
-  requestHref: string;
-}) {
+function SpecialistProfileHeader({ specialist }: { specialist: Specialist }) {
   return (
-    <header className="glass-strong rounded-panel p-5 sm:p-6">
+    <header className="glass rounded-panel p-5 sm:p-6">
       <div className="flex flex-wrap items-start gap-4 sm:gap-5">
-        <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-indigo-50 text-xl font-medium tracking-tight text-indigo-700 ring-1 ring-inset ring-indigo-100">
+        <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] border border-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(246,221,196,0.72))] text-xl font-medium tracking-tight text-indigo-700 shadow-soft">
           {initials(specialist.name)}
         </span>
         <SpecialistProfileFacts specialist={specialist} />
-        <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:items-end">
+        <div className="ml-auto shrink-0">
           <SpecialistPriceBox priceFrom={specialist.price_from} />
-          <Link
-            to={requestHref}
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
-          >
-            <Send className="h-3.5 w-3.5" />
-            Solicitar derivación
-          </Link>
         </div>
       </div>
     </header>
@@ -178,7 +174,7 @@ function SlotsCard({
         <SelectedSlotHint selectedSlot={selection.selectedSlot} />
         <Link
           to={requestHref}
-          className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
+          className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26] sm:w-auto"
         >
           <Send className="h-3.5 w-3.5" />
           Solicitar derivación
@@ -262,7 +258,7 @@ export function SpecialistDetail() {
   return (
     <div className="space-y-6">
       <BackLink to={specialistListHref(patientId)}>Especialistas</BackLink>
-      <SpecialistProfileHeader specialist={specialist} requestHref={requestHref} />
+      <SpecialistProfileHeader specialist={specialist} />
       <AvailabilitySection slots={slots} selection={selection} requestHref={requestHref} />
     </div>
   );
