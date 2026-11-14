@@ -40,7 +40,7 @@ export function PatientSpecialistSection({ form, onUpdate }: SectionProps) {
   const patientsQuery = usePatients();
   const specialistsQuery = useSpecialists('', '');
   return (
-    <section className="glass space-y-4 rounded-panel p-5">
+    <section className="glass relative z-30 space-y-4 rounded-panel p-5">
       <SectionHeading icon={UserRound} title="Paciente y especialista" />
       <PatientField
         value={form.patientId}
@@ -144,7 +144,7 @@ function UrgencyPicker({
 
 export function ReasonSection({ form, onUpdate }: SectionProps) {
   return (
-    <section className="glass space-y-4 rounded-panel p-5">
+    <section className="glass relative z-20 space-y-4 rounded-panel p-5">
       <SectionHeading icon={AlertCircle} title="Motivo de la derivación" />
       <MotivoField
         value={form.motivo}
