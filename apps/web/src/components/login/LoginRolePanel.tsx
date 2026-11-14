@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { ApiError } from '../../api/client';
-import { useResetDemo } from '../../api/hooks';
 import type { User } from '../../api/types';
 import { isSpecialist } from '../../lib/format';
 import { homeFor } from '../../lib/routes';
@@ -20,8 +19,6 @@ interface RoleTone {
   title: string;
   badge: string;
   text: string;
-  bullet: string;
-  dot: string;
   arrow: string;
   spinner: string;
 }
@@ -33,8 +30,6 @@ const ROLE_TONES: Record<'primary' | 'secondary', RoleTone> = {
     title: 'text-white',
     badge: 'border-white/20 bg-indigo-900/35 text-white/90',
     text: 'text-white/80',
-    bullet: 'text-white/65',
-    dot: 'bg-white/45',
     arrow: 'text-white/70 group-hover:text-white',
     spinner: 'text-white',
   },
@@ -44,8 +39,6 @@ const ROLE_TONES: Record<'primary' | 'secondary', RoleTone> = {
     title: 'text-ink',
     badge: 'border-indigo-100 bg-indigo-50 text-indigo-700',
     text: 'text-caption',
-    bullet: 'text-caption',
-    dot: 'bg-indigo-300',
     arrow: 'text-indigo-300 group-hover:text-indigo-700',
     spinner: 'text-indigo',
   },
@@ -75,17 +68,6 @@ function RoleCardText({ card, tone }: { card: RoleCard; tone: RoleTone }) {
         </span>
       </div>
       <p className={`mt-1 text-[11.5px] leading-4 ${tone.text}`}>{card.description}</p>
-      <ul className="mt-1.5 flex flex-wrap gap-x-2.5 gap-y-1">
-        {card.bullets.map((bullet) => (
-          <li
-            key={bullet}
-            className={`inline-flex items-center gap-1 text-[10px] leading-3 ${tone.bullet}`}
-          >
-            <span className={`h-1 w-1 rounded-full ${tone.dot}`} aria-hidden="true" />
-            {bullet}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
@@ -163,47 +145,6 @@ function LoginErrorAlert({ error }: { error: Error }) {
   );
 }
 
-function ResetDemoButton({ reset }: { reset: ReturnType<typeof useResetDemo> }) {
-  return (
-    <button
-      type="button"
-      className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[10.5px] font-medium text-caption transition duration-200 ease-smooth hover:bg-white/70 hover:text-indigo-700 disabled:opacity-60"
-      onClick={() => reset.mutate()}
-      disabled={reset.isPending}
-      title="POST /api/demo/reset (requiere sesión)"
-    >
-      {reset.isPending ? <Spinner size="xs" /> : <ShieldCheck className="h-3 w-3" />}
-      Reiniciar datos de demo
-    </button>
-  );
-}
-
-function ResetFooter({
-  user,
-  reset,
-}: {
-  user: User | null | undefined;
-  reset: ReturnType<typeof useResetDemo>;
-}) {
-  return (
-    <>
-      <div className="mt-4 flex items-center justify-between gap-2 border-t border-line/80 pt-3">
-        {user ? (
-          <ResetDemoButton reset={reset} />
-        ) : (
-          <span className="text-[10.5px] leading-4 text-caption/80">
-            El reset de la demo está en la cabecera, ya con sesión
-          </span>
-        )}
-        <span className="text-[10.5px] text-caption/70">v0.1 · H+0</span>
-      </div>
-      {reset.isError ? (
-        <p className="mt-2 text-[10.5px] text-crit">{reset.error.message}</p>
-      ) : null}
-    </>
-  );
-}
-
 function SsoLink() {
   return (
     <button
@@ -221,18 +162,17 @@ function SsoLink() {
 function PanelGlow() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <span className="absolute -right-40 -top-56 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(221,240,227,0.55),rgba(245,248,254,0)_70%)]" />
-      <span className="absolute -bottom-56 -left-32 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(255,243,229,0.9),rgba(245,248,254,0)_70%)]" />
+      <span className="absolute -right-40 -top-56 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(246,220,203,0.7),rgba(251,244,234,0)_70%)]" />
+      <span className="absolute -bottom-56 -left-32 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(233,180,138,0.55),rgba(251,244,234,0)_70%)]" />
     </div>
   );
 }
 
 function LoginFootNote() {
   return (
-    <div className="mt-4 space-y-1 text-center text-[10px] tracking-[0.01em] text-caption sm:text-[9.5px] sm:uppercase sm:tracking-[0.1em]">
-      <p>Entorno de demostración · datos ficticios y anonimizados</p>
-      <p className="text-caption/80">Equipo Joniha · VIII Hackathon Boehringer Ingelheim España</p>
-    </div>
+    <p className="mt-4 text-center text-[10px] text-caption">
+      Entorno de demostración · datos ficticios · Equipo Joniha
+    </p>
   );
 }
 
@@ -254,7 +194,6 @@ function MobileBrand() {
 
 export function LoginRolePanel({ user }: { user: User | null | undefined }) {
   const { login, pending, start } = useDemoLogin();
-  const reset = useResetDemo();
 
   return (
     <section className="relative order-1 flex flex-col items-center justify-center overflow-hidden bg-mist px-4 py-8 sm:px-8 sm:py-10 lg:order-2 lg:min-h-screen lg:px-10">
@@ -276,7 +215,7 @@ export function LoginRolePanel({ user }: { user: User | null | undefined }) {
             Entra en la demo
           </h2>
           <p className="mt-1.5 text-[12.5px] leading-[18px] text-caption">
-            Elige el lado que quieres ver. Puedes cambiar cuando quieras.
+            Elige tu lado.
           </p>
 
           {user ? <ActiveSessionCard user={user} /> : null}
@@ -303,8 +242,6 @@ export function LoginRolePanel({ user }: { user: User | null | undefined }) {
           <div className="mt-2.5 text-center">
             <SsoLink />
           </div>
-
-          <ResetFooter user={user} reset={reset} />
         </div>
         <LoginFootNote />
       </div>
