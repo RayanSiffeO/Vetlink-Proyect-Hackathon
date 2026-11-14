@@ -46,12 +46,9 @@ function NavBrand({ home }: { home: string }) {
       className="group flex shrink-0 items-center gap-2.5 rounded-xl pr-1"
       aria-label="VetLink, inicio"
     >
-      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[12px] font-medium tracking-tight text-ink shadow-lift transition duration-200 ease-smooth group-hover:-translate-y-0.5">
-        VL
-      </span>
-      <span className="hidden leading-tight sm:block">
-        <span className="block text-[15px] font-medium tracking-[-0.01em] text-ink">VetLink</span>
-        <span className="block text-[10.5px] text-caption">Salud animal, a un clic</span>
+      <span className="vl-wordmark text-[16px] font-medium tracking-[-0.02em]">VetLink</span>
+      <span className="hidden text-[10.5px] leading-tight text-caption sm:block">
+        Salud animal, a un clic
       </span>
     </Link>
   );

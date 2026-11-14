@@ -213,6 +213,13 @@
     border-color: rgba(158, 76, 54, 0.12);
   }
 
+  .vl-wordmark {
+    background: linear-gradient(100deg, #9e4c36 0%, #c46b4d 48%, #e9b48a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
   .login-intro {
     position: fixed;
     inset: 0;
@@ -598,6 +605,13 @@
     border-color: rgba(158, 76, 54, 0.12);
   }
 
+  .vl-wordmark {
+    background: linear-gradient(100deg, #9e4c36 0%, #c46b4d 48%, #e9b48a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
   .login-intro {
     position: fixed;
     inset: 0;

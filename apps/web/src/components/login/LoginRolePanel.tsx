@@ -179,15 +179,8 @@ function LoginFootNote() {
 function MobileBrand() {
   return (
     <div className="mb-5 flex items-center gap-2.5 lg:hidden">
-      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[11.5px] font-medium tracking-tight text-ink shadow-lift">
-        VL
-      </span>
-      <span>
-        <span className="block text-[15px] font-medium leading-5 tracking-[-0.01em] text-ink">
-          VetLink
-        </span>
-        <span className="block text-[10.5px] leading-4 text-caption">Salud animal, a un clic</span>
-      </span>
+      <span className="vl-wordmark text-[16px] font-medium leading-5 tracking-[-0.02em]">VetLink</span>
+      <span className="text-[10.5px] leading-4 text-caption">Salud animal, a un clic</span>
     </div>
   );
 }
