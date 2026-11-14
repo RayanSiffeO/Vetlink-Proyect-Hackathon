@@ -5,6 +5,7 @@ const ACCEPTED_FILES = {
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
   'application/json': ['.json'],
+  'text/csv': ['.csv'],
 };
 
 export function usePatientDropzone(onAccepted: (files: File[]) => void) {

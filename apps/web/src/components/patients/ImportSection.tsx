@@ -90,7 +90,7 @@ function ImportIntro() {
       <div>
         <h2 className="text-sm font-semibold">Importar historia clínica</h2>
         <p className="text-[12px] text-base-content/55">
-          Arrastra los ficheros o selecciónalos · Word, Excel y JSON
+          Arrastra los ficheros o selecciónalos · Word, Excel, JSON y CSV
         </p>
       </div>
     </div>
@@ -108,6 +108,9 @@ function ImportControls({ pending, onOpen }: { pending: boolean; onOpen: () => v
       </span>
       <span className="badge badge-ghost badge-sm gap-1">
         <FileUp className="h-3 w-3" /> .json
+      </span>
+      <span className="badge badge-ghost badge-sm gap-1">
+        <FileSpreadsheet className="h-3 w-3" /> .csv
       </span>
       <button
         type="button"
@@ -127,7 +130,7 @@ function ImportNotices({ rejected, error }: { rejected: string[]; error?: Error 
     <>
       {rejected.length > 0 ? (
         <p className="mt-3 text-[12px] text-error">
-          Formato no soportado: {rejected.join(', ')}. Usa .docx, .xlsx o .json.
+          Formato no soportado: {rejected.join(', ')}. Usa .docx, .xlsx, .json o .csv.
         </p>
       ) : null}
       {error ? (
