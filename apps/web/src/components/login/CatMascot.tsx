@@ -1,39 +1,31 @@
 export function CatMascot() {
   return (
-    <div className="cat-scene" aria-hidden="true">
-      <span className="cat-glow" />
-      <span className="cat-shadow" />
-      <div className="cat">
-        <div className="cat-body">
-          <span className="cat-arm cat-arm-left" />
-          <span className="cat-arm cat-arm-right" />
-          <span className="cat-tail" />
-        </div>
-        <span className="cat-ear cat-ear-left">
-          <span className="cat-ear-inner" />
-        </span>
-        <span className="cat-ear cat-ear-right">
-          <span className="cat-ear-inner" />
-        </span>
-        <div className="cat-head">
-          <div className="cat-eye cat-eye-left">
-            <span className="cat-pupil" />
-            <span className="cat-sparkle" />
-          </div>
-          <div className="cat-eye cat-eye-right">
-            <span className="cat-pupil" />
-            <span className="cat-sparkle" />
-          </div>
-          <span className="cat-nose" />
-          <span className="cat-whisker cat-whisker-left cat-whisker-1" />
-          <span className="cat-whisker cat-whisker-left cat-whisker-2" />
-          <span className="cat-whisker cat-whisker-left cat-whisker-3" />
-          <span className="cat-whisker cat-whisker-right cat-whisker-1" />
-          <span className="cat-whisker cat-whisker-right cat-whisker-2" />
-          <span className="cat-whisker cat-whisker-right cat-whisker-3" />
+    <article className="css-cat" role="img" aria-labelledby="cat-alt">
+      <div id="cat-alt" className="cat-alt">
+        Cartoon de un gato negro tierno dibujado en CSS
+      </div>
+      <div className="shadow" />
+      <div className="tail" />
+      <div className="body">
+        <div className="leg" />
+        <div className="leg" />
+        <div className="paw" />
+        <div className="paw" />
+      </div>
+      <div className="head">
+        <div className="ear" />
+        <div className="ear" />
+        <div className="face">
+          <div className="whisker" />
+          <div className="whisker" />
+          <div className="whisker" />
+          <div className="whisker" />
+          <div className="eye" />
+          <div className="eye" />
+          <div className="nose" />
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
