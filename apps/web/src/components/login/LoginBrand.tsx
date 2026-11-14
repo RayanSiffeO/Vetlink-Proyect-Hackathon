@@ -86,7 +86,7 @@ function HeroFootnote() {
 
 export function LoginBrand() {
   return (
-    <section className="relative isolate order-2 flex flex-col overflow-hidden bg-[linear-gradient(158deg,#FDF6EC_0%,#F6DDC4_44%,#E59B73_100%)] px-6 py-9 text-ink sm:px-10 lg:order-1 lg:min-h-screen lg:px-12 lg:py-12 xl:px-16">
+    <section className="login-brand relative isolate order-2 flex flex-col overflow-hidden bg-[linear-gradient(158deg,#FDF6EC_0%,#F6DDC4_44%,#E59B73_100%)] px-6 py-9 text-ink sm:px-10 lg:order-1 lg:min-h-screen lg:px-12 lg:py-12 xl:px-16">
       <HeroGlow />
       <div className="relative z-10 hidden lg:block">
         <BrandLockup />
