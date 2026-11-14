@@ -1,4 +1,4 @@
-import { AlertOctagon, AlertTriangle, ArrowRight, ChevronDown, FileText, Info } from 'lucide-react';
+import { AlertCircle, AlertOctagon, AlertTriangle, ArrowRight, ChevronDown, CircleMinus, FileText, Info } from 'lucide-react';
 import type { AlertEvidence, AlertItem } from '../api/types';
 import { severityRank, severityStyle } from '../lib/format';
 import { lookupValue } from '../lib/lookup';
@@ -17,7 +17,8 @@ interface AlertTone {
 const SEVERITY_ICONS: Record<string, typeof Info> = {
   CRITICAL: AlertOctagon,
   HIGH: AlertTriangle,
-  MEDIUM: AlertTriangle,
+  MEDIUM: AlertCircle,
+  LOW: CircleMinus,
 };
 
 const ALERT_TONES: Record<string, AlertTone> = {

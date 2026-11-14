@@ -1,38 +1,71 @@
 import { severityStyle } from '../lib/format';
-import { lookupValue } from '../lib/lookup';
 
-const CHIP_TONES: Record<string, string> = {
+const ORDER = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'INFO'] as const;
+
+const TONES: Record<string, string> = {
   CRITICAL: 'text-crit',
   HIGH: 'text-warn',
   MEDIUM: 'text-infoblue',
-  LOW: 'text-caption',
+  LOW: 'text-[#9a7e68]',
   INFO: 'text-caption',
 };
 
-const FALLBACK_CHIP_TONE = 'text-caption';
+const BARS: Record<string, string> = {
+  CRITICAL: 'bg-crit',
+  HIGH: 'bg-warn',
+  MEDIUM: 'bg-infoblue',
+  LOW: 'bg-[#9a7e68]',
+  INFO: 'bg-caption/40',
+};
 
-function AlertCountChip({ severity, count }: { severity: string; count: number }) {
-  const style = severityStyle(severity);
-  const tone = lookupValue(CHIP_TONES, String(severity ?? '').toUpperCase(), FALLBACK_CHIP_TONE);
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-white/60 bg-white/45 px-2.5 py-1 text-[11px] font-medium leading-4 ${tone}`}
-    >
-      <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true" />
-      {count} {style.label.toLowerCase()}
-    </span>
-  );
+function levelCount(counts: Record<string, number>, severity: string): number {
+  return Number(counts[severity] ?? 0);
 }
 
-export function AlertCountChips({ counts }: { counts: Record<string, number> | null | undefined }) {
+export function AlertCountChips({
+  counts,
+}: {
+  counts: Record<string, number> | null | undefined;
+}) {
   if (!counts) return null;
-  const entries = Object.entries(counts).filter(([, value]) => Number(value) > 0);
-  if (entries.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-1.5">
-      {entries.map(([severity, count]) => (
-        <AlertCountChip key={severity} severity={severity} count={count} />
-      ))}
+    <div
+      className="flex flex-wrap items-stretch gap-1.5"
+      role="list"
+      aria-label="Escala de gravedad, de mayor a menor: crítica, alta, media, baja e info"
+    >
+      {ORDER.map((severity) => {
+        const label = severityStyle(severity).label;
+        const count = levelCount(counts, severity);
+        return (
+          <div
+            key={severity}
+            role="listitem"
+            title={`${label}: ${count}`}
+            className={`flex min-w-[54px] flex-1 flex-col items-center gap-1 rounded-xl border px-2 py-1.5 ${
+              count > 0 ? 'border-white/60 bg-white/45' : 'border-line/60 bg-white/25'
+            }`}
+          >
+            <span className={`h-1 w-full rounded-full ${BARS[severity] ?? 'bg-line-strong'}`} />
+            <span
+              className={`text-[8px] font-semibold uppercase tracking-[0.08em] ${
+                TONES[severity] ?? 'text-caption'
+              } ${count === 0 ? 'opacity-45' : ''}`}
+            >
+              {label}
+            </span>
+            <span
+              className={`text-[12px] font-medium leading-none ${
+                count > 0 ? TONES[severity] ?? 'text-caption' : 'text-caption/35'
+              }`}
+            >
+              {count}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }
+
+export default AlertCountChips;
