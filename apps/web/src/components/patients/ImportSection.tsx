@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   AlertTriangle,
@@ -14,6 +15,7 @@ import { useImportFiles } from '../../api/hooks';
 import { usePatientDropzone } from '../../hooks/usePatientDropzone';
 import { Spinner } from '../Spinner';
 import { lookupValue } from '../../lib/lookup';
+import { ImportMappingEditor } from './ImportMappingEditor';
 
 interface ImportStatusStyle {
   label: string;
@@ -53,16 +55,35 @@ function importStatusStyle(status: string): ImportStatusStyle {
   return lookupValue(IMPORT_STATUS_STYLES, String(status).toUpperCase(), fallback);
 }
 
-function ImportResultRow({ file }: { file: ImportFileResult }) {
-  const style = importStatusStyle(file.status);
+function ImportResultRow({
+  file,
+  confirmed,
+  onReviewMapping,
+}: {
+  file: ImportFileResult;
+  confirmed: boolean;
+  onReviewMapping: (jobId: string, filename: string) => void;
+}) {
+  const style = importStatusStyle(confirmed ? 'READY' : file.status);
   const Icon = style.icon;
   return (
     <li className="flex items-start gap-2 rounded-xl border border-line bg-white/75 px-3 py-2">
       <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${style.text}`} aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-[12.5px] font-medium text-ink">{file.filename}</p>
-        {file.message ? (
+        {confirmed ? (
+          <p className="text-[11px] leading-snug text-caption">Mapeo confirmado y ficha actualizada.</p>
+        ) : file.message ? (
           <p className="text-[11px] leading-snug text-caption">{file.message}</p>
+        ) : null}
+        {file.mapping_available && file.job_id && !confirmed ? (
+          <button
+            type="button"
+            className="mt-1.5 inline-flex items-center gap-1 rounded-full border border-indigo-200 bg-white/70 px-2 py-0.5 text-[10.5px] font-medium text-indigo-700 transition hover:bg-indigo-50"
+            onClick={() => onReviewMapping(file.job_id as string, file.filename)}
+          >
+            Revisar mapeo
+          </button>
         ) : null}
       </div>
       <span
@@ -75,6 +96,8 @@ function ImportResultRow({ file }: { file: ImportFileResult }) {
 }
 
 function ImportResult({ result, onSeePatients }: { result: ImportResponse; onSeePatients: () => void }) {
+  const [mappingTarget, setMappingTarget] = useState<{ jobId: string; filename: string } | null>(null);
+  const [confirmedJobs, setConfirmedJobs] = useState<string[]>([]);
   return (
     <div className="mt-4 rounded-2xl border border-line bg-white/55 p-3">
       <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -92,9 +115,25 @@ function ImportResult({ result, onSeePatients }: { result: ImportResponse; onSee
       </div>
       <ul className="grid gap-2 sm:grid-cols-2">
         {(result.files ?? []).map((file, index) => (
-          <ImportResultRow key={`${file.filename}-${index}`} file={file} />
+          <ImportResultRow
+            key={`${file.filename}-${index}`}
+            file={file}
+            confirmed={Boolean(file.job_id && confirmedJobs.includes(file.job_id))}
+            onReviewMapping={(jobId, filename) => setMappingTarget({ jobId, filename })}
+          />
         ))}
       </ul>
+      {mappingTarget ? (
+        <ImportMappingEditor
+          jobId={mappingTarget.jobId}
+          filename={mappingTarget.filename}
+          onClose={() => setMappingTarget(null)}
+          onConfirmed={() => {
+            setConfirmedJobs((current) => [...current, mappingTarget.jobId]);
+            setMappingTarget(null);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

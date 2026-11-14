@@ -111,6 +111,9 @@ El botón **Cargar demo** de la cabecera reinicia los datos de ejemplo.
 |---|---|
 | ![Login](screenshots/01-login.png) | ![Pacientes](screenshots/02-pacientes.png) |
 
+| Revisión del mapeo de columnas | Mi disponibilidad |
+|---|---|
+| ![Mapeo de columnas](screenshots/10-mapeo-columnas.png) | ![Disponibilidad](screenshots/11-disponibilidad.png) |
 ### Móvil
 
 La ficha, las alertas y la navegación están preparadas para móvil:
@@ -124,10 +127,10 @@ La ficha, las alertas y la navegación están preparadas para móvil:
 - **CSV genérico:** las variantes de CSV se mapean por reglas y sinónimos, con conversión de fechas y pesos (kg/lb) y marca de revisión humana.
 - **Registro canónico:** paciente, tutores, encuentros, problemas, alertas, vacunas, tratamientos y procedencia.
 - **Alertas clínicas:** severidad ordenada (crítica → alta → media → baja → info), evidencia y acción recomendada.
-- **Revisión humana:** campos dudosos señalados y confirmación de la ficha antes de compartirla.
+- **Revisión humana:** campos dudosos señalados, mapeo de columnas editable y confirmación de la ficha antes de compartirla.
 - **Marketplace:** búsqueda por especialidad y zona, tarifa orientativa y siguiente hueco.
 - **Derivación con consentimiento:** resumen no identificativo antes de aceptar; historia completa y briefing después.
-- **Agenda:** cita confirmada al aceptar una franja.
+- **Agenda:** cita confirmada al aceptar una franja; el especialista puede añadir o retirar sus franjas.
 - **Cierre de visita:** nota del especialista que vuelve a la ficha de la clínica.
 - **Auditoría:** accesos y acciones relevantes registrados.
 
@@ -171,8 +174,8 @@ Bloques principales:
 
 - `auth`: login/logout demo por rol.
 - `patients`: bandeja y ficha canónica.
-- `imports`: subida multi-fichero y estado por fichero.
-- `specialists`: marketplace, perfil y disponibilidad.
+- `imports`: subida multi-fichero, estado por fichero y mapeo de columnas editable/confirmable.
+- `specialists`: marketplace, perfil y edición de disponibilidad del especialista.
 - `requests`: solicitud, resumen pre-aceptación, aceptación/declinación, briefing y cierre.
 - `appointments` y `audit`: agenda y registro de accesos.
 - `demo/reset`: reinicio de datos de ejemplo.
@@ -227,4 +230,6 @@ Todos los datos son **ficticios y anonimizados**. El prototipo aplica mínimo pr
 Equipo **Joniha** · Jose Miguel (producto, frontend y demo) y Rayan (backend y datos).
 
 Reto 3 de la VIII Hackathon Boehringer Ingelheim España.
+
+
 

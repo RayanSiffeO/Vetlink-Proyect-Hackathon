@@ -105,7 +105,7 @@ def _document(path: Path):
         raise UnsupportedFormat(f"Word inválido: {exc}") from exc
 
 
-def extract(path: Path) -> ExtractResult:
+def _read(path: Path) -> tuple[dict[str, str], list[dict[str, str]], int]:
     document = _document(path)
     patient: dict[str, str] = {}
     visits: list[dict[str, str]] = []
@@ -122,9 +122,24 @@ def extract(path: Path) -> ExtractResult:
     patient["allergy"] = allergy or ""
     if not patient.get("name"):
         raise UnsupportedFormat("Word sin tabla de paciente reconocible")
+    return patient, visits, ignored
+
+
+def _table_rows(patient: dict[str, str], visits: list[dict[str, str]]) -> tuple[list[str], list[list[str]]]:
     headers = list(dict.fromkeys([*patient.keys(), "date", "reason", "diagnosis", "treatment", "next_visit"]))
     source = visits or [{}]
     rows = [[{**patient, **visit}.get(header, "") for header in headers] for visit in source]
+    return headers, rows
+
+
+def read_table(path: Path) -> tuple[list[str], list[list[str]]]:
+    patient, visits, _ = _read(path)
+    return _table_rows(patient, visits)
+
+
+def extract(path: Path) -> ExtractResult:
+    patient, visits, ignored = _read(path)
+    headers, rows = _table_rows(patient, visits)
     record, warnings = build_record(headers, rows, path.name)
     record["source"]["system"] = "Word genérico"
     record["source"]["format"] = "DOCX"

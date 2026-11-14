@@ -142,22 +142,27 @@ def _rows_for(
     return headers, rows
 
 
-def extract(path: Path) -> ExtractResult:
+def read_table(path: Path) -> tuple[list[str], list[list[str]]]:
     tables = _workbook_tables(path)
     if not tables:
         raise UnsupportedFormat("Excel sin tablas legibles")
-    patient, allergies, visits, weight, ignored = _collect(tables)
+    patient, allergies, visits, weight, _ = _collect(tables)
     if not patient:
         raise UnsupportedFormat("Excel sin datos de paciente reconocibles")
     patient = {key: value for key, value in patient.items() if value}
     if weight is not None:
         patient["weight_kg"] = str(weight)
-    headers, rows = _rows_for(patient, allergies, visits)
+    return _rows_for(patient, allergies, visits)
+
+
+def extract(path: Path) -> ExtractResult:
+    tables = _workbook_tables(path)
+    if not tables:
+        raise UnsupportedFormat("Excel sin tablas legibles")
+    headers, rows = read_table(path)
     record, warnings = build_record(headers, rows, path.name)
     record["source"]["system"] = "Excel genérico"
     record["source"]["format"] = "XLSX"
     record["source"]["sheets"] = [worksheet.title for worksheet, _, _ in tables]
     warnings = ["Excel genérico: se importa la primera tabla clínica reconocida.", *warnings]
-    if ignored:
-        warnings.append(f"Hojas sin columnas reconocidas: {', '.join(ignored)}.")
     return ExtractResult(record=record, warnings=warnings, needs_review=True)

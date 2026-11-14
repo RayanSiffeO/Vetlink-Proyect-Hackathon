@@ -1,15 +1,17 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Query
 from sqlmodel import select
 
+from ..auth import specialist_id_for_user
 from ..context import ApiCtx
-from ..db import loads_json
-from ..errors import require_found
-from ..models import Specialist
-from ..schemas import specialist_dict
+from ..db import dumps_json, loads_json
+from ..errors import UNPROCESSABLE, ensure, require_found
+from ..models import Role, Specialist
+from ..schemas import AvailabilityIn, role_value, specialist_dict
 
 router = APIRouter(prefix="/specialists", tags=["specialists"])
 
@@ -49,3 +51,28 @@ def get_specialist(specialist_id: str, ctx: ApiCtx) -> dict:
         "available_slots": slots,
         "slots_count": len(slots),
     }
+
+
+def _normalize_slots(slots: list[str]) -> list[str]:
+    values: set[str] = set()
+    for slot in slots:
+        try:
+            moment = datetime.fromisoformat(str(slot))
+        except ValueError:
+            ensure(False, f"Franja no válida: {slot}", UNPROCESSABLE)
+        values.add(moment.isoformat())
+    return sorted(values)
+
+
+@router.patch("/{specialist_id}/availability", summary="Actualizar la disponibilidad del especialista")
+def update_availability(specialist_id: str, payload: AvailabilityIn, ctx: ApiCtx) -> dict:
+    ensure(role_value(ctx.user) == Role.SPECIALIST.value, "Solo el especialista puede editar su agenda")
+    ensure(specialist_id_for_user(ctx.user) == specialist_id, "Solo puedes editar tu propia disponibilidad")
+    spec = require_found(ctx.session.get(Specialist, specialist_id), "Especialista no encontrado")
+    slots = _normalize_slots(payload.slots)
+    spec.available_slots_json = dumps_json(slots)
+    ctx.session.add(spec)
+    ctx.session.commit()
+    ctx.session.refresh(spec)
+    ctx.audit("Specialist", spec.id, "UPDATE_AVAILABILITY")
+    return {"specialist": specialist_dict(spec), "available_slots": slots, "slots_count": len(slots)}

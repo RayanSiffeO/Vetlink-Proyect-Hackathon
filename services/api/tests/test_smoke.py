@@ -128,6 +128,27 @@ def test_import_cache_and_csv_review(client: TestClient) -> None:
     assert len(body["alerts"]) == 2
     assert body["provenance_summary"]["alerts"]["total"] == 2
 
+    mapping = client.get(f"/api/imports/{entry['job_id']}/mapping").json()
+    assert mapping["rows_count"] == 3
+    confirmed = client.post(
+        f"/api/imports/{entry['job_id']}/mapping",
+        json={"mapping": [{"index": item["index"], "target": item["target"]} for item in mapping["columns"]]},
+    )
+    assert confirmed.status_code == 200, confirmed.text
+    assert confirmed.json()["job"]["status"] == "READY"
+
+
+def test_specialist_can_update_own_availability(client: TestClient) -> None:
+    login(client, "marc")
+    detail = client.get("/api/specialists/spc_marc").json()
+    slots = detail["available_slots"][:2]
+    updated = client.patch("/api/specialists/spc_marc/availability", json={"slots": slots})
+    assert updated.status_code == 200, updated.text
+    assert updated.json()["slots_count"] == 2
+    login(client, "laura")
+    forbidden = client.patch("/api/specialists/spc_marc/availability", json={"slots": slots})
+    assert forbidden.status_code == 403
+
 
 def test_request_summary_locked_then_briefing(client: TestClient) -> None:
     login(client, "laura")

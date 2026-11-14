@@ -9,12 +9,15 @@ from sqlmodel import select
 
 from ..config import settings
 from ..context import ApiContext, ApiCtx
-from ..errors import BAD_REQUEST, ensure, require_found
+from ..db import dumps_json, loads_json
+from ..errors import BAD_REQUEST, UNPROCESSABLE, ensure, require_found
 from ..extractors import get_extractor
 from ..extractors.base import ExtractResult, UnsupportedFormat
-from ..ingestion import ingest_canonical
-from ..models import ImportJob, ImportStatus, utcnow
-from ..schemas import import_job_dict
+from ..extractors.canonical_csv import build_record
+from ..extractors.preview import apply_mapping, plan, read_table, targets
+from ..ingestion import ingest_canonical, persist_canonical
+from ..models import ImportDraft, ImportJob, ImportStatus, Record, Role, utcnow
+from ..schemas import MappingConfirmIn, import_job_dict, role_value
 from ..seed import NEEDS_REVIEW_MESSAGE, READY_MESSAGE, build_import_cache, sha256_of
 
 router = APIRouter(prefix="/imports", tags=["imports"])
@@ -22,6 +25,8 @@ router = APIRouter(prefix="/imports", tags=["imports"])
 EXTRACTION_REVIEW_MESSAGE = "Extracción marcada para revisión manual"
 UNSUPPORTED_FORMAT_MESSAGE = "Formato no soportado por los extractores; revisión manual"
 FAILED_MESSAGE = "No se pudo procesar el fichero"
+MAPPING_CONFIRMED_MESSAGE = "Mapeo confirmado por la clínica"
+MAPPING_READY_DETAIL = "Mapeo disponible para revisión"
 
 
 def _safe_name(filename: str) -> str:
@@ -95,6 +100,28 @@ def _apply_extraction_flags(ctx: ApiContext, job: ImportJob, result: ExtractResu
     return job
 
 
+def _save_draft(ctx: ApiContext, job: ImportJob, path: Path) -> None:
+    try:
+        headers, rows = read_table(path)
+    except (UnsupportedFormat, ValueError, OSError):
+        return
+    draft = ImportDraft(
+        job_id=job.id,
+        format=path.suffix.lower().lstrip("."),
+        headers_json=dumps_json(headers),
+        rows_json=dumps_json(rows),
+        mapping_json=dumps_json(plan(headers)),
+    )
+    ctx.session.add(draft)
+    ctx.session.commit()
+
+
+def _file_payload(ctx: ApiContext, job: ImportJob) -> dict:
+    data = import_job_dict(job)
+    data["mapping_available"] = ctx.session.get(ImportDraft, job.id) is not None
+    return data
+
+
 def _process_upload(ctx: ApiContext, upload: UploadFile, cache: dict[str, str]) -> ImportJob:
     data = upload.file.read()
     filename = upload.filename or "upload.bin"
@@ -115,7 +142,9 @@ def _process_upload(ctx: ApiContext, upload: UploadFile, cache: dict[str, str]) 
     except Exception as exc:
         ctx.session.rollback()
         return _store(ctx, _failed_job(filename, digest, f"{FAILED_MESSAGE}: {exc}"))
-    return _apply_extraction_flags(ctx, job, result)
+    job = _apply_extraction_flags(ctx, job, result)
+    _save_draft(ctx, job, path)
+    return job
 
 
 def _summary(jobs: list[ImportJob]) -> dict[str, int]:
@@ -134,19 +163,66 @@ def upload_files(
     jobs = [_process_upload(ctx, upload, cache) for upload in files]
     return {
         "job_id": jobs[0].id,
-        "files": [import_job_dict(job) for job in jobs],
+        "files": [_file_payload(ctx, job) for job in jobs],
         "summary": _summary(jobs),
+    }
+
+
+def _draft_payload(draft: ImportDraft) -> dict:
+    headers = loads_json(draft.headers_json, [])
+    rows = loads_json(draft.rows_json, [])
+    return {
+        "job_id": draft.job_id,
+        "format": draft.format,
+        "rows_count": len(rows),
+        "columns": plan(headers),
+        "targets": targets(),
+        "mapping_available": True,
     }
 
 
 @router.get("/{job_id}", summary="Estado de una importación")
 def get_import(job_id: str, ctx: ApiCtx) -> dict:
     job = require_found(ctx.session.get(ImportJob, job_id), "Importación no encontrada")
-    return {"job_id": job.id, "files": [import_job_dict(job)]}
+    return {"job_id": job.id, "files": [_file_payload(ctx, job)]}
+
+
+@router.get("/{job_id}/mapping", summary="Mapeo propuesto para una importación")
+def get_mapping(job_id: str, ctx: ApiCtx) -> dict:
+    ensure(role_value(ctx.user) == Role.CLINIC.value, "Solo la clínica puede revisar el mapeo")
+    require_found(ctx.session.get(ImportJob, job_id), "Importación no encontrada")
+    draft = require_found(ctx.session.get(ImportDraft, job_id), "Esta importación no tiene mapeo editable")
+    return _draft_payload(draft)
+
+
+@router.post("/{job_id}/mapping", summary="Confirmar o corregir el mapeo de columnas")
+def confirm_mapping(job_id: str, payload: MappingConfirmIn, ctx: ApiCtx) -> dict:
+    ensure(role_value(ctx.user) == Role.CLINIC.value, "Solo la clínica puede confirmar el mapeo")
+    job = require_found(ctx.session.get(ImportJob, job_id), "Importación no encontrada")
+    draft = require_found(ctx.session.get(ImportDraft, job_id), "Esta importación no tiene mapeo editable")
+    headers = loads_json(draft.headers_json, [])
+    rows = loads_json(draft.rows_json, [])
+    mapping = {item.index: item.target for item in payload.mapping}
+    mapped_headers = apply_mapping(headers, mapping)
+    try:
+        record, _ = build_record(mapped_headers, rows, job.filename)
+    except (UnsupportedFormat, ValueError, KeyError) as exc:
+        ensure(False, f"No se pudo aplicar el mapeo: {exc}", UNPROCESSABLE)
+    existing = ctx.session.get(Record, job.record_id) if job.record_id else None
+    outcome = persist_canonical(ctx, record, existing.patient_id if existing else None)
+    job.status = ImportStatus.READY
+    job.record_id = outcome.record.id
+    job.message = MAPPING_CONFIRMED_MESSAGE
+    draft.mapping_json = dumps_json(plan(mapped_headers))
+    ctx.session.add(job)
+    ctx.session.add(draft)
+    ctx.session.commit()
+    ctx.session.refresh(job)
+    return {"job": _file_payload(ctx, job), "mapping": _draft_payload(draft)}
 
 
 @router.get("", summary="Historial de importaciones")
 def list_imports(ctx: ApiCtx) -> dict:
     statement = select(ImportJob).order_by(ImportJob.created_at.desc()).limit(50)
     jobs = list(ctx.session.exec(statement).all())
-    return {"files": [import_job_dict(job) for job in jobs], "count": len(jobs)}
+    return {"files": [_file_payload(ctx, job) for job in jobs], "count": len(jobs)}

@@ -113,8 +113,11 @@ def _new_patient(session: Session, canonical: dict) -> Patient:
     return patient
 
 
-def _persist_patient(session: Session, canonical: dict, match: dict | None) -> tuple[Patient, bool]:
-    existing = session.get(Patient, match["patient_id"]) if match else None
+def _persist_patient(
+    session: Session, canonical: dict, match: dict | None, patient_id: str | None = None
+) -> tuple[Patient, bool]:
+    target = patient_id or (match["patient_id"] if match else "")
+    existing = session.get(Patient, target) if target else None
     if existing is not None:
         _apply_patient_fields(existing, canonical)
         session.add(existing)
@@ -166,9 +169,9 @@ def _persist_record(session: Session, canonical: dict, patient: Patient) -> Reco
     return record
 
 
-def _persist(session: Session, canonical: dict) -> IngestOutcome:
+def _persist(session: Session, canonical: dict, patient_id: str | None = None) -> IngestOutcome:
     match = match_patient(canonical.get("patient") or {}, _candidates(session))
-    patient, created = _persist_patient(session, canonical, match)
+    patient, created = _persist_patient(session, canonical, match, patient_id)
     _persist_alerts(session, canonical, patient.id)
     record = _persist_record(session, canonical, patient)
     return IngestOutcome(patient=patient, record=record, created=created, match=match)
@@ -217,13 +220,20 @@ def _sync_provenance_alerts(canonical: dict, alerts: list[dict]) -> None:
         summary["alerts"] = _alert_summary(alerts)
 
 
-def ingest_canonical(ctx: ApiContext, canonical: dict, filename: str, sha256: str) -> ImportJob:
+def persist_canonical(ctx: ApiContext, canonical: dict, patient_id: str | None = None) -> IngestOutcome:
     alerts = build_alerts(canonical)
     canonical["alerts"] = alerts
     _sync_provenance_alerts(canonical, alerts)
-    outcome = _persist(ctx.session, canonical)
+    outcome = _persist(ctx.session, canonical, patient_id)
     ctx.session.commit()
     _audit(ctx, outcome)
+    return outcome
+
+
+def ingest_canonical(
+    ctx: ApiContext, canonical: dict, filename: str, sha256: str, patient_id: str | None = None
+) -> ImportJob:
+    outcome = persist_canonical(ctx, canonical, patient_id)
     job = _job(filename, sha256, outcome)
     ctx.session.add(job)
     ctx.session.commit()

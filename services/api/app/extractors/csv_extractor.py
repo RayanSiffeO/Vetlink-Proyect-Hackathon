@@ -45,12 +45,16 @@ def _table(text: str, delimiter: str) -> tuple[list[str], list[list[str]]]:
     return headers, data
 
 
-def extract(path: Path) -> ExtractResult:
+def read_table(path: Path) -> tuple[list[str], list[list[str]]]:
     text = _decode(path)
     delimiter = _delimiter(text)
     if delimiter is None:
         raise UnsupportedFormat("no se pudo detectar el delimitador del CSV")
-    headers, rows = _table(text, delimiter)
+    return _table(text, delimiter)
+
+
+def extract(path: Path) -> ExtractResult:
+    headers, rows = read_table(path)
     record, warnings = build_record(headers, rows, path.name)
     messages = [HEURISTIC_WARNING, *warnings]
     return ExtractResult(record=record, warnings=messages, needs_review=True)

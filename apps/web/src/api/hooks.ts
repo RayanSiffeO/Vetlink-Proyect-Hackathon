@@ -10,11 +10,13 @@ import { isSpecialist } from '../lib/format';
 import type {
   AppointmentsResponse,
   AuditResponse,
+  AvailabilityResponse,
   BriefingResponse,
   CloseRequestPayload,
   CloseRequestResponse,
   CreateRequestPayload,
   DemoUserId,
+  ImportMappingResponse,
   ImportResponse,
   LoginResponse,
   MeResponse,
@@ -45,6 +47,7 @@ export const qk = {
   briefing: (id: string) => ['request', id, 'briefing'] as QueryKey,
   audit: (id: string) => ['request', id, 'audit'] as QueryKey,
   appointments: ['appointments'] as QueryKey,
+  importMapping: (jobId: string) => ['import', jobId, 'mapping'] as QueryKey,
 };
 
 function isUnauthorizedError(error: unknown): boolean {
@@ -158,6 +161,30 @@ export function useImportFiles() {
   });
 }
 
+export function useImportMapping(jobId: string | null) {
+  return useQuery<ImportMappingResponse>({
+    queryKey: qk.importMapping(jobId ?? ''),
+    queryFn: () => request<ImportMappingResponse>(`/imports/${jobId}/mapping`),
+    enabled: Boolean(jobId),
+    retry: false,
+  });
+}
+
+export function useConfirmImportMapping() {
+  const queryClient = useQueryClient();
+  return useMutation<
+    { job: { status: string; record_id?: string | null }; mapping: ImportMappingResponse },
+    Error,
+    { jobId: string; mapping: Array<{ index: number; target: string | null }> }
+  >({
+    mutationFn: ({ jobId, mapping }) =>
+      request(`/imports/${jobId}/mapping`, { method: 'POST', body: { mapping } }),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: qk.patients });
+      queryClient.invalidateQueries({ queryKey: qk.importMapping(variables.jobId) });
+    },
+  });
+}
 function specialistQueryString(specialty: string, zone: string): string {
   const params = new URLSearchParams();
   if (specialty.trim()) params.set('specialty', specialty.trim());
@@ -183,6 +210,26 @@ export function useSpecialist(id: string | undefined) {
     queryFn: () => request<SpecialistDetailResponse>(`/specialists/${encodeURIComponent(id!)}`),
     enabled: Boolean(id),
     retry: 1,
+  });
+}
+
+export function useUpdateAvailability() {
+  const queryClient = useQueryClient();
+  return useMutation<
+    AvailabilityResponse,
+    Error,
+    { specialistId: string; slots: string[] }
+  >({
+    mutationFn: ({ specialistId, slots }) =>
+      request<AvailabilityResponse>(`/specialists/${encodeURIComponent(specialistId)}/availability`, {
+        method: 'PATCH',
+        body: { slots },
+      }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: qk.specialist(data.specialist.id) });
+      queryClient.invalidateQueries({ queryKey: qk.specialists('', '') });
+      queryClient.invalidateQueries({ queryKey: qk.appointments });
+    },
   });
 }
 

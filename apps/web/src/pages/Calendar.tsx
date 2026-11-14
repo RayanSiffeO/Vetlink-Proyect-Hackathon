@@ -9,6 +9,7 @@ import {
   UserRound,
 } from 'lucide-react';
 import { EmptyState, ErrorState } from '../components/EmptyState';
+import { AvailabilityEditor } from '../components/AvailabilityEditor';
 import { LoadingCards } from '../components/Loading';
 import { PageHeader } from '../components/PageHeader';
 import { StatusBadge } from '../components/badges';
@@ -191,6 +192,7 @@ export function Calendar() {
   return (
     <div className="space-y-6">
       <CalendarHeader specialistRole={specialistRole} />
+      {specialistRole ? <AvailabilityEditor /> : null}
       <AppointmentsBody query={query} />
     </div>
   );

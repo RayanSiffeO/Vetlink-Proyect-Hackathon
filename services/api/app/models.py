@@ -149,3 +149,14 @@ class ImportJob(SQLModel, table=True):
     record_id: Optional[str] = Field(default=None)
     message: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=utcnow)
+
+
+class ImportDraft(SQLModel, table=True):
+    __tablename__ = "import_draft"
+
+    job_id: str = Field(primary_key=True, foreign_key="import_job.id")
+    format: str = "tabular"
+    headers_json: str = "[]"
+    rows_json: str = "[]"
+    mapping_json: str = "[]"
+    created_at: datetime = Field(default_factory=utcnow)

@@ -22,6 +22,19 @@ class RequestCreateIn(BaseModel):
     preferred: Optional[str] = None
 
 
+class AvailabilityIn(BaseModel):
+    slots: list[str] = Field(default_factory=list)
+
+
+class MappingItemIn(BaseModel):
+    index: int = Field(ge=0)
+    target: Optional[str] = None
+
+
+class MappingConfirmIn(BaseModel):
+    mapping: list[MappingItemIn] = Field(default_factory=list)
+
+
 class AcceptIn(BaseModel):
     slot_iso: Optional[str] = Field(default=None, description="Slot ISO ofrecido por el especialista")
 

@@ -176,6 +176,28 @@ export interface ImportFileResult {
   status: ImportFileStatus;
   record_id?: string | null;
   message?: string | null;
+  mapping_available?: boolean;
+}
+
+export interface ImportMappingColumn {
+  index: number;
+  source: string;
+  target?: string | null;
+  confidence?: number;
+}
+
+export interface ImportMappingTarget {
+  id: string;
+  label: string;
+}
+
+export interface ImportMappingResponse {
+  job_id: string;
+  format: string;
+  rows_count: number;
+  columns: ImportMappingColumn[];
+  targets: ImportMappingTarget[];
+  mapping_available: boolean;
 }
 
 export interface ImportResponse {
@@ -206,6 +228,12 @@ export interface SpecialistDetailResponse {
   specialist: Specialist;
   available_slots: AvailableSlot[];
   slots_count?: number;
+}
+
+export interface AvailabilityResponse {
+  specialist: Specialist;
+  available_slots: AvailableSlot[];
+  slots_count: number;
 }
 
 export type RequestStatus =
