@@ -23,6 +23,8 @@ import type {
   RequestRecord,
   RequestsResponse,
   ResetResponse,
+  ReviewRecordPayload,
+  ReviewResponse,
   SpecialistDetailResponse,
   SpecialistsResponse,
   Urgency,
@@ -119,6 +121,21 @@ export function usePatientRecord(id: string | undefined) {
     queryFn: () => request<PatientRecordResponse>(`/patients/${encodeURIComponent(id!)}/record`),
     enabled: Boolean(id),
     retry: 1,
+  });
+}
+
+export function useReviewRecord(patientId: string | undefined) {
+  const queryClient = useQueryClient();
+  return useMutation<ReviewResponse, Error, ReviewRecordPayload>({
+    mutationFn: (payload) =>
+      request<ReviewResponse>(`/patients/${encodeURIComponent(patientId!)}/record/review`, {
+        method: 'PATCH',
+        body: payload,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: qk.patientRecord(patientId ?? '') });
+      queryClient.invalidateQueries({ queryKey: qk.patients });
+    },
   });
 }
 

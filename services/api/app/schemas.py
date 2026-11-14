@@ -29,6 +29,11 @@ class DeclineIn(BaseModel):
     reason: Optional[str] = None
 
 
+class ReviewRequest(BaseModel):
+    reviewed_fields: list[str] = Field(default_factory=list)
+    note: Optional[str] = None
+
+
 def enum_value(value: Any) -> Any:
     return value.value if hasattr(value, "value") else value
 

@@ -13,6 +13,7 @@ import AlertCard, { sortAlerts } from '../components/AlertCard';
 import { BackLink } from '../components/BackLink';
 import { EmptyState, ErrorState } from '../components/EmptyState';
 import { Loading } from '../components/Loading';
+import { PatientReviewBanner } from '../components/patients/PatientReviewBanner';
 import ProvenanceBadge from '../components/ProvenanceBadge';
 import { usePatientRecord } from '../api/hooks';
 import type { Encounter, PatientRecordResponse } from '../api/types';
@@ -322,6 +323,7 @@ export function PatientRecord() {
     <div className="space-y-6">
       <BackLink to="/patients">Pacientes</BackLink>
       <RecordHeaderCard data={query.data} />
+      <PatientReviewBanner patientId={id ?? ''} review={query.data.record?.review ?? null} />
       <div className="grid gap-6 lg:grid-cols-[1.05fr_1fr]">
         <RecordAlertsSection alerts={alerts} />
         <RecordEncountersSection encounters={encounters} />

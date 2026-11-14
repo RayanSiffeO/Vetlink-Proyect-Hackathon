@@ -109,6 +109,26 @@ export interface ProvenanceSummary {
   [key: string]: unknown;
 }
 
+export interface ReviewCriticalField {
+  field?: string | null;
+  entity_id?: string | null;
+  type?: string | null;
+  review_required?: boolean | null;
+  reason?: string | null;
+  [key: string]: unknown;
+}
+
+export interface ReviewSummary {
+  policy?: string | null;
+  critical_fields?: Array<ReviewCriticalField | string> | null;
+  pending_review?: number | null;
+  reviewed_by?: string | null;
+  reviewed_at?: string | null;
+  reviewed_fields?: string[] | null;
+  note?: string | null;
+  [key: string]: unknown;
+}
+
 export interface CanonicalRecord {
   record_id?: string;
   patient?: CanonicalPatient | null;
@@ -116,6 +136,7 @@ export interface CanonicalRecord {
   alerts?: AlertItem[];
   problems?: unknown[];
   provenance_summary?: ProvenanceSummary | null;
+  review?: ReviewSummary | null;
   [key: string]: unknown;
 }
 
@@ -134,6 +155,17 @@ export interface RecordMeta {
   record_version?: number | null;
   imported_at?: string | null;
   alerts_count?: number | null;
+}
+
+export interface ReviewRecordPayload {
+  reviewed_fields?: string[];
+  note?: string | null;
+}
+
+export interface ReviewResponse {
+  patient: PatientSummary;
+  record: RecordMeta;
+  review: ReviewSummary;
 }
 
 export type ImportFileStatus = 'UPLOADING' | 'PARSING' | 'NEEDS_REVIEW' | 'READY' | 'FAILED' | string;
