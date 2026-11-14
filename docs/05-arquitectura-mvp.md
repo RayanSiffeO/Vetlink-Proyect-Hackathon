@@ -1,187 +1,227 @@
-# 05 · Arquitectura del MVP (VetLink)
+# 05 · Arquitectura del MVP (VetLink) — stack rápido
 
-> Decisión de stack ya tomada por el equipo (notas 13/11): **React + FastAPI + PostgreSQL en Supabase**. Este documento la concreta para que backend y frontend trabajen en paralelo sin fricción. Ver debate y alternativas en `03-debate-diseno.md`.
+> **Decisión v1.3 (14/11 01:45, Lead):** para un MVP de ~6 h con agentes en paralelo se mantiene el esqueleto React + FastAPI, pero se sustituye la infraestructura pesada por la más rápida: **SQLite en archivo**, **un solo proceso en la demo** y **DaisyUI** para la UI. Sin Supabase, sin Docker en el camino crítico y sin LLM en la demo. El modelo y el contrato son **Postgres-ready**: migrar es cambiar la URL de conexión.
+>
+> Antecedentes: decisión de stack del equipo (13/11, notas Obsidian: React + FastAPI + PostgreSQL/Supabase) y debate red-team en `03-debate-diseno.md`. Esta versión supersede a v1.0/v1.1 en lo relativo a infraestructura.
 
-## Decisiones v1.1 (del debate red-team)
+## Qué cambia y por qué
 
-1. **5 pantallas** en lugar de 13: login/rol, paciente+subida+revisión, búsqueda+ficha, reserva+agenda, briefing/informe (ver `04-flujos-usuarios.md`).
-2. **Supabase solo como PostgreSQL.** Sin Supabase Auth, Storage ni Realtime: auth propia (JWT) en FastAPI y documentos en disco local/objeto. Menos servicios = menos fallos.
-3. **Demo local-first** (Docker + seed + reset). La nube es un extra de credibilidad, nunca la columna vertebral.
-4. **Briefing determinista** (plantilla sobre el registro canónico). El LLM solo extrae texto libre y nunca redacta el informe.
-5. **Mapeador asistido** para tabulares con columnas desconocidas + **4º formato CSV** como prueba de homogeneización dinámica.
-6. **Resumen no identificativo antes de aceptar** la derivación; historia completa después (minimización RGPD + demostración del "puente").
-7. **Modelo canónico FHIR-inspired** (Patient, Encounter, Condition, MedicationStatement, AllergyIntolerance, Immunization, Observation, DocumentReference) con provenance por campo.
-8. **Congelaciones:** esquema sábado 18:00 · dependencias 20:00 · features domingo 10:00 · código domingo 12:00.
+| Antes | Ahora (v1.3) | Ganancia |
+|---|---|---|
+| PostgreSQL + Supabase + RLS | **SQLite** (`data/vetlink.db`), SQLModel | −1–2 h de infra; demo offline y determinista |
+| Docker Compose en el camino crítico | `uvicorn` + `pnpm dev`; **build estático servido por FastAPI** en la demo | −30–45 min y menos piezas que arrancar |
+| Frontend y API en dos despliegues + CORS | En demo, **FastAPI sirve `apps/web/dist`** en `/`; API en `/api` | 1 proceso, 1 puerto, 1 URL |
+| UI hecha a mano | **Tailwind + DaisyUI** + lucide-react | −2–3 h de CSS; componentes listos |
+| Auth de Supabase | **Cookie firmada (itsdangerous) + selector de rol demo** | −2 h; roles visibles en 2 clics |
+| Alembic/migraciones | `SQLModel.metadata.create_all` + seed al arrancar | −1 h; nada que migrar |
+| LLM para extraer | **python-docx / openpyxl / json / csv deterministas** | −2 h y cero alucinación en la demo |
 
-## Principios
+**Regla de oro:** el camino crítico de la demo no depende de red, contenedores ni servicios externos. Si algo se cae, la demo sigue en local.
 
-1. **Demo-first:** cada pieza existe porque se ve en la demo. Nada de infraestructura que no se demuestre.
-2. **Un repo, dos despliegues:** frontend estático + API; base de datos gestionada.
-3. **La IA propone, el veterinario confirma:** todo campo extraído lleva `provenance` y `confidence`; por debajo del umbral va a revisión.
-4. **Datos de salud = mínimo privilegio:** roles, niveles de compartición y datos ficticios.
-5. **Si falla algo, la demo no muere:** datos semilla, plan B en vídeo, modo local.
+## Decisiones de producto/arquitectura
 
-## Vista de componentes
+1. **5 pantallas**: login/rol · paciente+subida+revisión · búsqueda+ficha · reserva+agenda · briefing/informe (ver `04-flujos-usuarios.md`).
+2. **Sin Supabase** ni servicios gestionados para la demo. Postgres queda como camino de producción documentado.
+3. **Un solo proceso en demo**: FastAPI sirve la SPA compilada; en desarrollo, Vite con proxy `/api`.
+4. **Briefing determinista** (plantilla Jinja/Python sobre el registro canónico). El LLM no redacta el informe.
+5. **Mapeador asistido** para tabulares con columnas desconocidas + **4º formato CSV**.
+6. **Resumen no identificativo antes de aceptar**; historia completa después.
+7. **Modelo canónico FHIR-inspired** con provenance por campo, persistido como JSON canónico.
+8. **Congelaciones:** esquema sábado 18:00 · dependencias 20:00 · features domingo 10:00 · código 12:00.
+
+## Vista de componentes (demo)
 
 ```
 ┌──────────────────────────── USUARIO (web responsive) ────────────────────────────┐
-│  React SPA (Vite + TypeScript + Tailwind + React Router + TanStack Query)        │
-│  S1 Landing · S2 Login · S3 Home clínica · S4 Importar · S5 Ficha canónica       │
-│  S6 Marketplace · S7 Perfil · S8 Solicitud · S9 Home especialista · S10 Briefing  │
-│  S11 Calendario · S12 Chat · S13 Cierre                                           │
+│  React SPA (Vite + TypeScript + Tailwind + DaisyUI + lucide-react)               │
+│  React Router · TanStack Query · react-dropzone                                  │
+│  S1 Login/rol · S2 Paciente+subida+revisión · S3 Búsqueda+ficha                  │
+│  S4 Reserva+agenda · S5 Briefing/informe                                         │
 └───────────────────────────────────┬───────────────────────────────────────────────┘
-                                    │ HTTPS · JWT (Supabase Auth)
+                                    │ HTTPS · cookie de sesión demo (rol)
 ┌───────────────────────────────────▼───────────────────────────────────────────────┐
-│  API FastAPI (Python 3.12 · Pydantic v2 · SQLAlchemy async · Uvicorn)            │
+│  FastAPI (Python 3.12 · Pydantic v2 · SQLModel · Uvicorn)                        │
 │                                                                                   │
-│  Auth/RBAC        Patients        Imports          Canonical        Marketplace  │
-│  ·JWT verify      ·CRUD           ·upload           ·merge          ·search      │
-│  ·roles           ·matching       ·format sniff     ·alerts         ·profiles    │
+│  Auth demo (cookie firmada)   Patients   Imports      Canonical      Marketplace │
+│  ·rol CLINIC/SPECIALIST       ·CRUD      ·upload      ·merge         ·search     │
+│                               ·matching  ·sniff       ·alerts        ·profiles   │
 │                                                                                   │
-│  ┌── Extractores (registry de adaptadores) ────────────────────────────────────┐  │
-│  │ docx_extractor  xlsx_extractor  json_extractor  generic/llm_extractor        │  │
-│  │  (python-docx)   (openpyxl)      (schema map)    (structured output + JSON  │  │
-│  │                                                   Schema, confidence)       │  │
+│  ┌── Extractores deterministas (registry de adaptadores) ──────────────────────┐  │
+│  │ docx_extractor (python-docx)  xlsx_extractor (openpyxl)                     │  │
+│  │ json_extractor (mapping)      csv_extractor + mapeador asistido             │  │
 │  └─────────────────────────────────────────────────────────────────────────────┘  │
 │                                                                                   │
-│  Briefing builder: plantilla determinista (sin LLM; solo enlaces a la fuente)   │
+│  Briefing builder (plantilla determinista)   StaticFiles("/") → apps/web/dist    │
 └───────────────┬───────────────────────────────┬──────────────────────────────────┘
                 │                               │
         ┌───────▼────────┐              ┌───────▼────────┐
-        │  PostgreSQL    │              │  Supabase      │
-        │  (Supabase)    │              │  Storage       │
-        │  tablas + RLS  │              │  documentos    │
+        │  SQLite        │              │  Disco local   │
+        │  data/vetlink.db│             │ data/uploads/  │
+        │  tablas + JSON │              │  documentos    │
         └────────────────┘              └────────────────┘
+
+  (Postgres-ready: SQLModel + `canonical_json` portable a JSONB; sin cambios de contrato)
 ```
 
-## Pipeline de importación (el diferencial técnico)
+## Pipeline de importación
 
 ```
-Upload (1..N ficheros)
-   │  sniff: extensión + magic bytes + heurística de hojas/claves
+Upload (1..N ficheros: .docx/.xlsx/.json/.csv)
+   │  sniff: extensión + magic bytes + heurística
    ▼
-Adaptador elegido (docx | xlsx | json | csv | generic)
-   │  extracción → "partial record" + field provenance + confidence
+Adaptador elegido (docx | xlsx | json | csv)
+   │  extracción → "partial record" + provenance + confidence
    ▼
-Mapeador asistido (solo tabulares): propone mapeo de columnas desconocidas → usuario confirma
+Mapeador asistido (solo tabulares desconocidos): propone columnas → usuario confirma
    ▼
-Validación contra JSON Schema del Registro Canónico
-   │  si falla → NEEDS_REVIEW (campos dudosos marcados, nunca se pierde el dato)
+Validación contra el esquema canónico (Pydantic)
+   │  si faltan campos → NEEDS_REVIEW (no se pierde nada)
    ▼
 Normalización (fechas ISO-8601, unidades, códigos especie/sexo/estado, moneda)
    ▼
-Matching de paciente (microchip → nombre+fecha nac.; si ambiguo, sugerencia)
+Matching de paciente (microchip → nombre+fecha nac.; ambiguo = sugerencia)
    ▼
-Merge al registro existente (provenance por campo; conflicto = conservar ambos)
+Merge con provenance + cálculo de alertas (reglas Python R01–R11)
    ▼
-Persistencia (JSONB canónico + índices) + cálculo de alertas + briefing cache
+Persistencia SQLite (tabla `records.canonical_json` + `alerts` proyectadas)
    ▼
-UI: S5 ficha canónica / S10 briefing
+UI: ficha canónica (S2) · briefing (S5)
 ```
 
-**Regla de oro:** el pipeline nunca devuelve un error global si puede devolver un resultado parcial. Los adaptadores son un registry: añadir un formato = añadir un módulo, no tocar el core. Esto responde al matiz del reto "cada clínica puede tener unos distintos".
+**Regla:** el pipeline devuelve resultado parcial, nunca un error global. Añadir un formato = añadir un adaptador, no tocar el core. **Cache de importación** por hash de fichero para que la demo sea instantánea y repetible.
 
-## Modelo de datos (resumen)
+## Persistencia (SQLite en demo)
 
-Detalle completo y mapeo campo a campo en `docs/02-modelo-datos.md`. Entidades canónicas:
+Tablas mínimas (SQLModel):
 
-`Patient · Owner · Encounter · Problem · Immunization · ParasiteControl · Weight · Reminder · Document · Prescription · Invoice · Alert · ImportJob · Specialist · Request · Appointment · Message · AuditEvent`
+| Tabla | Contenido |
+|---|---|
+| `users` | Laura (CLINIC), Marc (SPECIALIST) y usuarios demo; `role`, `display_name`, `clinic_id`/`specialty` |
+| `patients` | identidad canónica + `owner_json` + `species`, `breed`, `birth_date`, `microchip`, `identity_confidence` |
+| `records` | `patient_id`, `canonical_json` (registro completo), `record_version`, `source_system`, `imported_at` |
+| `alerts` | proyección de alertas (severity, category, due_date, evidence_json) para listados |
+| `specialists` | perfil marketplace: especialidad, zonas, tarifa, disponibilidad |
+| `requests` | solicitud de derivación: `status`, `share_level`, `patient_id`, `specialist_id`, `motivo`, `urgencia` |
+| `appointments` | cita: fecha/hora, `request_id`, estado |
+| `audit_events` | quién vio qué y cuándo (panel de auditoría) |
+| `import_jobs` | estado por fichero (`UPLOADING/PARSING/NEEDS_REVIEW/READY/FAILED`) |
 
-Persistencia del MVP:
-- Tablas relacionales mínimas: `patients`, `owners`, `specialists`, `requests`, `appointments`, `messages`, `import_jobs`, `audit_events`.
-- `canonical_records` (JSONB) con el registro completo + `record_version`.
-- `alerts` proyectadas (tabla) para listados rápidos.
-- **Autorización en la API** (única puerta): cada clínica solo ve sus pacientes; el especialista solo ve lo de solicitudes donde participa; documentos servidos con URL firmada. RLS de Supabase opcional como defensa en profundidad, no como mecanismo principal (menos piezas que fallen en la demo).
+- `canonical_json` es el registro de `docs/02-modelo-datos.md` tal cual (los 3 ejemplos de `docs/ejemplos/` sirven de seed).
+- Seed idempotente al arrancar si la base está vacía; endpoint `POST /api/demo/reset` para la demo.
+- **Postgres-ready:** `canonical_json` pasa a `JSONB`, y SQLModel reutiliza las mismas clases.
 
 ## API (contrato MVP)
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| POST | `/auth/session` | Intercambio/validación de sesión (Supabase JWT) |
-| GET | `/me` | Usuario + rol + clínica/especialidad |
-| GET | `/patients` | Lista de pacientes de la clínica |
-| POST | `/imports` | Subida multipart (1..N ficheros) → `job_id` |
-| GET | `/imports/{job_id}` | Estado por fichero + resumen del resultado |
-| GET | `/patients/{id}/record` | Registro canónico + alertas + provenance |
-| PATCH | `/patients/{id}/record/review` | Confirmar/corregir campos dudosos |
-| GET | `/specialists?specialty=&lat=&lng=&radius=&date=` | Búsqueda marketplace |
-| GET | `/specialists/{id}` | Perfil, servicios, zonas, tarifas, disponibilidad |
-| POST | `/requests` | Crear solicitud (paciente, nivel de compartición, franjas) |
-| GET | `/requests/{id}` | Detalle + estado (ambas partes) |
-| POST | `/requests/{id}/accept` · `/decline` · `/cancel` | Transiciones |
-| GET | `/requests/{id}/summary` | Resumen **no identificativo** pre-aceptación (especie, raza, edad, peso, motivo, alertas, servicio, precio) |
-| GET | `/requests/{id}/briefing` | Briefing pre-visita + historia completa **solo tras aceptar** |
-| GET | `/requests/{id}/audit` | Quién vio qué y cuándo (panel de auditoría) |
-| GET | `/appointments?from=&to=` | Calendario |
-| POST | `/requests/{id}/messages` · GET | Chat del caso |
-| POST | `/requests/{id}/close` | Nota de cierre del especialista |
-| GET | `/health` | Para el demo y el deploy |
+| GET | `/api/health` | Estado (para demo y deploy) |
+| POST | `/api/auth/demo` | Login demo por rol/usuario; set-cookie firmada |
+| POST | `/api/auth/logout` | Cierra sesión demo |
+| GET | `/api/me` | Usuario, rol, clínica/especialidad |
+| GET | `/api/patients` | Pacientes de la clínica |
+| POST | `/api/imports` | Subida multipart (1..N) → `job_id` |
+| GET | `/api/imports/{job_id}` | Estado por fichero + resumen |
+| POST | `/api/imports/{job_id}/confirm` | Confirmar mapeo de columnas (CSV) |
+| PATCH | `/api/patients/{id}/record/review` | Confirmar/corregir campos dudosos |
+| GET | `/api/patients/{id}/record` | Registro canónico completo + alertas |
+| GET | `/api/specialists?specialty=&zone=&date=` | Búsqueda marketplace |
+| GET | `/api/specialists/{id}` | Perfil, servicios, tarifas, disponibilidad |
+| POST | `/api/requests` | Crear solicitud (share level, franjas) |
+| GET | `/api/requests/{id}` | Detalle y estado (ambas partes) |
+| GET | `/api/requests/{id}/summary` | **Resumen no identificativo** pre-aceptación |
+| POST | `/api/requests/{id}/accept` · `/decline` · `/cancel` | Transiciones |
+| GET | `/api/requests/{id}/briefing` | Briefing + historia completa **solo tras aceptar** |
+| GET | `/api/requests/{id}/audit` | Quién vio qué y cuándo |
+| GET | `/api/appointments?from=&to=` | Calendario |
+| POST | `/api/demo/reset` | Reset + seed (solo demo) |
+| GET | `/docs` | Swagger autogenerado (se enseña en el pitch) |
 
-OpenAPI autogenerado por FastAPI: **enseñarlo en el pitch** (viabilidad técnica).
+`GET /api/health` y OpenAPI no dependen de la base: si algo falla, la demo sigue mostrando el estado.
 
 ## Frontend
 
-- **Stack:** Vite + React 18/19 + TypeScript + Tailwind CSS + React Router + TanStack Query. Sin librería de componentes pesada: tarjetas y tokens propios (marca VetLink).
-- **Marca:** navy `#1D2B4F` + teal `#1E8E82` + blanco; tipografía sans (Inter/Manrope); logo monograma "VL" (ya existe en `D:\hackaton\Ideas\Logo 5 · Monograma VL@2x.png`).
-- **Estado servidor** con TanStack Query; estado de sesión con Context; sin Redux.
-- **Mock-first:** el frontend puede arrancar con MSW/fixtures de la API mientras backend termina (contrato de este documento). Así front y back trabajan en paralelo desde el minuto 1.
-- **Responsive:** la demo se hace en portátil; el briefing debe verse bien en móvil (es el escenario real de Marc).
+- **Stack:** React 18 + Vite + TypeScript + **Tailwind CSS + DaisyUI** + `lucide-react` + `react-dropzone` + **TanStack Query** + React Router.
+- **Marca VetLink:** navy `#1D2B4F`, teal `#1E8E82`, blanco; logo monograma "VL" (origen `D:\hackaton\Ideas\Logo 5 · Monograma VL@2x.png`).
+- **Roles demo:** selector Laura/Marc en la pantalla de login (sin passwords): el jurado puede ver los dos lados en 2 clics.
+- **Mock-first:** el frontend arranca con fixtures de `docs/ejemplos/` mientras el backend termina; mismo contrato.
+- **Responsive:** briefing legible en móvil (escenario real de Marc).
 
-## Deploy y entornos
+## Cómo se ejecuta
 
-| Pieza | Herramienta | Notas |
-|---|---|---|
-| PostgreSQL | **Supabase (solo como DB)** o Postgres en Docker | Sin Auth/Storage/Realtime de Supabase; migraciones + seed |
-| API | **Render / Fly.io / Railway** (opcional) | `Dockerfile` en `services/api`; variables de entorno en el panel |
-| Frontend | **Vercel / Netlify / GitHub Pages** (opcional) | `VITE_API_URL` por entorno |
-| **Demo principal** | **`docker compose up` local** | **Local-first:** sin depender del WiFi del evento; la nube es extra |
+```powershell
+# Desarrollo (2 terminales)
+cd services/api;  uv run uvicorn app.main:app --reload --port 8000   # API + SQLite + seed
+cd apps/web;      pnpm dev                                           # Vite (proxy /api → 8000)
 
-**Regla:** el domingo 12:00 la demo debe funcionar **en local** aunque el deploy falle. El deploy es extra de credibilidad, no el único camino.
+# Demo "un proceso" (la que se enseña)
+cd apps/web; pnpm build          # genera apps/web/dist
+cd services/api; uv run uvicorn app.main:app --port 8000
+# → http://localhost:8000  sirve la SPA y /api, sin CORS
 
-## Seguridad y RGPD (lo que el jurado puede preguntar)
+# Reset de datos
+curl -X POST http://localhost:8000/api/demo/reset
+```
 
-- Todos los datos de demo son **ficticios y seudonimizados** (los ficheros del reto ya vienen así: Kira/Luna/Bruno, tutores anonimizados).
-- **Roles** (`CLINIC`, `SPECIALIST`, `ADMIN`) + **RLS** en Supabase: la clínica es la responsable del dato; el especialista accede solo al caso y solo con nivel autorizado.
-- **Niveles de compartición** (`CLINICAL` / `FULL`) y URL firmadas para documentos.
-- **Auditoría**: tabla `audit_events` (quién vio qué y cuándo) — se enseña en la demo si preguntan.
-- **Retención:** no se persisten datos reales; aviso en UI "entorno de demostración con datos ficticios".
-- Secretos en variables de entorno; `.env` fuera del repo (`.gitignore`).
-- Base legal para producción: consentimiento informado del tutor + contrato de encargado del tratamiento clínica↔VetLink.
+## Seguridad y RGPD (demo)
+
+- Datos **sintéticos/ficticios** y banner visible: "Entorno de demostración — datos sin PII. No usar con datos reales."
+- **Autorización en la API** (única puerta): la clínica solo ve sus pacientes; el especialista solo el caso donde participa; el resumen pre-aceptación no incluye PII del tutor, microchip completo, documentos ni facturas.
+- **Auditoría** en `audit_events` (quién vio qué y cuándo) mostrada en el panel del caso.
+- Sesión demo con cookie firmada (`itsdangerous`); en producción: JWT/sesión real + HTTPS + DPA + datos en la UE.
+- Sin secretos en el repo; `.env.example` con lo mínimo (no hay servicio externo obligatorio).
 
 ## Riesgos técnicos y mitigación
 
 | Riesgo | Mitigación |
 |---|---|
-| El LLM devuelve JSON inválido o inventa campos | JSON Schema estricto + validación + umbral de confianza + revisión humana + extractores deterministas para Excel/JSON |
-| Supabase limita/falla en la demo | Modo local con PostgreSQL en Docker + datos semilla |
-| Tiempo insuficiente para marketplace + datos | Contrato API cerrado desde hoy y mock-first en frontend; el marketplace es CRUD simple |
-| Fusión de pacientes mal hecha | Nunca automática: sugerencia + confirmación |
-| Demo en directo con subida de ficheros | Copias locales + botón "cargar datos demo" + vídeo de respaldo |
+| SQLite no escala / no es "arquitectura de producción" | Es demo: un fichero, seed, reset. El modelo es Postgres-ready y se dice en el pitch |
+| Pérdida de la BD en un deploy | La demo es local; si se despliega, volumen persistente o seed al arrancar |
+| Documentos con PII en el Word de Bruno | Demo con datos sintéticos y banner; no se envían a ningún LLM |
+| Extracción DOCX frágil | Tablas con python-docx + revisión humana + cache de importación; nunca rompe la pantalla |
+| Fricción front/back | Contrato congelado hoy + mock-first + un solo origen en demo (sin CORS) |
+| Demo en directo | Seed + reset + build local + vídeo de respaldo |
 
-## Estructura de repo propuesta
+## Estructura de repo
 
 ```
 Joniha/
 ├── README.md                 # pitch, arranque en 3 pasos, links
-├── PLAYBOOK.md               # este plan de trabajo y ritmo
-├── docs/                     # contexto, reto, modelo de datos, debate, flujos, arquitectura
+├── PLAYBOOK.md               # plan de trabajo y ritmo
+├── docs/                     # 00 contexto · 01 reto · 02 datos · 03 debate · 04 flujos · 05 arquitectura · 06 mercado
 │   ├── diagramas/            # HTML Archify
-│   └── ejemplos/             # registros canónicos JSON
-├── apps/web/                 # React + Vite + TS
-├── services/api/             # FastAPI
-│   ├── app/extractors/       # adaptadores docx/xlsx/json/generic
+│   └── ejemplos/             # 3 registros canónicos JSON (seed)
+├── apps/web/                 # React + Vite + TS + Tailwind + DaisyUI
+├── services/api/             # FastAPI + SQLModel + extractores + seed
+│   ├── app/extractors/       # docx · xlsx · json · csv
 │   ├── app/canonical/        # schema, merge, alerts
-│   ├── app/briefing/         # generador
-│   ├── app/routers/          # endpoints
-│   └── app/seed/             # datos demo + 3 ficheros originales
-├── data/samples/             # los 3 ficheros del reto (copias)
-└── docker-compose.yml        # postgres + api + web (fallback local)
+│   ├── app/briefing/         # plantilla determinista
+│   ├── app/routers/
+│   └── app/seed/
+├── data/samples/             # 3 ficheros del reto + CSV de robustez
+├── data/vetlink.db           # SQLite (gitignored; se genera al arrancar)
+└── scripts/                  # demo:reset, capturas, utilidades
 ```
 
-## Non-goals técnicos (para no discutirlos el sábado a las 2 a.m.)
+> `docker-compose.yml` queda **fuera del camino crítico**: solo si sobra tiempo y se quiere un envoltorio "un comando" para el jurado.
 
-- Microservicios, colas, event bus, Kubernetes.
-- OCR de PDFs (fase 2).
-- Pagos reales (Stripe) — solo maqueta de comisión.
-- Notificaciones push reales — email/campana mock.
-- Multi-idioma completo: español + catalán en textos legales (fase 2).
+## Librerías que ahorran horas (usar sin dudar)
+
+| Capa | Librería | Para qué |
+|---|---|---|
+| UI | `daisyui` | componentes listos (cards, badges, tabs, modals) |
+| UI | `lucide-react` | iconografía |
+| UI | `react-dropzone` | drag & drop de ficheros |
+| UI | `@tanstack/react-query` | fetch/estados sin boilerplate |
+| UI | `react-router-dom` | 5 rutas en minutos |
+| UI | `recharts` (opcional) | curva de peso en la ficha |
+| API | `sqlmodel` | modelos + validación en una clase |
+| API | `python-docx` / `openpyxl` | extractores deterministas |
+| API | `itsdangerous` | cookie de sesión demo |
+| API | `uvicorn` | servidor |
+
+## Non-goals técnicos (no se discuten el sábado a las 2 a.m.)
+
+- Supabase, RLS, Docker, Kubernetes, microservicios, colas, Alembic.
+- OCR/PDF escaneado, pagos reales, notificaciones push, WebSockets.
+- LLM en el camino crítico de la demo (solo extracción de texto libre, fuera del guion si no es necesaria).
+- App móvil nativa, multi-idioma completo.

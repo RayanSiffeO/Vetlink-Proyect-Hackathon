@@ -33,7 +33,7 @@
 ## Estado real a las 01:00 del sábado 14/11
 
 - Repo `Joniha`: solo `Initial commit` con el README de instrucciones. **Código: 0 líneas.**
-- Dirección previa del equipo (notas Obsidian del 13/11): marca **VetLink**, stack **React + FastAPI + PostgreSQL (Supabase)**, páginas inicio/login/marketplace/área común.
+- Dirección previa del equipo (notas Obsidian del 13/11): marca **VetLink**, stack **React + FastAPI + PostgreSQL (Supabase)**, páginas inicio/login/marketplace/área común. **Actualizado v1.3:** la demo usa React + FastAPI + **SQLite + DaisyUI** en un solo proceso, sin Supabase ni Docker (ver `docs/05-arquitectura-mvp.md`).
 - Ventana restante: **~36 h de reloj**, de las que caben ~20–24 h de trabajo real. De ahí el playbook por bloques y la regla de congelación del domingo.
 
 ## Implicaciones para nosotros

@@ -36,6 +36,7 @@ Contrato canónico que produce la capa de ingesta: una historia clínica veterin
 
 - `Owner` 1-N `Patient` (co-tutores); `Patient` 1-N todo; `Encounter` N-1 `Patient`; `Prescription`/`Invoice`/`DocumentReference` N-1 `Encounter`; `Condition` N-N `Encounter` (vía `first_encounter_ref`/`linked_problems`).
 - Campos estructurados en JSONB (vitals, soap, procedures, lab_results, address, phones, consents, lines, evidence) para no crear 30 tablas en el hackathon; en PostgreSQL cada colección es una tabla con FK e índices por `patient_id`.
+- **Nota de implementación demo (v1.3):** la demo persiste el registro canónico completo como `records.canonical_json` en **SQLite** (JSON serializado) + proyecciones (`alerts`, `patients`); el esquema es portable a PostgreSQL (`JSONB`) sin cambiar el contrato. Ver `docs/05-arquitectura-mvp.md`.
 - Fechas sin hora = `date`; con hora = `time` + `started_at` con offset `Europe/Madrid`. Nunca se inventa una hora.
 
 ## 3. Mapeo fuente → canónico

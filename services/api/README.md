@@ -1,27 +1,28 @@
 # `services/api` — API VetLink (FastAPI)
 
-**Stack:** Python 3.12 + FastAPI + Pydantic v2 + SQLAlchemy async + PostgreSQL (Supabase).
+**Stack:** Python 3.12 + FastAPI + Pydantic v2 + **SQLModel + SQLite** (`data/vetlink.db`). Sin Supabase ni PostgreSQL en la demo (Postgres-ready). En la demo, FastAPI sirve también la SPA compilada de `apps/web/dist`.
 
 ## Estructura prevista
 
 ```
 services/api/
 ├── app/
-│   ├── main.py               # FastAPI app + routers + CORS
+│   ├── main.py               # FastAPI app + routers + StaticFiles(SPA)
 │   ├── config.py             # variables de entorno
-│   ├── auth.py               # verificación JWT Supabase + RBAC
+│   ├── db.py                 # engine SQLite + create_all + seed al arrancar
+│   ├── models.py             # SQLModel (patients, records, requests, ...)
+│   ├── auth.py               # cookie de sesión demo + RBAC
 │   ├── extractors/           # registry de adaptadores
 │   │   ├── base.py           # interfaz Extractor
 │   │   ├── docx_extractor.py # python-docx (tablas + texto)
 │   │   ├── xlsx_extractor.py # openpyxl (13 hojas → entidades)
 │   │   ├── json_extractor.py # mapeo de esquema de API PMS
-│   │   └── generic_extractor.py # LLM structured output + confianza
+│   │   └── csv_extractor.py  # tabular + mapeador asistido
 │   ├── canonical/            # schema, normalize, merge, alerts
-│   ├── briefing/             # generador de briefing pre-visita
+│   ├── briefing/             # generador determinista de briefing
 │   ├── routers/              # endpoints (contrato en docs/05)
-│   └── seed/                 # datos demo reproducibles
+│   └── seed/                 # datos demo reproducibles (3 JSON canónicos)
 ├── tests/
-├── Dockerfile
 └── pyproject.toml
 ```
 

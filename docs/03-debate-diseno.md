@@ -151,8 +151,9 @@ Integrarse con el PMS/FHIR real de una clínica: no hay acceso, contrato ni tiem
 | 9 | ¿Cómo tratar formatos desconocidos? | Mapeador asistido para tabulares; matriz de soporte explícita; PDF escaneado fuera con estado claro; nada de “cualquier formato”. | “Dinámico” es mapear columnas, no tener tres importadores hardcodeados. | El bullet 1 se queda en tres scripts y el cuarto fichero te delata. |
 | 10 | ¿Modelo de datos? | JSON canónico inspirado en FHIR (Patient, Encounter, Condition, MedicationStatement, AllergyIntolerance, Immunization, Observation, DocumentReference), versionado, con procedencia por campo y audit log. | Es el idioma que un director de IT respeta; permite enseñar el “de dónde sale”. | Un JSON ad hoc; preguntan por interoperabilidad y no hay respuesta. |
 
-## 5. Scope killers
+> **Actualización v1.3 (01:50, Lead):** por velocidad, la demo baja a **SQLite + FastAPI de un solo proceso + DaisyUI**, sin Supabase ni Docker en el camino crítico y sin LLM; el modelo es Postgres-ready. Esta nota supersede la infraestructura del decision log (D6) y del supuesto 7; el debate de alcance (C') sigue vigente. Ver `PLAYBOOK.md` D7 y `docs/05-arquitectura-mvp.md`.
 
+## 5. Scope killers
 Lo que no se hace y qué contestar si el jurado lo pide. No improvises: estas respuestas van ensayadas.
 
 | Feature | Decisión | Si el jurado lo pide |

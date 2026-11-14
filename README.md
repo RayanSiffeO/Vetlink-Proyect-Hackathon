@@ -25,7 +25,7 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 | Diagramas navegables (`docs/diagramas/`) | ✅ 4 HTML validados |
 | Datos de ejemplo (3 pacientes, 3 formatos + CSV de robustez) | ✅ |
 | Modelo canónico + reglas de normalización | ✅ 3 registros JSON canónicos validados (1.785 campos, 22 alertas con evidencia) |
-| Aplicación (React + FastAPI + Supabase) | 🚧 en construcción |
+| Aplicación (React + FastAPI + SQLite) | 🚧 en construcción |
 
 ## Documentación
 
@@ -61,31 +61,37 @@ Joniha/
 ├── docs/                  # contexto, reto, datos, debate, flujos, arquitectura
 │   ├── diagramas/         # diagramas HTML navegables
 │   └── ejemplos/          # registros canónicos JSON de ejemplo
-├── apps/web/              # frontend React + Vite + TypeScript (en construcción)
-├── services/api/          # API FastAPI + extractores (en construcción)
-├── data/samples/          # los 3 ficheros de ejemplo del reto
-└── docker-compose.yml     # entorno local (previsto)
+├── apps/web/              # frontend React + Vite + TypeScript + DaisyUI (en construcción)
+├── services/api/          # API FastAPI + SQLModel + extractores (en construcción)
+├── data/samples/          # los 3 ficheros de ejemplo del reto + CSV de robustez
+├── data/vetlink.db        # SQLite de la demo (gitignored; se genera al arrancar)
+└── scripts/               # demo:reset y utilidades
 ```
 
 ## Stack
 
-- **Frontend:** React + Vite + TypeScript + Tailwind CSS + TanStack Query.
-- **Backend:** FastAPI (Python 3.12) + Pydantic v2 + SQLAlchemy async.
-- **Datos:** PostgreSQL + Auth + Storage en Supabase (RLS activo).
-- **IA:** extracción estructurada con validación de esquema y provenance; el veterinario confirma.
-- **Despliegue:** Vercel/Netlify (web) + Render/Fly (API) + Supabase; fallback local con Docker.
+- **Frontend:** React + Vite + TypeScript + Tailwind CSS + **DaisyUI** + TanStack Query + react-dropzone.
+- **Backend:** FastAPI (Python 3.12) + Pydantic v2 + **SQLModel**.
+- **Datos:** **SQLite** en archivo (`data/vetlink.db`) + documentos en disco local. *Postgres-ready*: migrar es cambiar la URL de conexión.
+- **Demo:** **un solo proceso** — FastAPI sirve la SPA compilada y la API (`/api`), sin CORS ni servicios externos.
+- **IA:** extracción estructurada con validación de esquema y provenance; en la demo, extractores deterministas (sin LLM). El veterinario confirma.
 
 ## Cómo arrancar
 
 > Se completará cuando el esqueleto de la aplicación esté creado (ver `docs/05-arquitectura-mvp.md`).
 
-```bash
-# previsto
-cp .env.example .env        # configurar Supabase y API
-docker compose up           # postgres + api + web
-# o
-pnpm --dir apps/web dev     # frontend
-uvicorn app.main:app --reload --dir services/api   # API
+```powershell
+# Desarrollo (2 terminales)
+cd services/api;  uv run uvicorn app.main:app --reload --port 8000   # API + SQLite + seed
+cd apps/web;      pnpm dev                                           # Vite (proxy /api → 8000)
+
+# Demo "un proceso" (la que se enseña)
+cd apps/web;      pnpm build            # genera apps/web/dist
+cd services/api;  uv run uvicorn app.main:app --port 8000
+# → http://localhost:8000 sirve la SPA y /api
+
+# Reset de datos de demo
+curl -X POST http://localhost:8000/api/demo/reset
 ```
 
 ## Datos de ejemplo

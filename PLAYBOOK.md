@@ -2,7 +2,8 @@
 
 > **Documento maestro de trabajo y ritmo del equipo.**  
 > Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
-> Versión 1.2 · 14/11/2026 01:20 · Lead (agente) para el equipo Joniha.  
+> Versión 1.3 · 14/11/2026 01:50 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.3: **stack rápido aprobado** — React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico y sin LLM en la demo; Postgres-ready. Elimina ~4–6 h de infra.  
 > Cambios v1.2: cierra las decisiones abiertas con Data (`docs/02-modelo-datos.md`): congelar nombres v1 + `fhir_profile`, gate de revisión con banner, alcance del resumen pre-aceptación y fixture CSV de robustez.  
 > Cambios v1.1: integra el debate red-team (`docs/03-debate-diseno.md`) y la investigación (`docs/06-investigacion-mercado.md`): recorte a **C'** (5 pantallas), briefing determinista, resumen no identificativo antes de aceptar, demo local-first y reloj de congelaciones.
 
@@ -14,6 +15,7 @@
 - **Nuestro reto (Reto 3):** *"Menos papeleo, más cuidado: los datos al servicio de la clínica"* — homogeneizar la historia clínica veterinaria que llega en Word/Excel/JSON, montar un marketplace de especialistas y conectar ambas piezas para que el especialista vea el caso antes de la visita.
 - **Nuestra apuesta:** **VetLink** = la historia clínica en un formato único + la red de especialistas + el **briefing pre-visita**. Pitch: *"La historia clínica de tu paciente llega completa al especialista antes de la visita."*
 - **Decisiones clave del debate:** alcance **C' recortado** (5 pantallas, ~40–48 h-persona), **briefing determinista** (la IA solo extrae), **resumen no identificativo antes de aceptar**, **demo local-first** con seed y vídeo.
+- **Stack rápido (v1.3):** React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico, sin LLM en la demo. Postgres-ready.
 - **Estado:** repo con documentación y estructura (0 código de app), ~36 h de reloj, equipo pequeño. Plan por bloques con hitos demoables y congelación progresiva.
 
 ---
@@ -143,7 +145,7 @@
 | D4 | **Provenance + confidence por campo**, revisión humana obligatoria en campos críticos | Es salud; protege la demo y la credibilidad |
 | D5 | **Resumen no identificativo antes de aceptar; historia completa después** | Minimización RGPD + la mejor demostración de "conectar" |
 | D6 | **Dueño/tutor fuera de la demo** (fase 2) | El reto es clínica↔especialista |
-| D7 | **Stack congelado:** React + FastAPI + PostgreSQL. Supabase **solo como Postgres**; demo **local-first** (Docker) | Menos servicios = menos fallos; Auth/Storage/Realtime de Supabase comen horas |
+| D7 | **Stack rápido (v1.3):** React + Vite + TS + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA) · sin Supabase, sin Docker crítico, sin LLM en demo · **Postgres-ready** | Menos piezas = menos fallos y ~4–6 h menos de infra; migrar a Postgres es cambiar la URL de conexión |
 | D8 | **Mapeador asistido** para tabulares + **4º formato CSV** con cabeceras no vistas | "Homogeneizar dinámicamente" ≠ 3 importadores hardcodeados |
 | D9 | **Marca VetLink congelada**; tagline de pitch: "La historia clínica llega completa al especialista" | Hay prior art de "VetLink" en UK/UAE/IDEXX: no invertir en dominio; el nombre no puntúa, el mensaje sí |
 | D10 | **Demo local-first** + seed/reset + vídeo + segundo portátil | El jurado evalúa funcionamiento; la wifi no puede decidir |
@@ -169,7 +171,7 @@
 
 1. **Deadline exacto** (y zona horaria) — confirmar con la organización y anotarlo en `docs/00`.
 2. **Composición real del equipo** (para mapear roles del §7 y validar las 40–48 h-persona de C').
-3. Proyecto **PostgreSQL/Supabase** disponible; credenciales en el gestor del equipo.
+3. ¿Confirmáis **SQLite para la demo** (recomendado, cero infra) o preferís Postgres/Supabase para el pitch? El modelo es Postgres-ready.
 4. ¿Alguien ha aceptado la invitación a la org de GitHub y puede pushear? (probar hoy).
 5. ¿Quién narra el pitch y quién hace la demo?
 6. ¿Requisitos de entrega de la organización (vídeo, URL, README)?
@@ -180,7 +182,7 @@
 
 > Detalle en **[`docs/05-arquitectura-mvp.md`](05-arquitectura-mvp.md)** y **[`docs/02-modelo-datos.md`](02-modelo-datos.md)**.
 
-**Stack (cerrado):** React + Vite + TS + Tailwind · FastAPI (Python 3.12) · PostgreSQL (Supabase o Docker local) · LLM solo para texto libre · despliegue opcional: Vercel/Netlify (web), Render/Fly (API).
+**Stack (cerrado, v1.3):** React + Vite + TS + Tailwind + **DaisyUI** · FastAPI (Python 3.12) + **SQLModel + SQLite** · auth demo por cookie firmada · **un solo proceso en demo** (FastAPI sirve la SPA compilada) · sin Supabase, sin Docker en el camino crítico, sin LLM en la demo · Postgres-ready. Detalle en [`docs/05-arquitectura-mvp.md`](05-arquitectura-mvp.md).
 
 **Pipeline diferencial:** `upload → sniff de formato → adaptador (docx/xlsx/json/csv/generic-LLM) → validación de esquema → revisión humana de campos dudosos → normalización → matching de paciente → merge con provenance → registro canónico JSONB → alertas → briefing determinista`.
 
@@ -200,10 +202,11 @@ Joniha/
 ├── docs/                  # 00 contexto · 01 reto · 02 datos · 03 debate · 04 flujos · 05 arquitectura · 06 mercado
 │   ├── diagramas/         # 4 diagramas HTML navegables (Archify)
 │   └── ejemplos/          # registros canónicos JSON de ejemplo
-├── apps/web/              # React + Vite + TS (README con pantallas y rutas)
-├── services/api/          # FastAPI (README con estructura y contrato)
-├── data/samples/          # los 3 ficheros del reto (copias)
-└── docker-compose.yml     # previsto: fallback local
+├── apps/web/              # React + Vite + TS + Tailwind + DaisyUI (README con pantallas y rutas)
+├── services/api/          # FastAPI + SQLModel + extractores + seed (README con estructura y contrato)
+├── data/samples/          # los 3 ficheros del reto + CSV de robustez (copias)
+├── data/vetlink.db        # SQLite de la demo (gitignored; se genera al arrancar)
+└── scripts/               # demo:reset y utilidades (docker-compose opcional, fuera del camino crítico)
 ```
 
 **Herramientas del equipo:** plugin **Archify** instalado en el perfil DSH (skill-only, sin UI propia) → genera los diagramas HTML navegables de `docs/diagramas/` (flujos, arquitectura, secuencia) y sirve para el pitch.
@@ -236,7 +239,7 @@ Joniha/
 |---|---|---|---|
 | **Capitán / PM + pitch** | Playbook, decisiones, tiempos, GitHub/entrega, guion | Daily status + demo script | Lead del equipo |
 | **Data / AI** | `docs/02`, adaptadores, canónico, alertas, mapeador, briefing | 4 fichas normalizadas + briefing | Perfil datos/IA |
-| **Backend** | API FastAPI, roles, Postgres, solicitudes, agenda, seed, Docker | API viva + seed reproducible | Perfil back |
+| **Backend** | API FastAPI, roles, SQLite, solicitudes, agenda, seed | API viva + seed reproducible | Perfil back |
 | **Frontend** | 5 pantallas MVP, design system VetLink, estados vacío/error | Pantallas demoables | Perfil front |
 | **Demo / UX / QA** | Datos demo, guion visual, vídeo, README, QA cruzada, métricas | Vídeo + README + bugs P0 | Perfil producto/QA |
 
@@ -271,7 +274,7 @@ Joniha/
 | Franja | Bloque | Objetivo | Entregable/Hito | Checkpoint |
 |---|---|---|---|---|
 | 01:15–02:30 | **H0 · Alineación** | Leer playbook + `01` + `04`; cerrar D1–D15; tablero y scaffold | Playbook v1.2, docs, tablero | — |
-| 08:00–09:00 | Kickoff | Verificar push a `main` y deadline oficial; reparto; entorno local (Docker + Postgres) | Entorno listo | Standup 10' |
+| 08:00–09:00 | Kickoff | Verificar push a `main` y deadline oficial; reparto; entorno local (`uvicorn` + SQLite + `pnpm`) | Entorno listo | Standup 10' |
 | 09:00–14:00 | **B1 · Esqueleto vertical** | Esquema canónico, auth/roles, seed, XLSX+JSON end-to-end, pantalla paciente/subida/revisión | **H1 (14:00): esquema + auth + seed + XLSX/JSON E2E** | Demo interna 1 |
 | 14:00–15:00 | Comida | — | — | — |
 | 15:00–18:00 | **B2 · DOCX + marketplace + reserva** | Adaptador DOCX, LLM solo texto libre, búsqueda/ficha especialista, solicitud/aceptación/agenda | **H2 (18:00): flujo completo con DOCX y reserva** | Congelar **esquema 18:00** |
@@ -313,6 +316,23 @@ Joniha/
 
 ---
 
+### 8.5 Modo agentes (si la implementación la hacen agentes en paralelo, ~6 h)
+
+**Condiciones no negociables:** contrato API congelado a los 30 min · 3 workstreams con ficheros disjuntos (backend / frontend / seed-demo) · 1 humano integrando y aceptando gates cada 60–90 min. Si dos agentes tocan el mismo fichero, los 6 h no se cumplen.
+
+| Reloj | Bloque | Entregable / gate |
+|---|---|---|
+| H+0:00–0:30 | Scaffold + contrato + seed | `uvicorn` + `pnpm dev` + `/api/health` + SQLite con los 3 pacientes |
+| H+0:30–2:00 (paralelo) | A: API+DB+extractores+alertas · B: SPA shell + pantallas 1–3 con mock | `curl` importa los 3 ficheros; el frontend navega con mocks |
+| H+2:00–3:30 | Integración E2E | importar → ficha → solicitar → aceptar → briefing |
+| H+3:30–4:30 | Robustez: CSV + mapeador, reset/caché, 3 repeticiones | demo repetible y determinista (<2 s) |
+| H+4:30–5:15 | Vídeo 3 min + README | repo clonable y levantable por alguien ajeno |
+| H+5:15–6:00 | Ensayo + entrega | `main` pusheado, checklist §11 cumplido |
+
+**Recorte si a H+3:30 no hay E2E:** fuera auditoría y cierre de visita → fuera mapeador UI (CSV en panel de revisión) → fuera agenda navegable (cita confirmada como estado + tarjeta). Se conservan sí o sí: importación de 3 formatos, ficha con alertas, briefing y solicitud/aceptación.
+
+**Honestidad:** con 3 agentes en paralelo y gates cada 60–90 min, la demo vertical en 6 h es creíble (~60–70% de probabilidad); en 8 h, ~85%. Una sola persona orquestando no lo hace en 6 h (10–12 h). Los 40–48 h de C' son esfuerzo humano: con agentes se comprime la generación, **no la verificación**.
+
 ## 9. Plan de demo y pitch
 
 ### 9.1 Guion de 3 minutos (red-team, ensayado)
@@ -333,7 +353,7 @@ Joniha/
 
 1. **Botón "Cargar datos demo"** + reset (seed reproducible).
 2. **Vídeo de 3 min** grabado el sábado noche / domingo 11:00 con el mismo recorrido.
-3. **Modo local** (`docker compose up`) si la red del evento falla.
+3. **Un solo comando local** (`pnpm demo` → build de la SPA + `uvicorn` sirviendo todo) si la red del evento falla.
 4. **README** con capturas y enlaces por si ni el vídeo se puede reproducir.
 5. **Segundo portátil** con el entorno preparado.
 
@@ -359,7 +379,7 @@ Joniha/
 | Riesgo | Prob. | Impacto | Mitigación | Dueño |
 |---|---|---|---|---|
 | No llegar a capa + marketplace en 20 h | Alta | Alto | C' recortado, vertical slice, hitos demoables, recorte sábado 20:00 | Capitán |
-| LLM devuelve JSON inválido / inventa | Media | Alto | Validación de esquema + reglas para estructurado + revisión humana; medir en held-out | Data |
+| LLM devuelve JSON inválido / inventa (solo si se usa) | Baja | Medio | **Fuera de la demo**: extractores deterministas; si se usa, solo texto libre con revisión humana | Data |
 | Demo en directo se cae | Media | Alto | Local-first + seed + vídeo + segundo portátil | Demo/QA |
 | Deadline antes de lo asumido | Media | Alto | Versión enviable en `main` el sábado noche; domingo = mejora | Capitán |
 | Permisos de push en GitHub org | Media | Crítico | Verificar hoy; si falla, avisar a organización YA | Capitán |
@@ -368,7 +388,7 @@ Joniha/
 | IA en datos clínicos: mala extracción | Media | Alto | Umbral de confianza + revisión obligatoria + discurso "asistido" | Data/QA |
 | PII de los ficheros en la demo | Baja | Alto | Datos sintéticos, banner, no enviar PII al LLM | Demo/QA |
 | Privacidad mal contada en la UI | Baja | Alto | Matriz de permisos + auditoría + textos legales de `docs/03` §7 | Demo/QA |
-| Supabase/deploy falla | Media | Medio | Postgres local Docker; la nube es extra | Backend |
+| SQLite/deploy falla | Media | Medio | Demo 100% local con fichero SQLite + seed; Postgres es opcional, no camino crítico | Backend |
 | Nombre "VetLink" con prior art | Media | Bajo | No invertir en dominio/registro; pitch de hackathon; tagline descriptivo | Capitán |
 
 ---
@@ -383,7 +403,7 @@ Joniha/
 - [ ] `data/samples/` con los 3 ficheros del reto + `export_clinica_norte.csv` (4º formato de robustez).
 - [ ] Validación clínica de las reglas de alerta R01–R11 (textos y umbrales) por alguien con criterio veterinario del equipo antes del pitch.
 - [ ] Sin secretos: buscar `supabase`, `sk-`, `password`, `postgres://` en el repo.
-- [ ] Datos semilla reproducibles (`docker compose up` o script `seed`).
+- [ ] Datos semilla reproducibles (`POST /api/demo/reset` o `pnpm demo`); SQLite autogenerada al arrancar.
 - [ ] Banner de demo + aviso "no usar con datos reales".
 - [ ] Vídeo de 3 min accesible + enlace en README.
 - [ ] Copia local `.zip` del repo por si acaso.
@@ -397,7 +417,7 @@ Joniha/
 |---|---|---|
 | 1 | Deadline domingo 15/11 ~15:00 CET; tratamos 13:30 como real | Confirmar y recomprimir §8 |
 | 2 | Equipo de 4–5 personas (~40–48 h-persona) | Si menos, usar versión comprimida §8.3 y bajar a A+D sin llamarlo marketplace |
-| 3 | PostgreSQL/Supabase disponible hoy | Si no, Postgres Docker y migrar luego |
+| 3 | SQLite local basta para la demo; no hace falta Supabase | Si se pide Postgres, cambiar la URL de conexión (modelo portable) |
 | 4 | Push a `HackathonBoehringerIT/Joniha` operativo | Probar hoy; si no, escalar a organización |
 | 5 | Se mantiene marca VetLink; tagline de pitch descriptivo | Ya hay logo; no invertir en naming ni dominio |
 | 6 | Demo en directo el domingo ante jurado | Si es vídeo obligatorio, invertir el orden: grabar antes |

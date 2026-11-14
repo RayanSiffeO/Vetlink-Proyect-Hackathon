@@ -1,6 +1,10 @@
 # `apps/web` — Frontend VetLink
 
-**Stack:** React 18/19 + Vite + TypeScript + Tailwind CSS + React Router + TanStack Query.
+**Stack:** React 18/19 + Vite + TypeScript + Tailwind CSS + **DaisyUI** + `lucide-react` + `react-dropzone` + React Router + TanStack Query.
+
+## Pantallas MVP (C')
+
+La demo implementa **5 pantallas** (el resto de la tabla queda para roadmap): login/rol · paciente+subida+revisión · búsqueda+ficha de especialista · reserva+agenda · briefing/informe. Ver `PLAYBOOK.md` §3.
 
 ## Pantallas (ver `docs/04-flujos-usuarios.md`)
 
@@ -27,7 +31,8 @@
 
 ## Reglas
 
-- **Mock-first:** arrancar contra fixtures de la API (contrato en `docs/05-arquitectura-mvp.md`) mientras el backend termina.
+- **Selector de rol demo** (Laura/Marc) en el login, sin passwords: el jurado ve los dos lados en 2 clics.
+- **Mock-first:** arrancar contra fixtures de la API (contrato en `docs/05-arquitectura-mvp.md`) mientras el backend termina. En la demo, el frontend se compila y lo sirve FastAPI (sin CORS).
 - **Marca:** navy `#1D2B4F`, teal `#1E8E82`, blanco; logo monograma "VL" (origen en `D:\hackaton\Ideas\Logo 5 · Monograma VL@2x.png`).
 - **Estados obligatorios:** vacío, carga, error y éxito en cada pantalla que entre en la demo.
 - El **briefing (S10) debe verse bien en móvil**: es el escenario real del especialista.
