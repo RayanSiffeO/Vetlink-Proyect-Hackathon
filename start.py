@@ -43,9 +43,6 @@ def run_package_tool(tool: str, args: list[str], cwd: Path) -> None:
 
 
 def select_venv() -> Path:
-    existing = API_DIR / ".venv"
-    if venv_python(existing).exists():
-        return existing
     return ROOT / ".venv"
 
 

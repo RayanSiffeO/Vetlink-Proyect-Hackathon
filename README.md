@@ -177,10 +177,10 @@ Con el entorno ya creado por `start.py`:
 
 ```bash
 # Windows
-services\api\.venv\Scripts\python.exe -m pytest services/api/tests -q
+.venv\Scripts\python.exe -m pytest services/api/tests -q
 
 # macOS/Linux
-services/api/.venv/bin/python -m pytest services/api/tests -q
+.venv/bin/python -m pytest services/api/tests -q
 ```
 
 E2E de API (flujo completo clínica → especialista):
