@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 import uuid
+from collections import Counter
 from dataclasses import dataclass
 from itertools import count
 
@@ -205,8 +206,21 @@ def _job(filename: str, sha256: str, outcome: IngestOutcome) -> ImportJob:
     )
 
 
+def _alert_summary(alerts: list[dict]) -> dict:
+    counts = Counter(str(alert.get("severity") or "INFO").upper() for alert in alerts)
+    return {"total": len(alerts), "by_severity": dict(counts)}
+
+
+def _sync_provenance_alerts(canonical: dict, alerts: list[dict]) -> None:
+    summary = canonical.get("provenance_summary")
+    if isinstance(summary, dict):
+        summary["alerts"] = _alert_summary(alerts)
+
+
 def ingest_canonical(ctx: ApiContext, canonical: dict, filename: str, sha256: str) -> ImportJob:
-    canonical["alerts"] = build_alerts(canonical)
+    alerts = build_alerts(canonical)
+    canonical["alerts"] = alerts
+    _sync_provenance_alerts(canonical, alerts)
     outcome = _persist(ctx.session, canonical)
     ctx.session.commit()
     _audit(ctx, outcome)

@@ -126,6 +126,7 @@ def test_import_cache_and_csv_review(client: TestClient) -> None:
     assert canonical["patient"]["weight_current_kg"] == 11.97
     assert canonical["problems"][0]["category"] == "ALLERGY"
     assert len(body["alerts"]) == 2
+    assert body["provenance_summary"]["alerts"]["total"] == 2
 
 
 def test_request_summary_locked_then_briefing(client: TestClient) -> None:
