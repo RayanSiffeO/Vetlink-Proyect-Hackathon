@@ -1,0 +1,68 @@
+{
+  "suite": "VetLink Browser E2E (Edge headless)",
+  "base_url": "http://127.0.0.1:8050",
+  "generated_at": "2026-11-14T09:32:19.774Z",
+  "duration_ms": 7408,
+  "total": 10,
+  "passed": 10,
+  "failed": 0,
+  "console_errors": [],
+  "expected_console_errors": [
+    "console: Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+    "console: Failed to load resource: the server responded with a status of 403 (Forbidden)",
+    "console: Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+  ],
+  "expected_console_errors_note": "401 = comprobacion de sesion sin cookie; 403 = briefing bloqueado a proposito antes de aceptar",
+  "checks": [
+    {
+      "name": "login carga",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "login Laura y bandeja de pacientes",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "importación 3 formatos",
+      "ok": true,
+      "detail": "3 READY"
+    },
+    {
+      "name": "CSV a revisión",
+      "ok": true,
+      "detail": "1 NEEDS_REVIEW"
+    },
+    {
+      "name": "ficha canónica con alertas",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "marketplace con 3 especialistas",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "solicitud creada y briefing bloqueado",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "especialista acepta y agenda",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "briefing desbloqueado tras aceptar",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "calendario con cita",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

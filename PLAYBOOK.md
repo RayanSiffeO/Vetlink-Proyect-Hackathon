@@ -2,7 +2,8 @@
 
 > **Documento maestro de trabajo y ritmo del equipo.**  
 > Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
-> Versión 1.8 · 14/11/2026 03:15 · Lead (agente) para el equipo Joniha.  
+> Versión 1.9 · 14/11/2026 11:00 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.9: **build de CP2 congelada** en `releases/cp2` (tag local `cp2-build`, servidor `scripts\serve-cp2.ps1`) y **E2E verdes**: API 27/27 y navegador Edge 10/10 con capturas. Corregido el importador para aceptar CSV (4º formato) y regenerada la build.  
 > Cambios v1.8: **refactor clean-code completado y verificado** — backend `ruff` 0, `pytest` 5/5 y contrato OpenAPI deep-equal; frontend build OK con 0 comentarios y 0 ifs anidados; 165 violaciones del gate → 0/74 ficheros. Añadido `scripts\check-code.ps1` como gate de §7.1.  
 > Cambios v1.7: **H+0 validado por el equipo en navegador** (login, importación, ficha, marketplace, solicitud, briefing con niveles de acceso y agenda) y **reglas de código obligatorias** añadidas (§7.1): DRY, clean code sin comentarios, cero `ifs` imbricados, una función un propósito y sin funciones complejas.  
 > Cambios v1.6: **calendario oficial re-anclado** (CP1 sáb 12:00 · CP2 sáb 18:00 · CP3 dom 14:45, 15 min cada uno, cámara on, sala del jurado) y plan hora a hora reescrito (§8). **GitHub congelado por indicación del equipo: nada de push.**  
@@ -327,7 +328,7 @@ powershell -ExecutionPolicy Bypass -File scripts\check-code.ps1
 | 13:30–14:15 | Comida | — | — | — |
 | 14:15–17:15 | **B3 · Marketplace + briefing** | Búsqueda/ficha, solicitud, aceptación, agenda y briefing con niveles de acceso | **H2 (17:15): flujo Laura→Marc end-to-end** | Demo interna 2 |
 | 17:15–17:45 | **Preparación CP2** | Propuesta de solución + demo corta; repasar CP2 | **17:45: demo CP2 congelada** | Ensayo 15' |
-| **18:00–18:15** | **CP2 con el jurado** | Propuesta de solución y avance | **CP2 entregado** | — |
+| **18:00–18:15** | **CP2 con el jurado** | Propuesta de solución y avance con la **build congelada** (`releases/cp2` + `scripts\serve-cp2.ps1`) | **CP2 entregado** | — |
 | 18:15–20:00 | Cena + pulido | CSV desconocido, auditoría, estados de error | — | Demo interna 3 |
 | 20:00–24:00 | **B4 · Demo completa + vídeo** | Reset/seed, responsive, vídeo de 3 min, README | **H4 (24:00): demo completa + vídeo grabado** | — |
 | 00:00–08:00 | **Descanso obligatorio** | Dormir. El domingo se gana con cabeza fresca | — | — |
@@ -460,6 +461,7 @@ powershell -ExecutionPolicy Bypass -File scripts\check-code.ps1
 - [ ] Banner de demo + aviso "no usar con datos reales".
 - [ ] Vídeo de 3 min accesible + enlace en README.
 - [ ] Copia local `.zip` del repo por si acaso.
+- [ ] Build de CP2 congelada presente en `releases/cp2` (con hashes en `build-info.json`) y E2E verdes (`releases/cp2/e2e/`), servible con `scripts\serve-cp2.ps1`.
 - [ ] Aviso al canal de la organización de que la entrega está hecha (con enlace al repo).
 
 ---

@@ -126,9 +126,9 @@ try {
 }
 
 const failed = checks.filter((item) => !item.ok).length;
-const expectedUnauthorized = /401 \(Unauthorized\)/;
-const expectedConsole = consoleErrors.filter((item) => expectedUnauthorized.test(item));
-const unexpectedConsole = consoleErrors.filter((item) => !expectedUnauthorized.test(item));
+const expectedHttpGuards = /(401 \(Unauthorized\)|403 \(Forbidden\))/;
+const expectedConsole = consoleErrors.filter((item) => expectedHttpGuards.test(item));
+const unexpectedConsole = consoleErrors.filter((item) => !expectedHttpGuards.test(item));
 const report = {
   suite: 'VetLink Browser E2E (Edge headless)',
   base_url: base,
@@ -139,6 +139,7 @@ const report = {
   failed,
   console_errors: unexpectedConsole,
   expected_console_errors: expectedConsole,
+  expected_console_errors_note: '401 = comprobacion de sesion sin cookie; 403 = briefing bloqueado a proposito antes de aceptar',
   checks
 };
 fs.writeFileSync(path.join(outDir, 'browser-report.json'), JSON.stringify(report, null, 2), 'utf8');

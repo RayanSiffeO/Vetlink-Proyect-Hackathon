@@ -27,6 +27,8 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 | Modelo canónico + reglas de normalización | ✅ 3 registros JSON canónicos validados (1.785 campos, 22 alertas con evidencia) |
 | Aplicación (React + FastAPI + SQLite) | ✅ **MVP C' funcional**: 5 pantallas (9 rutas), login demo, seed, import cache, ficha con alertas, marketplace, solicitud, briefing con niveles de acceso, agenda y auditoría. Backend limpio (`ruff` 0, `pytest` 5/5) y contrato de 23 endpoints congelado |
 | Estado de la demo | ✅ SPA compilada y servida por FastAPI en un solo proceso (`:8000`); seed/reset verificado; pasada E2E de navegador y vídeo de 3 min planificados para el cierre (D-07) |
+| Build de CP2 (congelada) | ✅ `releases/cp2/` con SPA + hashes (`build-info.json`) y tag local `cp2-build`; se presenta con `scripts\serve-cp2.ps1` |
+| Tests E2E | ✅ API **27/27** (`scripts\e2e-api.ps1`) · navegador Edge headless **10/10** con capturas (`scripts\e2e-browser.ps1`); reportes en `releases/cp2/e2e/` |
 | Entrega final | 🟡 Pendiente de cierre: E2E en navegador, vídeo, README final y paquete local. GitHub congelado por indicación del equipo |
 
 ## Documentación
@@ -93,6 +95,13 @@ powershell -ExecutionPolicy Bypass -File scripts\dev.ps1     # Vite dev → :517
 powershell -ExecutionPolicy Bypass -File scripts\demo.ps1    # → http://127.0.0.1:8000
 # si el 8000 está ocupado, usa el siguiente libre y lo imprime en pantalla
 powershell -ExecutionPolicy Bypass -File scripts\stop.ps1    # libera 8000/8001/5173
+
+# Demo de CP2: sirve la build congelada (sin rebuild) con la API actual
+powershell -ExecutionPolicy Bypass -File scripts\serve-cp2.ps1
+
+# Tests E2E
+powershell -ExecutionPolicy Bypass -File scripts\e2e-api.ps1
+powershell -ExecutionPolicy Bypass -File scripts\e2e-browser.ps1
 ```
 
 **Manual (equivalente):**

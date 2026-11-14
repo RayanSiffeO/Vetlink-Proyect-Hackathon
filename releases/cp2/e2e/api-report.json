@@ -1,0 +1,174 @@
+﻿{
+    "suite":  "VetLink API E2E",
+    "generated_at":  "2026-11-14T10:31:48.0958242+01:00",
+    "git_commit":  "8ef5aa7",
+    "port":  8040,
+    "duration_ms":  3354,
+    "total":  27,
+    "passed":  27,
+    "failed":  0,
+    "checks":  [
+                   {
+                       "name":  "health",
+                       "expected":  "ok",
+                       "actual":  "ok",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "seed pacientes",
+                       "expected":  "3",
+                       "actual":  "3",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "seed alertas",
+                       "expected":  "22",
+                       "actual":  "22",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "login Laura",
+                       "expected":  "200",
+                       "actual":  "200",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "rol Laura",
+                       "expected":  "CLINIC",
+                       "actual":  "CLINIC",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "pacientes de la clinica",
+                       "expected":  "3",
+                       "actual":  "3",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "pacientes esperados",
+                       "expected":  "Bruno,Kira,Luna",
+                       "actual":  "Bruno,Kira,Luna",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "import Word/Excel/JSON",
+                       "expected":  "3",
+                       "actual":  "3",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "CSV a revision",
+                       "expected":  "1",
+                       "actual":  "1",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "alertas Kira",
+                       "expected":  "7",
+                       "actual":  "7",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "entidades canonicas Kira",
+                       "expected":  "53",
+                       "actual":  "53",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "marketplace especialistas",
+                       "expected":  "3",
+                       "actual":  "3",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "franjas de Marc",
+                       "expected":  "\u003e=1",
+                       "actual":  "9",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "solicitud creada",
+                       "expected":  "REQUESTED",
+                       "actual":  "REQUESTED",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "resumen pre-aceptacion",
+                       "expected":  "NON_IDENTIFYING",
+                       "actual":  "NON_IDENTIFYING",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "resumen sin PII del tutor",
+                       "expected":  "False",
+                       "actual":  "False",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "briefing bloqueado antes de aceptar",
+                       "expected":  "403",
+                       "actual":  "403",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "login Marc",
+                       "expected":  "200",
+                       "actual":  "200",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "aceptacion de la derivacion",
+                       "expected":  "SCHEDULED",
+                       "actual":  "SCHEDULED",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "briefing desbloqueado",
+                       "expected":  "200",
+                       "actual":  "200",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "briefing alertas renderizadas",
+                       "expected":  "\u003e=1",
+                       "actual":  "7",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "auditoria de accesos",
+                       "expected":  "\u003e=3",
+                       "actual":  "4",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "cita en calendario",
+                       "expected":  "\u003e=1",
+                       "actual":  "1",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "SPA servida por FastAPI",
+                       "expected":  "200",
+                       "actual":  "200",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "SPA con titulo VetLink",
+                       "expected":  "True",
+                       "actual":  "True",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "SPA fallback de rutas",
+                       "expected":  "200",
+                       "actual":  "200",
+                       "ok":  true
+                   },
+                   {
+                       "name":  "reset de demo",
+                       "expected":  "0",
+                       "actual":  "0",
+                       "ok":  true
+                   }
+               ]
+}
