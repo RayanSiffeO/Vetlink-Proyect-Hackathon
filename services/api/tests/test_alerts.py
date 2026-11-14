@@ -7,7 +7,7 @@ from pathlib import Path
 
 from app.canonical.alerts import build_alerts
 
-EXAMPLES_DIR = Path(__file__).resolve().parents[3] / "docs" / "ejemplos"
+EXAMPLES_DIR = Path(__file__).resolve().parents[3] / "data" / "canonical"
 SEVERITIES = ("CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO")
 ALERT_ID_PATTERN = re.compile(r"^alr_[a-z0-9_]+_R\d{2}_\d+$")
 
@@ -125,3 +125,4 @@ def test_minimal_record_does_not_raise() -> None:
     assert isinstance(alerts, list)
     assert all(alert["evidence"] for alert in alerts)
     assert isinstance(build_alerts({}), list)
+

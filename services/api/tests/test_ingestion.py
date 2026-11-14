@@ -18,7 +18,7 @@ from app.ingestion import ingest_canonical
 from app.main import app
 from app.models import Alert, AuditEvent, ImportStatus, Patient, Record, Role, User
 
-EXAMPLES_DIR = Path(__file__).resolve().parents[3] / "docs" / "ejemplos"
+EXAMPLES_DIR = Path(__file__).resolve().parents[3] / "data" / "canonical"
 DEMO_USER = User(id="usr_ingesta", username="ingesta", display_name="Ingesta", role=Role.CLINIC)
 
 
@@ -177,3 +177,4 @@ def test_extractor_crash_does_not_break_the_batch(client: TestClient, monkeypatc
     assert body["files"][0]["status"] == "FAILED" and "hoja corrupta" in body["files"][0]["message"]
     assert body["files"][1]["status"] == "READY"
     assert body["summary"] == {"total": 2, "ready": 1, "needs_review": 0, "failed": 1}
+
