@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CheckCircle2, XCircle } from 'lucide-react';
+import { CheckCircle2, Sparkles, XCircle } from 'lucide-react';
 import type { AvailableSlot, RequestRecord } from '../../api/types';
 import { useAcceptRequest, useDeclineRequest, useSpecialist } from '../../api/hooks';
 import { formatDateTime, shareLevelLabel, slotIso, slotLabel } from '../../lib/format';
@@ -14,11 +14,13 @@ interface AcceptActions {
 function AcceptHeading({ shareLevel }: { shareLevel?: string | null }) {
   return (
     <>
-      <h2 className="flex items-center gap-2 text-sm font-semibold">
-        <CheckCircle2 className="h-4 w-4 text-secondary" />
+      <h2 className="flex items-center gap-2 text-[15px] font-medium leading-6 text-ink">
+        <span className="grid h-8 w-8 place-items-center rounded-xl bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100">
+          <Sparkles className="h-4 w-4" aria-hidden="true" />
+        </span>
         Aceptar la derivación y confirmar franja
       </h2>
-      <p className="mt-1 text-[12px] text-base-content/55">
+      <p className="mt-2 text-[12px] leading-[18px] text-caption">
         Al aceptar se desbloquean la historia completa y el briefing según el nivel
         {` ${shareLevelLabel(shareLevel)}`} y queda registrado en la auditoría.
       </p>
@@ -39,10 +41,10 @@ function SlotOption({
     <button
       type="button"
       onClick={onSelect}
-      className={`rounded-xl border px-3 py-2 text-left text-sm transition-colors ${
+      className={`rounded-xl border px-3 py-2 text-left text-[12.5px] font-medium leading-4 transition duration-200 ease-smooth ${
         selected
-          ? 'border-secondary bg-secondary/10 font-semibold text-secondary'
-          : 'border-base-300 hover:border-secondary/50'
+          ? 'border-indigo bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100'
+          : 'border-line bg-white/70 text-para hover:-translate-y-px hover:border-indigo-300'
       }`}
     >
       {slotLabel(slot)}
@@ -52,7 +54,7 @@ function SlotOption({
 
 function AvailabilityEmpty({ query }: { query: ReturnType<typeof useSpecialist> }) {
   return (
-    <p className="mt-3 text-[12px] text-base-content/50">
+    <p className="mt-3 text-[12px] leading-[18px] text-caption">
       {query.isError
         ? `No se pudo cargar la disponibilidad (${query.error.message}). Indica una fecha concreta.`
         : 'Sin franjas publicadas: indica una fecha concreta.'}
@@ -69,7 +71,7 @@ function AvailabilityBlock({
 }) {
   const slots = query.data?.available_slots ?? [];
   if (query.isLoading) {
-    return <p className="mt-3 text-[12px] text-base-content/50">Cargando disponibilidad…</p>;
+    return <p className="mt-3 text-[12px] leading-[18px] text-caption">Cargando disponibilidad…</p>;
   }
   if (slots.length === 0) return <AvailabilityEmpty query={query} />;
   return (
@@ -95,7 +97,7 @@ function ManualSlotField({ value, onChange }: { value: string; onChange: (value:
       <span className="vl-label">Otra franja</span>
       <input
         type="datetime-local"
-        className="input input-bordered input-sm mt-1"
+        className="input input-bordered input-sm mt-1 h-9 rounded-btn border-line bg-white/80 text-[12px]"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       />
@@ -113,7 +115,7 @@ function AcceptButton({
   return (
     <button
       type="button"
-      className="btn btn-secondary btn-sm gap-1.5"
+      className="btn btn-primary btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
       disabled={!slot || accept.isPending}
       onClick={() => accept.mutate({ slot_iso: slot })}
     >
@@ -127,7 +129,7 @@ function DeclineButton({ decline }: { decline: ReturnType<typeof useDeclineReque
   return (
     <button
       type="button"
-      className="btn btn-ghost btn-sm gap-1.5 text-error"
+      className="inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-1.5 text-[12px] font-medium text-crit transition duration-200 ease-smooth hover:border-crit/20 hover:bg-crit-soft disabled:opacity-60"
       onClick={() => decline.mutate()}
       disabled={decline.isPending}
     >
@@ -139,7 +141,7 @@ function DeclineButton({ decline }: { decline: ReturnType<typeof useDeclineReque
 
 function SlotSummary({ slot }: { slot: string }) {
   return (
-    <span className="text-[11px] text-base-content/45">
+    <span className="text-[11px] leading-4 text-caption">
       {slot ? `Franja: ${formatDateTime(slot)}` : 'Selecciona una franja'}
     </span>
   );
@@ -199,7 +201,7 @@ export function AcceptPanel({
   };
 
   return (
-    <section className="vl-card border-secondary/40 p-5">
+    <section className="glass rounded-panel border-l-4 border-l-indigo p-5">
       <AcceptHeading shareLevel={request.share_level} />
       <AvailabilityBlock query={slotsQuery} selection={{ selectedSlot, onPick: pickSlot }} />
       <AcceptControls

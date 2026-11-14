@@ -14,32 +14,74 @@ interface RoleCardState {
   disabled: boolean;
 }
 
-function RoleCardIcon({ card }: { card: RoleCard }) {
+interface RoleTone {
+  card: string;
+  icon: string;
+  title: string;
+  badge: string;
+  text: string;
+  bullet: string;
+  dot: string;
+  arrow: string;
+  spinner: string;
+}
+
+const ROLE_TONES: Record<'primary' | 'secondary', RoleTone> = {
+  primary: {
+    card: 'border-white/10 bg-[linear-gradient(135deg,#5C59F3_0%,#2F33A8_72%)] text-white shadow-lift hover:shadow-card',
+    icon: 'border border-white/20 bg-white/15 text-white',
+    title: 'text-white',
+    badge: 'border-white/20 bg-indigo-900/35 text-white/90',
+    text: 'text-white/80',
+    bullet: 'text-white/65',
+    dot: 'bg-white/45',
+    arrow: 'text-white/70 group-hover:text-white',
+    spinner: 'text-white',
+  },
+  secondary: {
+    card: 'border-line-strong bg-white/85 text-ink hover:border-indigo-300 hover:bg-white hover:shadow-soft',
+    icon: 'bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100',
+    title: 'text-ink',
+    badge: 'border-indigo-100 bg-indigo-50 text-indigo-700',
+    text: 'text-caption',
+    bullet: 'text-caption',
+    dot: 'bg-indigo-300',
+    arrow: 'text-indigo-300 group-hover:text-indigo-700',
+    spinner: 'text-indigo',
+  },
+};
+
+const ROLE_CARD_CLASS =
+  'group relative flex w-full items-start gap-3 overflow-hidden rounded-btn border p-3.5 text-left transition duration-200 ease-smooth hover:-translate-y-0.5 disabled:cursor-progress';
+
+function RoleCardIcon({ card, tone }: { card: RoleCard; tone: RoleTone }) {
   const Icon = card.icon;
   return (
-    <span
-      className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${card.accent} text-white shadow-soft`}
-    >
-      <Icon className="h-5 w-5" aria-hidden="true" />
+    <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${tone.icon}`}>
+      <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
     </span>
   );
 }
 
-function RoleCardText({ card }: { card: RoleCard }) {
+function RoleCardText({ card, tone }: { card: RoleCard; tone: RoleTone }) {
   return (
     <div className="min-w-0 flex-1">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-base font-semibold">{card.title}</span>
-        <span className="badge badge-xs badge-ghost">{card.subtitle}</span>
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span className={`text-[14px] font-medium leading-5 ${tone.title}`}>{card.title}</span>
+        <span
+          className={`inline-flex items-center rounded-full border px-1.5 py-0.5 text-[9.5px] font-medium leading-3 ${tone.badge}`}
+        >
+          {card.subtitle}
+        </span>
       </div>
-      <p className="mt-1 text-[13px] leading-snug text-base-content/60">{card.description}</p>
-      <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+      <p className={`mt-1 text-[11.5px] leading-4 ${tone.text}`}>{card.description}</p>
+      <ul className="mt-1.5 flex flex-wrap gap-x-2.5 gap-y-1">
         {card.bullets.map((bullet) => (
           <li
             key={bullet}
-            className="inline-flex items-center gap-1 text-[11px] text-base-content/45"
+            className={`inline-flex items-center gap-1 text-[10px] leading-3 ${tone.bullet}`}
           >
-            <span className="h-1 w-1 rounded-full bg-secondary/70" />
+            <span className={`h-1 w-1 rounded-full ${tone.dot}`} aria-hidden="true" />
             {bullet}
           </li>
         ))}
@@ -48,10 +90,10 @@ function RoleCardText({ card }: { card: RoleCard }) {
   );
 }
 
-function RoleCardArrow({ busy }: { busy: boolean }) {
+function RoleCardArrow({ busy, tone }: { busy: boolean; tone: RoleTone }) {
   return (
-    <span className="mt-1 shrink-0 text-base-content/30 transition-transform group-hover:translate-x-0.5 group-hover:text-secondary">
-      {busy ? <Spinner size="sm" /> : <ArrowRight className="h-5 w-5" />}
+    <span className={`mt-1 shrink-0 ${tone.arrow}`}>
+      {busy ? <Spinner size="sm" className={tone.spinner} /> : <ArrowRight className="h-[18px] w-[18px]" />}
     </span>
   );
 }
@@ -65,19 +107,19 @@ function RoleCardButton({
   state: RoleCardState;
   onSelect: () => void;
 }) {
+  const tone = ROLE_TONES[card.primary ? 'primary' : 'secondary'];
+  const dimmed = state.disabled && !state.busy ? 'opacity-60' : '';
   return (
     <button
       type="button"
       onClick={onSelect}
       disabled={state.disabled}
-      className="group relative overflow-hidden rounded-2xl border border-base-300 bg-base-100 p-4 text-left transition-all hover:-translate-y-0.5 hover:border-secondary/60 hover:shadow-card disabled:opacity-60"
+      className={`${ROLE_CARD_CLASS} ${tone.card} ${dimmed}`}
       data-demo-user={card.id}
     >
-      <div className="flex items-start gap-3">
-        <RoleCardIcon card={card} />
-        <RoleCardText card={card} />
-        <RoleCardArrow busy={state.busy} />
-      </div>
+      <RoleCardIcon card={card} tone={tone} />
+      <RoleCardText card={card} tone={tone} />
+      <RoleCardArrow busy={state.busy} tone={tone} />
     </button>
   );
 }
@@ -85,16 +127,16 @@ function RoleCardButton({
 function ActiveSessionCard({ user }: { user: User }) {
   const navigate = useNavigate();
   return (
-    <div className="mt-4 rounded-xl border border-secondary/30 bg-secondary/5 p-3 text-sm">
-      <p className="font-medium">
+    <div className="mt-3.5 rounded-2xl border border-indigo/20 bg-indigo-50/80 p-3">
+      <p className="text-[12px] font-medium leading-4 text-indigo-700">
         Sesión activa como {user.display_name} ({isSpecialist(user) ? 'especialista' : 'clínica'})
       </p>
       <button
         type="button"
-        className="btn btn-secondary btn-sm mt-2 gap-1.5"
+        className="mt-2 inline-flex items-center gap-1.5 rounded-btn bg-indigo px-3 py-1.5 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-px hover:bg-indigo-700"
         onClick={() => navigate(homeFor(user), { replace: true })}
       >
-        Continuar <ArrowRight className="h-4 w-4" />
+        Continuar <ArrowRight className="h-3.5 w-3.5" />
       </button>
     </div>
   );
@@ -103,17 +145,20 @@ function ActiveSessionCard({ user }: { user: User }) {
 function LoginErrorAlert({ error }: { error: Error }) {
   const isOffline = error instanceof ApiError && error.status === 0;
   return (
-    <div className="alert alert-error mt-4 flex items-start gap-3 text-left text-sm" role="alert">
-      <ShieldCheck className="h-4 w-4 shrink-0" />
-      <div className="min-w-0 flex-1">
-        <p className="font-semibold">No se pudo iniciar la demo</p>
-        <p className="mt-0.5 text-[13px] leading-snug">{error.message}</p>
-        {isOffline ? (
-          <p className="mt-2 rounded-lg bg-black/10 px-2 py-1 font-mono text-[11px]">
-            cd services/api; uv run uvicorn app.main:app --reload --port 8000
-          </p>
-        ) : null}
-      </div>
+    <div
+      className="mt-4 rounded-2xl border border-crit/25 bg-crit-soft px-3.5 py-3 text-left"
+      role="alert"
+    >
+      <p className="flex items-center gap-1.5 text-[12px] font-medium text-crit">
+        <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+        No se pudo iniciar la demo
+      </p>
+      <p className="mt-1 text-[11.5px] leading-4 text-[#7A2A31]">{error.message}</p>
+      {isOffline ? (
+        <p className="mt-2 rounded-lg bg-white/70 px-2 py-1 font-mono text-[10.5px] text-[#7A2A31]">
+          cd services/api; uv run uvicorn app.main:app --reload --port 8000
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -122,12 +167,12 @@ function ResetDemoButton({ reset }: { reset: ReturnType<typeof useResetDemo> }) 
   return (
     <button
       type="button"
-      className="btn btn-ghost btn-xs gap-1.5 text-base-content/45"
+      className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[10.5px] font-medium text-caption transition duration-200 ease-smooth hover:bg-white/70 hover:text-indigo-700 disabled:opacity-60"
       onClick={() => reset.mutate()}
       disabled={reset.isPending}
       title="POST /api/demo/reset (requiere sesión)"
     >
-      {reset.isPending ? <Spinner size="xs" /> : <ShieldCheck className="h-3.5 w-3.5" />}
+      {reset.isPending ? <Spinner size="xs" /> : <ShieldCheck className="h-3 w-3" />}
       Reiniciar datos de demo
     </button>
   );
@@ -142,20 +187,68 @@ function ResetFooter({
 }) {
   return (
     <>
-      <div className="mt-4 flex items-center justify-between gap-2 border-t border-base-300/70 pt-3">
+      <div className="mt-4 flex items-center justify-between gap-2 border-t border-line/80 pt-3">
         {user ? (
           <ResetDemoButton reset={reset} />
         ) : (
-          <span className="text-[11px] text-base-content/35">
+          <span className="text-[10.5px] leading-4 text-caption/80">
             El reset de la demo está en la cabecera, ya con sesión
           </span>
         )}
-        <span className="text-[11px] text-base-content/35">v0.1 · H+0</span>
+        <span className="text-[10.5px] text-caption/70">v0.1 · H+0</span>
       </div>
       {reset.isError ? (
-        <p className="mt-2 text-[11px] text-error">{reset.error.message}</p>
+        <p className="mt-2 text-[10.5px] text-crit">{reset.error.message}</p>
       ) : null}
     </>
+  );
+}
+
+function SsoLink() {
+  return (
+    <button
+      type="button"
+      disabled
+      title="El SSO de la clínica no está habilitado en la demo"
+      className="inline-flex items-center justify-center gap-1.5 rounded-full px-2 py-1 text-[12px] font-medium text-indigo-700/80"
+    >
+      <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+      Entrar con SSO de la clínica
+    </button>
+  );
+}
+
+function PanelGlow() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span className="absolute -right-40 -top-56 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(214,219,255,0.55),rgba(245,248,254,0)_70%)]" />
+      <span className="absolute -bottom-56 -left-32 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(255,243,229,0.9),rgba(245,248,254,0)_70%)]" />
+    </div>
+  );
+}
+
+function LoginFootNote() {
+  return (
+    <div className="mt-4 space-y-1 text-center text-[10px] tracking-[0.01em] text-caption sm:text-[9.5px] sm:uppercase sm:tracking-[0.1em]">
+      <p>Entorno de demostración · datos ficticios y anonimizados</p>
+      <p className="text-caption/80">Equipo Joniha · VIII Hackathon Boehringer Ingelheim España</p>
+    </div>
+  );
+}
+
+function MobileBrand() {
+  return (
+    <div className="mb-5 flex items-center gap-2.5 lg:hidden">
+      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[11.5px] font-medium tracking-tight text-white shadow-lift">
+        VL
+      </span>
+      <span>
+        <span className="block text-[15px] font-medium leading-5 tracking-[-0.01em] text-ink">
+          VetLink
+        </span>
+        <span className="block text-[10.5px] leading-4 text-caption">Salud animal, a un clic</span>
+      </span>
+    </div>
   );
 }
 
@@ -164,32 +257,59 @@ export function LoginRolePanel({ user }: { user: User | null | undefined }) {
   const reset = useResetDemo();
 
   return (
-    <section className="order-1 lg:order-2">
-      <div className="vl-card p-5 sm:p-6">
-        <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-lg font-semibold tracking-tight">Entra en la demo</h2>
-          <span className="badge badge-ghost badge-sm">sin contraseña</span>
+    <section className="relative order-1 flex flex-col items-center justify-center overflow-hidden bg-mist px-4 py-8 sm:px-8 sm:py-10 lg:order-2 lg:min-h-screen lg:px-10">
+      <PanelGlow />
+      <div className="relative z-10 w-full max-w-[432px]">
+        <MobileBrand />
+        <div className="glass-strong rise rounded-[30px] px-5 py-6 sm:px-7 sm:py-7">
+          <div className="flex items-center justify-between gap-3">
+            <p className="flex items-center gap-1.5 text-[9.5px] font-medium uppercase tracking-[0.14em] text-indigo-700">
+              <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+              Acceso seguro
+            </p>
+            <span className="inline-flex items-center rounded-full border border-line bg-white/70 px-2 py-0.5 text-[10px] font-medium text-caption">
+              sin contraseña
+            </span>
+          </div>
+
+          <h2 className="mt-2.5 text-[27px] font-medium leading-[1.2] tracking-[-0.02em] text-ink">
+            Entra en la demo
+          </h2>
+          <p className="mt-1.5 text-[12.5px] leading-[18px] text-caption">
+            Elige el lado que quieres ver. Puedes cambiar cuando quieras.
+          </p>
+
+          {user ? <ActiveSessionCard user={user} /> : null}
+
+          <div className="mt-4 grid gap-2.5">
+            {ROLE_CARDS.map((card) => (
+              <RoleCardButton
+                key={card.id}
+                card={card}
+                state={{ busy: pending === card.id, disabled: login.isPending }}
+                onSelect={() => start(card.id)}
+              />
+            ))}
+          </div>
+
+          {login.error ? <LoginErrorAlert error={login.error} /> : null}
+
+          <div className="mt-4 flex items-center gap-3 text-[9.5px] uppercase tracking-[0.14em] text-caption">
+            <span className="h-px flex-1 bg-line" aria-hidden="true" />
+            <span>o</span>
+            <span className="h-px flex-1 bg-line" aria-hidden="true" />
+          </div>
+
+          <div className="mt-2.5 text-center">
+            <SsoLink />
+          </div>
+
+          <ResetFooter user={user} reset={reset} />
         </div>
-        <p className="mt-1 text-sm text-base-content/55">
-          Elige el lado que quieres ver. Puedes cambiar cuando quieras.
-        </p>
-
-        {user ? <ActiveSessionCard user={user} /> : null}
-
-        <div className="mt-4 grid gap-3">
-          {ROLE_CARDS.map((card) => (
-            <RoleCardButton
-              key={card.id}
-              card={card}
-              state={{ busy: pending === card.id, disabled: login.isPending }}
-              onSelect={() => start(card.id)}
-            />
-          ))}
-        </div>
-
-        {login.error ? <LoginErrorAlert error={login.error} /> : null}
-        <ResetFooter user={user} reset={reset} />
+        <LoginFootNote />
       </div>
     </section>
   );
 }
+
+export default LoginRolePanel;

@@ -11,22 +11,26 @@ export interface PageHeading {
 export function PageTitle({ heading }: { heading: PageHeading }) {
   const Icon = heading.icon;
   return (
-    <div>
-      <p className="vl-section-title">{heading.eyebrow}</p>
-      <h1 className="mt-1 flex items-center gap-2 text-2xl font-bold tracking-tight">
-        <Icon className="h-6 w-6 text-secondary" aria-hidden="true" />
+    <div className="min-w-0">
+      <p className="vl-section-title text-indigo-700">{heading.eyebrow}</p>
+      <h1 className="mt-1.5 flex items-center gap-2.5 text-[26px] font-medium leading-8 tracking-[-0.025em] text-ink sm:text-[32px] sm:leading-10">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100">
+          <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+        </span>
         {heading.title}
       </h1>
-      <p className="mt-1 text-sm text-base-content/55">{heading.description}</p>
+      <p className="mt-1 text-[13px] leading-5 text-caption">{heading.description}</p>
     </div>
   );
 }
 
 export function PageHeader({ heading, children }: { heading: PageHeading; children?: ReactNode }) {
   return (
-    <header className="flex flex-wrap items-end justify-between gap-3">
+    <header className="glass-strong flex flex-wrap items-end justify-between gap-3 rounded-panel px-5 py-4 sm:px-6 sm:py-5">
       <PageTitle heading={heading} />
       {children}
     </header>
   );
 }
+
+export default PageHeader;

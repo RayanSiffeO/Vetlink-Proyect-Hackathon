@@ -23,11 +23,18 @@ function pendingLabel(count: number): string {
 function ReviewedBanner({ review }: { review: ReviewSummary }) {
   const stamp = review.reviewed_at ? ` · ${formatDateTime(review.reviewed_at)}` : '';
   return (
-    <div className="alert alert-success flex items-start gap-3 text-left" role="status">
-      <CheckCircle2 className="h-5 w-5 shrink-0" />
+    <div
+      className="glass flex items-start gap-3 rounded-panel border-l-4 border-l-ok/60 px-4 py-3.5 text-left sm:px-5"
+      role="status"
+    >
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-ok-soft text-ok ring-1 ring-inset ring-ok/15">
+        <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+      </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold">Revisado por {review.reviewed_by}</p>
-        <p className="text-[12px] opacity-80">
+        <p className="text-[15px] font-medium leading-5 text-ink">
+          Revisado por {review.reviewed_by}
+        </p>
+        <p className="mt-0.5 text-[12px] leading-[18px] text-caption">
           Campos críticos confirmados{stamp}. La revisión queda registrada en la auditoría.
         </p>
       </div>
@@ -39,8 +46,8 @@ function PendingMessage({ review }: { review: ReviewSummary }) {
   const fields = fieldNames(review);
   return (
     <>
-      <p className="text-sm font-semibold">{pendingLabel(pendingCount(review))}</p>
-      <p className="mt-0.5 text-[12px] text-base-content/70">
+      <p className="text-[15px] font-medium leading-5 text-ink">{pendingLabel(pendingCount(review))}</p>
+      <p className="mt-0.5 text-[12px] leading-[18px] text-para">
         {fields.length > 0
           ? `Campos dudosos: ${fields.join(' · ')}.`
           : 'La importación detectó datos con confianza baja.'}{' '}
@@ -54,14 +61,14 @@ function PendingMessage({ review }: { review: ReviewSummary }) {
 function ReviewFeedback({ mutation }: { mutation: ReturnType<typeof useReviewRecord> }) {
   if (mutation.isError) {
     return (
-      <p className="mt-1 text-[12px] font-semibold text-error">
+      <p className="mt-1 text-[12px] font-medium text-crit">
         No se pudo confirmar la revisión: {mutation.error.message}
       </p>
     );
   }
   if (mutation.isSuccess) {
     return (
-      <p className="mt-1 text-[12px] font-semibold text-success">
+      <p className="mt-1 text-[12px] font-medium text-ok">
         Revisión registrada y auditada correctamente.
       </p>
     );
@@ -73,7 +80,7 @@ function ConfirmButton({ mutation, fields }: { mutation: ReturnType<typeof useRe
   return (
     <button
       type="button"
-      className="btn btn-warning btn-sm w-full gap-1.5 sm:w-auto"
+      className="btn btn-primary btn-sm h-9 w-full gap-1.5 rounded-full px-4 text-[12px] shadow-lift sm:w-auto"
       disabled={mutation.isPending}
       onClick={() => mutation.mutate({ reviewed_fields: fields })}
     >
@@ -93,7 +100,7 @@ function ClinicAction({ mutation, fields }: { mutation: ReturnType<typeof useRev
 
 function SpecialistNote() {
   return (
-    <p className="mt-1 w-full text-[11px] text-base-content/55 sm:w-auto">
+    <p className="mt-1 w-full text-[11px] leading-4 text-caption sm:w-auto">
       Solo la clínica puede confirmar la revisión de esta ficha.
     </p>
   );
@@ -113,8 +120,13 @@ export function PatientReviewBanner({
   if (pendingCount(review) <= 0) return null;
   const fields = fieldNames(review);
   return (
-    <div className="alert alert-warning flex flex-wrap items-start gap-3 text-left" role="status">
-      <AlertTriangle className="h-5 w-5 shrink-0" />
+    <div
+      className="glass flex flex-wrap items-start gap-3 rounded-panel border-l-4 border-l-warn/60 px-4 py-3.5 text-left sm:px-5"
+      role="status"
+    >
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-warn-soft text-warn ring-1 ring-inset ring-warn/15">
+        <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+      </span>
       <div className="min-w-0 flex-1">
         <PendingMessage review={review} />
         {specialist ? null : <ReviewFeedback mutation={mutation} />}

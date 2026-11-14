@@ -22,19 +22,24 @@ export function RequestTabs({
   onSelect: (tab: RequestTab) => void;
 }) {
   return (
-    <div role="tablist" className="tabs tabs-boxed w-full max-w-md overflow-x-auto bg-base-100 p-1">
+    <div className="glass inline-flex w-full max-w-md gap-1 overflow-x-auto rounded-full p-1">
       {TABS.map((item) => {
         const Icon = item.icon;
+        const active = tab === item.id;
         return (
           <button
             key={item.id}
             type="button"
             role="tab"
-            aria-selected={tab === item.id}
-            className={`tab h-11 flex-1 gap-1.5 whitespace-nowrap text-[13px] ${tab === item.id ? 'tab-active' : ''}`}
+            aria-selected={active}
+            className={`inline-flex h-10 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[12.5px] font-medium transition duration-200 ease-smooth ${
+              active
+                ? 'bg-indigo text-white shadow-lift'
+                : 'text-para hover:bg-white/70 hover:text-indigo-700'
+            }`}
             onClick={() => onSelect(item.id)}
           >
-            <Icon className="h-4 w-4" />
+            <Icon className="h-4 w-4" aria-hidden="true" />
             {item.label}
           </button>
         );

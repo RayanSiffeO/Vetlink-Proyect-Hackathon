@@ -51,10 +51,10 @@ export function ProvenanceBadge({
   const parts = provenanceParts({ summary, entities, fieldsPopulated, alerts });
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1 text-xs font-medium text-secondary ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-indigo-100 bg-indigo-50/80 px-2.5 py-1 text-[11px] font-medium leading-4 text-indigo-700 ${className}`}
       title="Trazabilidad del registro canónico (provenance)"
     >
-      <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+      <ShieldCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       <span>{parts.length ? parts.join(' · ') : 'Provenance pendiente'}</span>
     </span>
   );

@@ -8,8 +8,8 @@ import { Spinner } from '../Spinner';
 const NOTE_MIN_LENGTH = 3;
 const NOTE_MAX_LENGTH = 2000;
 const FIELD_MAX_LENGTH = 1000;
-const INPUT_CLASS = 'input input-bordered input-sm mt-1 w-full';
-const TEXTAREA_CLASS = 'textarea textarea-bordered mt-1 w-full text-sm';
+const INPUT_CLASS = 'input input-bordered input-sm mt-1 h-9 w-full rounded-btn border-line bg-white/80 text-[12.5px]';
+const TEXTAREA_CLASS = 'textarea textarea-bordered mt-1 w-full rounded-xl border-line bg-white/80 text-[12.5px]';
 
 interface CloseFormState {
   note: string;
@@ -57,11 +57,13 @@ function CloseField({ label, children }: { label: string; children: ReactNode })
 function CloseHeading() {
   return (
     <>
-      <h2 className="flex items-center gap-2 text-sm font-semibold">
-        <Stethoscope className="h-4 w-4 text-secondary" />
+      <h2 className="flex items-center gap-2 text-[15px] font-medium leading-6 text-ink">
+        <span className="grid h-8 w-8 place-items-center rounded-xl bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100">
+          <Stethoscope className="h-4 w-4" aria-hidden="true" />
+        </span>
         Cierre de visita del especialista
       </h2>
-      <p className="mt-1 text-[12px] leading-snug text-base-content/55">
+      <p className="mt-2 text-[12px] leading-[18px] text-caption">
         La nota se guarda como encuentro en la ficha clínica de la clínica y la solicitud queda
         completada.
       </p>
@@ -71,8 +73,11 @@ function CloseHeading() {
 
 function CloseSuccess() {
   return (
-    <div className="alert alert-success flex items-start gap-3 text-left text-sm" role="status">
-      <CheckCircle2 className="h-4 w-4 shrink-0" />
+    <div
+      className="flex items-start gap-2.5 rounded-2xl border border-ok/25 bg-ok-soft px-4 py-3 text-[13px] leading-5 text-ok"
+      role="status"
+    >
+      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
       <span>Visita cerrada · la nota ya está en la ficha de la clínica</span>
     </div>
   );
@@ -80,7 +85,11 @@ function CloseSuccess() {
 
 function OpenCloseButton({ onOpen }: { onOpen: () => void }) {
   return (
-    <button type="button" className="btn btn-secondary btn-sm mt-3 gap-1.5" onClick={onOpen}>
+    <button
+      type="button"
+      className="btn btn-primary btn-sm mt-3 h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
+      onClick={onOpen}
+    >
       <Stethoscope className="h-4 w-4" />
       Cerrar visita
     </button>
@@ -119,7 +128,10 @@ function CloseOptionalFields({ values, onChange }: OptionalFieldsProps) {
 function CloseError({ error }: { error: Error | null }) {
   if (!error) return null;
   return (
-    <p className="mt-2 rounded-lg bg-error/10 px-3 py-2 text-[12px] text-error" role="alert">
+    <p
+      className="mt-2 rounded-xl border border-crit/20 bg-crit-soft px-3 py-2 text-[12px] text-crit"
+      role="alert"
+    >
       {error.message}
     </p>
   );
@@ -130,16 +142,16 @@ function CloseActions({ values, mutation, onCancel }: CloseActionsProps) {
   const save = () => mutation.mutate(closePayload(values));
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2">
-      <button type="button" className="btn btn-secondary btn-sm gap-1.5" onClick={save}
+      <button type="button" className="btn btn-primary btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift" onClick={save}
         disabled={noteTooShort || mutation.isPending}>
         {mutation.isPending ? <Spinner size="xs" /> : <CheckCircle2 className="h-4 w-4" />}
         Guardar nota y cerrar
       </button>
-      <button type="button" className="btn btn-ghost btn-sm" onClick={onCancel}
+      <button type="button" className="inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-medium text-para transition duration-200 ease-smooth hover:bg-white/70 hover:text-ink" onClick={onCancel}
         disabled={mutation.isPending}>
         Cancelar
       </button>
-      <span className="text-[11px] text-base-content/45">Mínimo {NOTE_MIN_LENGTH} caracteres</span>
+      <span className="text-[11px] leading-4 text-caption">Mínimo {NOTE_MIN_LENGTH} caracteres</span>
     </div>
   );
 }
@@ -164,7 +176,7 @@ export function RequestClosePanel({ request }: { request: RequestRecord }) {
   if (mutation.isSuccess) return <CloseSuccess />;
   if (!isCloseableStatus(request.status)) return null;
   return (
-    <section className="vl-card border-secondary/40 p-5">
+    <section className="glass rounded-panel border-l-4 border-l-indigo p-5">
       <CloseHeading />
       <CloseForm mutation={mutation} />
     </section>

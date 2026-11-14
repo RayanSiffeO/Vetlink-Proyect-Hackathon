@@ -14,6 +14,9 @@ interface SpecialistFieldProps {
   query: ReturnType<typeof useSpecialists>;
 }
 
+const SELECT_CLASS =
+  'select select-bordered select-sm mt-1 h-10 w-full rounded-btn border-line bg-white/80 text-[12.5px]';
+
 export function PatientField({ value, onChange, query }: PatientFieldProps) {
   const patients = query.data?.patients ?? [];
   const selected = patients.find((patient) => patient.id === value) ?? null;
@@ -21,7 +24,7 @@ export function PatientField({ value, onChange, query }: PatientFieldProps) {
     <label className="block">
       <span className="vl-label">Paciente</span>
       <select
-        className="select select-bordered select-sm mt-1 h-10 w-full"
+        className={SELECT_CLASS}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         required
@@ -34,7 +37,7 @@ export function PatientField({ value, onChange, query }: PatientFieldProps) {
         ))}
       </select>
       {selected ? (
-        <span className="mt-1 block text-[11px] text-base-content/45">
+        <span className="mt-1 block text-[11px] leading-4 text-caption">
           {[selected.breed, selected.owner_display].filter(Boolean).join(' · ')}
         </span>
       ) : null}
@@ -52,13 +55,13 @@ function SpecialistFieldHint({
   return (
     <>
       {error ? (
-        <span className="mt-1 block text-[11px] text-error">
+        <span className="mt-1 block text-[11px] leading-4 text-crit">
           No se pudo cargar el marketplace: {error.message}
         </span>
       ) : null}
       {specialist ? (
-        <span className="mt-1 flex items-center gap-2 text-[11px] text-base-content/45">
-          <Stethoscope className="h-3 w-3" />
+        <span className="mt-1 flex items-center gap-1.5 text-[11px] leading-4 text-caption">
+          <Stethoscope className="h-3 w-3" aria-hidden="true" />
           {specialist.specialty} · {specialist.zone} · desde {formatPrice(specialist.price_from)}
         </span>
       ) : null}
@@ -73,7 +76,7 @@ export function SpecialistField({ value, onChange, query }: SpecialistFieldProps
     <label className="block">
       <span className="vl-label">Especialista</span>
       <select
-        className="select select-bordered select-sm mt-1 h-10 w-full"
+        className={SELECT_CLASS}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         required

@@ -23,31 +23,35 @@ const ALL_ITEMS: NavItem[] = [
 
 const SPECIALIST_ITEMS: NavItem[] = ALL_ITEMS.filter((item) => item.to !== '/patients');
 
-const PRIMARY_LINKS_CLASS = 'ml-4 hidden items-center gap-1 md:flex';
+const PRIMARY_LINKS_CLASS = 'ml-2 hidden items-center gap-1 md:flex';
 const MOBILE_LINKS_CLASS =
-  'flex items-center justify-between gap-0.5 overflow-x-auto border-t border-base-300/60 px-2 py-1 md:hidden';
-const NAV_ACTIVE_CLASS = 'bg-primary text-primary-content shadow-soft';
-const NAV_IDLE_CLASS = 'text-base-content/65 hover:bg-base-200 hover:text-base-content';
+  'mt-2 flex items-center gap-1 overflow-x-auto border-t border-line/80 px-0.5 pt-2 pb-0.5 md:hidden scrollbar-none';
+const NAV_ACTIVE_CLASS = 'bg-indigo text-white shadow-lift';
+const NAV_IDLE_CLASS = 'text-para hover:bg-white/70 hover:text-indigo-700';
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {
   const tone = isActive ? NAV_ACTIVE_CLASS : NAV_IDLE_CLASS;
-  return `inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${tone}`;
+  return `inline-flex items-center gap-2 rounded-full px-3 py-2 text-[13px] font-medium transition duration-200 ease-smooth hover:-translate-y-px ${tone}`;
 }
 
 function mobileNavLinkClass({ isActive }: { isActive: boolean }): string {
   const tone = isActive ? NAV_ACTIVE_CLASS : NAV_IDLE_CLASS;
-  return `inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-xl px-1.5 py-2.5 text-[12px] font-medium transition-colors ${tone}`;
+  return `inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[11.5px] font-medium transition duration-200 ease-smooth ${tone}`;
 }
 
 function NavBrand({ home }: { home: string }) {
   return (
-    <Link to={home} className="flex shrink-0 items-center gap-2" aria-label="VetLink, inicio">
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-[13px] font-black tracking-tight text-primary-content">
+    <Link
+      to={home}
+      className="group flex shrink-0 items-center gap-2.5 rounded-xl pr-1"
+      aria-label="VetLink, inicio"
+    >
+      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[12px] font-medium tracking-tight text-white shadow-lift transition duration-200 ease-smooth group-hover:-translate-y-0.5">
         VL
       </span>
       <span className="hidden leading-tight sm:block">
-        <span className="block text-sm font-bold tracking-tight">VetLink</span>
-        <span className="block text-[11px] text-base-content/50">Salud animal, a un clic</span>
+        <span className="block text-[15px] font-medium tracking-[-0.01em] text-ink">VetLink</span>
+        <span className="block text-[10.5px] text-caption">Salud animal, a un clic</span>
       </span>
     </Link>
   );
@@ -88,10 +92,10 @@ function MobileNavigation({ items }: { items: NavItem[] }) {
 function SessionChip({ user }: { user: User | null | undefined }) {
   if (!user) return null;
   return (
-    <span className="hidden items-center gap-1.5 rounded-full border border-base-300 bg-base-200/70 px-2.5 py-1 text-xs font-medium text-base-content/70 sm:inline-flex">
-      <span className="h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden="true" />
+    <span className="hidden items-center gap-1.5 rounded-full border border-line bg-white/70 px-2.5 py-1 text-[11px] font-medium text-para sm:inline-flex">
+      <span className="h-1.5 w-1.5 rounded-full bg-ok" aria-hidden="true" />
       {user.display_name}
-      <span className="text-base-content/35">·</span>
+      <span className="text-line-strong">·</span>
       {roleLabel(user)}
     </span>
   );
@@ -99,18 +103,21 @@ function SessionChip({ user }: { user: User | null | undefined }) {
 
 type ResetMutation = ReturnType<typeof useResetDemo>;
 
+const GHOST_BUTTON_CLASS =
+  'inline-flex items-center gap-1.5 rounded-full border border-transparent px-2 py-1.5 text-[11.5px] font-medium text-caption transition duration-200 ease-smooth hover:-translate-y-px hover:border-line hover:bg-white/70 disabled:opacity-60';
+
 function DemoResetButton({ reset, onSettled }: { reset: ResetMutation; onSettled: () => void }) {
   return (
     <button
       type="button"
       onClick={() => reset.mutate(undefined, { onSettled })}
-      className="btn btn-ghost btn-sm gap-1.5 px-2 text-base-content/50 hover:text-base-content"
+      className={`${GHOST_BUTTON_CLASS} hover:text-indigo-700`}
       title="Reiniciar los datos de la demo"
       aria-label="Reiniciar datos de demo"
       disabled={reset.isPending}
     >
       {reset.isPending ? <Spinner size="xs" /> : <RotateCcw className="h-4 w-4" />}
-      <span className="hidden lg:inline text-xs">Demo</span>
+      <span className="hidden text-[11.5px] lg:inline">Demo</span>
     </button>
   );
 }
@@ -126,12 +133,12 @@ function LogoutButton({
     <button
       type="button"
       onClick={() => logout.mutate(undefined, { onSettled })}
-      className="btn btn-ghost btn-sm gap-1.5 px-2 text-base-content/60 hover:text-error"
+      className={`${GHOST_BUTTON_CLASS} hover:text-crit`}
       title="Cerrar sesión"
       disabled={logout.isPending}
     >
       <LogOut className="h-4 w-4" />
-      <span className="hidden lg:inline text-xs">Salir</span>
+      <span className="hidden text-[11.5px] lg:inline">Salir</span>
     </button>
   );
 }
@@ -140,8 +147,8 @@ function ResetStatusLine({ reset, done }: { reset: ResetMutation; done: boolean 
   if (!reset.isError && !done) return null;
   return (
     <p
-      className={`px-4 pb-1.5 text-center text-[11px] ${
-        reset.isError ? 'text-error' : 'text-success'
+      className={`px-3 pb-1 pt-1.5 text-center text-[11px] ${
+        reset.isError ? 'text-crit' : 'text-ok'
       }`}
     >
       {reset.isError
@@ -166,18 +173,20 @@ export function Nav() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-base-300/80 bg-base-100/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5">
-        <NavBrand home={homeFor(user)} />
-        <DesktopNavigation items={items} />
-        <div className="ml-auto flex items-center gap-1.5">
-          <SessionChip user={user} />
-          <DemoResetButton reset={resetDemo} onSettled={flagReset} />
-          <LogoutButton logout={logout} onSettled={closeMenu} />
+    <header className="sticky top-0 z-40 bg-[linear-gradient(180deg,#FFFCF5_0%,rgba(255,252,245,0.92)_60%,rgba(255,252,245,0)_100%)] px-3 pb-1 pt-3 sm:px-6 sm:pt-4">
+      <div className="glass mx-auto w-full max-w-6xl rounded-[20px] px-3 py-2 sm:rounded-[22px] sm:px-4">
+        <div className="flex items-center gap-3">
+          <NavBrand home={homeFor(user)} />
+          <DesktopNavigation items={items} />
+          <div className="ml-auto flex items-center gap-1.5">
+            <SessionChip user={user} />
+            <DemoResetButton reset={resetDemo} onSettled={flagReset} />
+            <LogoutButton logout={logout} onSettled={closeMenu} />
+          </div>
         </div>
+        <MobileNavigation items={items} />
+        <ResetStatusLine reset={resetDemo} done={resetDone} />
       </div>
-      <MobileNavigation items={items} />
-      <ResetStatusLine reset={resetDemo} done={resetDone} />
     </header>
   );
 }

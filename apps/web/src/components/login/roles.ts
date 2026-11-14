@@ -9,7 +9,7 @@ export interface RoleCard {
   description: string;
   bullets: string[];
   icon: LucideIcon;
-  accent: string;
+  primary: boolean;
 }
 
 export const ROLE_CARDS: RoleCard[] = [
@@ -20,7 +20,7 @@ export const ROLE_CARDS: RoleCard[] = [
     description: 'Importa historias, revisa alertas y deriva al especialista que toca.',
     bullets: ['Subir Word / Excel / JSON', 'Ficha canónica con alertas', 'Buscar y derivar'],
     icon: Building2,
-    accent: 'from-primary to-[#2B3F6E]',
+    primary: true,
   },
   {
     id: 'marc',
@@ -29,6 +29,6 @@ export const ROLE_CARDS: RoleCard[] = [
     description: 'Recibe solicitudes, acepta franjas y llega con el caso leído.',
     bullets: ['Solicitudes con resumen anónimo', 'Briefing pre-visita', 'Agenda unificada'],
     icon: Stethoscope,
-    accent: 'from-secondary to-[#2AA79B]',
+    primary: false,
   },
 ];

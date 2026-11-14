@@ -11,7 +11,7 @@ import { formatDateTime, relativeTime } from '../lib/format';
 
 function RequestBadgeRow({ request }: { request: RequestRecord }) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-1.5">
       <StatusBadge status={String(request.status)} />
       <UrgencyBadge urgency={request.urgencia} />
       <ShareBadge level={request.share_level} />
@@ -25,12 +25,12 @@ function RequestTitle({ request }: { request: RequestRecord }) {
   return (
     <div className="min-w-0">
       <RequestBadgeRow request={request} />
-      <h3 className="mt-1.5 truncate text-base font-semibold">
+      <h3 className="mt-2 truncate text-[16.5px] font-medium leading-6 tracking-[-0.01em] text-ink">
         {patientName ??
           (request.patient_id ? `Paciente ${String(request.patient_id).slice(0, 8)}` : 'Solicitud')}
       </h3>
       {specialistName ? (
-        <p className="truncate text-[12px] text-base-content/55">{specialistName}</p>
+        <p className="truncate text-[12px] leading-[18px] text-caption">{specialistName}</p>
       ) : null}
     </div>
   );
@@ -38,14 +38,14 @@ function RequestTitle({ request }: { request: RequestRecord }) {
 
 function RequestMeta({ request }: { request: RequestRecord }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-base-content/45">
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] leading-4 text-caption">
       {request.patient_species ? <span>{request.patient_species}</span> : null}
       {request.patient_species && request.specialist_specialty ? (
-        <span className="text-base-content/25">·</span>
+        <span className="text-line-strong">·</span>
       ) : null}
       {request.specialist_specialty ? (
         <span className="inline-flex items-center gap-1">
-          <Stethoscope className="h-3 w-3" />
+          <Stethoscope className="h-3 w-3" aria-hidden="true" />
           {request.specialist_specialty}
         </span>
       ) : null}
@@ -56,14 +56,14 @@ function RequestMeta({ request }: { request: RequestRecord }) {
 function RequestFooter({ request }: { request: RequestRecord }) {
   const when = (request.slot_iso as string | undefined) ?? (request.when_iso as string | undefined);
   return (
-    <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-base-300/60 pt-2.5 text-[11px] text-base-content/45">
+    <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line/80 pt-2.5 text-[11px] leading-4 text-caption">
       <span className="inline-flex items-center gap-1">
-        <Clock3 className="h-3 w-3" />
+        <Clock3 className="h-3 w-3" aria-hidden="true" />
         {request.created_at ? relativeTime(request.created_at) : 'fecha sin registrar'}
       </span>
       {when ? (
         <span className="inline-flex items-center gap-1">
-          <CalendarClock className="h-3 w-3" />
+          <CalendarClock className="h-3 w-3" aria-hidden="true" />
           {formatDateTime(when)}
         </span>
       ) : null}
@@ -75,13 +75,15 @@ function RequestCard({ request }: { request: RequestRecord }) {
   return (
     <Link
       to={`/requests/${request.id}`}
-      className="vl-card group flex flex-col gap-3 p-4 transition-shadow hover:shadow-card"
+      className="group flex flex-col gap-3 rounded-card border border-line bg-white/70 p-4 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-100 hover:bg-white/90 hover:shadow-card"
     >
       <div className="flex items-start justify-between gap-2">
         <RequestTitle request={request} />
-        <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-base-content/30 transition-transform group-hover:translate-x-0.5 group-hover:text-secondary" />
+        <span className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-indigo-700 transition duration-200 ease-smooth group-hover:bg-indigo group-hover:text-white">
+          <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </span>
       </div>
-      <p className="line-clamp-2 text-[13px] leading-snug text-base-content/60">
+      <p className="line-clamp-2 text-[12.5px] leading-[18px] text-para">
         {request.motivo || 'Sin motivo registrado'}
       </p>
       <RequestMeta request={request} />
@@ -146,13 +148,19 @@ function RequestsHeader({ specialistRole }: { specialistRole: boolean }) {
       }}
     >
       {!specialistRole ? (
-        <div className="flex gap-2">
-          <Link to="/specialists" className="btn btn-outline btn-sm gap-1.5">
-            <Stethoscope className="h-4 w-4" />
+        <div className="flex flex-wrap gap-2">
+          <Link
+            to="/specialists"
+            className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-white/70 px-3 py-1.5 text-[12px] font-medium text-para transition duration-200 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-700"
+          >
+            <Stethoscope className="h-3.5 w-3.5" />
             Buscar especialista
           </Link>
-          <Link to="/requests/new" className="btn btn-primary btn-sm gap-1.5">
-            <Plus className="h-4 w-4" />
+          <Link
+            to="/requests/new"
+            className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700"
+          >
+            <Plus className="h-3.5 w-3.5" />
             Nueva solicitud
           </Link>
         </div>

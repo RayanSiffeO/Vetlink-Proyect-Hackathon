@@ -3,7 +3,7 @@ import { Send } from 'lucide-react';
 import { BackLink } from '../components/BackLink';
 import { EmptyState, ErrorState } from '../components/EmptyState';
 import { Loading } from '../components/Loading';
-import { PageTitle } from '../components/PageHeader';
+import { PageHeader } from '../components/PageHeader';
 import {
   PatientSpecialistSection,
   PreferredSlotsSection,
@@ -36,20 +36,18 @@ function NoPatientsState() {
 
 function RequestFormIntro({ patientId }: { patientId: string }) {
   return (
-    <>
+    <div className="space-y-3">
       <BackLink to={patientId ? `/patients/${patientId}` : '/patients'}>Volver</BackLink>
-      <header>
-        <PageTitle
-          heading={{
-            eyebrow: 'VetNetwork · derivación',
-            title: 'Nueva solicitud',
-            description:
-              'El especialista recibirá primero un resumen no identificativo. La historia completa se abre cuando acepta.',
-            icon: Send,
-          }}
-        />
-      </header>
-    </>
+      <PageHeader
+        heading={{
+          eyebrow: 'VetNetwork · derivación',
+          title: 'Nueva solicitud',
+          description:
+            'El especialista recibirá primero un resumen no identificativo. La historia completa se abre cuando acepta.',
+          icon: Send,
+        }}
+      />
+    </div>
   );
 }
 
@@ -62,7 +60,7 @@ interface RequestAsideState {
 
 function RequestFormAside({ state }: { state: RequestAsideState }) {
   return (
-    <aside className="space-y-4">
+    <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
       <PreferredSlotsSection
         presetSlot={state.form.presetSlot}
         value={state.form.preferredText}

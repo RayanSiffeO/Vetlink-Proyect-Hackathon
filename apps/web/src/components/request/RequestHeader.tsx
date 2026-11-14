@@ -9,8 +9,8 @@ import { Spinner } from '../Spinner';
 
 function ScheduledBadge({ appointment }: { appointment: Appointment | null }) {
   return (
-    <span className="badge badge-sm badge-success gap-1">
-      <CalendarClock className="h-3 w-3" />
+    <span className="inline-flex items-center gap-1 rounded-full border border-ok/20 bg-ok-soft px-2.5 py-1 text-[11px] font-medium leading-4 text-ok">
+      <CalendarClock className="h-3 w-3" aria-hidden="true" />
       {appointment ? formatDateTime(appointment.when_iso) : 'cita confirmada'}
     </span>
   );
@@ -47,10 +47,10 @@ function RequestHeading({
   return (
     <div className="min-w-0">
       <RequestStatusBadges request={request} appointment={appointment} />
-      <h1 className="mt-2 text-2xl font-bold tracking-tight">
+      <h1 className="mt-2.5 text-[28px] font-medium leading-9 tracking-[-0.025em] text-ink sm:text-[32px] sm:leading-10">
         {patientName ? `Caso de ${patientName}` : 'Solicitud de derivación'}
       </h1>
-      <p className="mt-0.5 text-[12px] text-base-content/45">
+      <p className="mt-1 text-[12px] leading-[18px] text-caption">
         {specialist ? `${specialist.name} · ${specialist.specialty} · ${specialist.zone}` : ''}
         {specialist && request.created_at ? ' · ' : ''}
         {request.created_at ? `creada ${relativeTime(request.created_at)}` : `id ${request.id}`}
@@ -63,11 +63,11 @@ function CancelRequestButton({ cancel }: { cancel: ReturnType<typeof useCancelRe
   return (
     <button
       type="button"
-      className="btn btn-outline btn-error btn-sm gap-1.5"
+      className="inline-flex items-center gap-1.5 rounded-full border border-crit/25 bg-crit-soft/70 px-3 py-1.5 text-[12px] font-medium text-crit transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-crit-soft disabled:opacity-60"
       onClick={() => cancel.mutate()}
       disabled={cancel.isPending}
     >
-      {cancel.isPending ? <Spinner size="xs" /> : <XCircle className="h-4 w-4" />}
+      {cancel.isPending ? <Spinner size="xs" /> : <XCircle className="h-3.5 w-3.5" />}
       Cancelar
     </button>
   );
@@ -86,8 +86,11 @@ function RequestHeaderActions({
   return (
     <div className="flex flex-wrap items-center gap-2">
       {request.patient_id && !specialistRole ? (
-        <Link to={`/patients/${request.patient_id}`} className="btn btn-ghost btn-sm gap-1.5">
-          <ClipboardList className="h-4 w-4" />
+        <Link
+          to={`/patients/${request.patient_id}`}
+          className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-white/70 px-3 py-1.5 text-[12px] font-medium text-para transition duration-200 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-700"
+        >
+          <ClipboardList className="h-3.5 w-3.5" />
           Ficha completa
         </Link>
       ) : null}
@@ -98,14 +101,16 @@ function RequestHeaderActions({
 
 function RequestReasonGrid({ request }: { request: RequestRecord }) {
   return (
-    <div className="mt-4 grid gap-2 rounded-xl bg-base-200/70 p-3 text-[12px] sm:grid-cols-2">
+    <div className="mx-5 mb-5 grid gap-2 rounded-2xl border border-line bg-white/60 p-3 text-[12px] sm:mx-6 sm:grid-cols-2">
       <p>
         <span className="vl-label block">Motivo de la derivación</span>
-        {request.motivo || '—'}
+        <span className="mt-0.5 block leading-[18px] text-para">{request.motivo || '—'}</span>
       </p>
       <p>
         <span className="vl-label block">Franjas preferidas</span>
-        {request.preferred ? request.preferred : 'Sin preferencia declarada'}
+        <span className="mt-0.5 block leading-[18px] text-para">
+          {request.preferred ? request.preferred : 'Sin preferencia declarada'}
+        </span>
       </p>
     </div>
   );
@@ -121,8 +126,8 @@ export function RequestHeaderCard({
   cancel: ReturnType<typeof useCancelRequest>;
 }) {
   return (
-    <header className="vl-card p-5">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <header className="glass-strong overflow-hidden rounded-panel">
+      <div className="flex flex-wrap items-start justify-between gap-3 px-5 pb-4 pt-5 sm:px-6">
         <RequestHeading data={data} appointment={appointment} />
         <RequestHeaderActions request={data.request} cancel={cancel} />
       </div>
@@ -134,8 +139,11 @@ export function RequestHeaderCard({
 export function ActionErrorBanner({ error }: { error: Error | null }) {
   if (!error) return null;
   return (
-    <div className="alert alert-error flex items-start gap-3 text-left text-sm" role="alert">
-      <AlertTriangle className="h-4 w-4 shrink-0" />
+    <div
+      className="flex items-start gap-2.5 rounded-2xl border border-crit/25 bg-crit-soft px-4 py-3 text-[13px] leading-5 text-crit"
+      role="alert"
+    >
+      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
       <span>{error.message}</span>
     </div>
   );

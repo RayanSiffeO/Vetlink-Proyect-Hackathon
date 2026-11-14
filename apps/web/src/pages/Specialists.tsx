@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, CalendarClock, MapPin, Search, Stethoscope, Tag, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarClock, MapPin, Search, Stethoscope, Tag, UserRound } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { EmptyState, ErrorState } from '../components/EmptyState';
 import { LoadingCards } from '../components/Loading';
 import { CardGrid } from '../components/CardGrid';
-import { PageTitle } from '../components/PageHeader';
+import { PageHeader } from '../components/PageHeader';
 import { Spinner } from '../components/Spinner';
 import { useSpecialists } from '../api/hooks';
 import type { Specialist } from '../api/types';
@@ -56,13 +56,13 @@ function useSpecialistFilters(): SpecialistFilters {
 function SearchField({ field }: { field: SearchFieldModel }) {
   const Icon = field.icon;
   return (
-    <label className="flex-1">
+    <label className="block min-w-0 flex-1">
       <span className="vl-label">{field.label}</span>
-      <div className="relative mt-1">
-        <Icon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-base-content/35" />
+      <div className="relative mt-1.5">
+        <Icon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-indigo-300" />
         <input
           type="text"
-          className="input input-bordered input-sm h-10 w-full pl-9"
+          className="h-10 w-full rounded-btn border border-line bg-white/80 pl-9 pr-3 text-[12.5px] text-ink transition duration-200 ease-smooth placeholder:text-caption/60 focus:border-indigo-300"
           placeholder={field.placeholder}
           value={field.value}
           onChange={(event) => field.onChange(event.target.value)}
@@ -109,12 +109,20 @@ function SearchButtons({
 }) {
   return (
     <div className="flex gap-2">
-      <button type="submit" className="btn btn-primary btn-sm h-10 gap-1.5" disabled={isFetching}>
-        {isFetching ? <Spinner size="xs" /> : <Search className="h-4 w-4" />}
+      <button
+        type="submit"
+        className="inline-flex h-10 items-center gap-1.5 rounded-full bg-indigo px-4 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700 disabled:opacity-60"
+        disabled={isFetching}
+      >
+        {isFetching ? <Spinner size="xs" /> : <Search className="h-3.5 w-3.5" />}
         Buscar
       </button>
       {hasFilters ? (
-        <button type="button" className="btn btn-ghost btn-sm h-10" onClick={onClear}>
+        <button
+          type="button"
+          className="inline-flex h-10 items-center rounded-full border border-line bg-white/70 px-3 text-[12px] font-medium text-para transition duration-200 ease-smooth hover:-translate-y-px hover:border-indigo-300 hover:text-indigo-700"
+          onClick={onClear}
+        >
           Limpiar
         </button>
       ) : null}
@@ -136,7 +144,10 @@ function SpecialistSearchForm({
     actions.apply(draft);
   };
   return (
-    <form className="vl-card flex flex-col gap-3 p-4 sm:flex-row sm:items-end" onSubmit={submit}>
+    <form
+      className="glass flex flex-col gap-3 rounded-panel p-4 sm:flex-row sm:items-end"
+      onSubmit={submit}
+    >
       <SearchField field={specialtyField(draft, onChange)} />
       <SearchField field={zoneField(draft, onChange)} />
       <SearchButtons
@@ -157,21 +168,24 @@ function SpecialistSuggestions({
 }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-[11px] font-semibold uppercase tracking-wide text-base-content/40">
-        Sugerencias
-      </span>
-      {SUGGESTIONS.map((suggestion) => (
-        <button
-          key={suggestion}
-          type="button"
-          className={`btn btn-xs ${
-            selected === suggestion ? 'btn-secondary' : 'btn-ghost border border-base-300'
-          }`}
-          onClick={() => onSelect(suggestion)}
-        >
-          {suggestion}
-        </button>
-      ))}
+      <span className="vl-section-title">Sugerencias</span>
+      {SUGGESTIONS.map((suggestion) => {
+        const active = selected === suggestion;
+        return (
+          <button
+            key={suggestion}
+            type="button"
+            className={`rounded-full border px-3 py-1.5 text-[11px] font-medium leading-4 transition duration-200 ease-smooth hover:-translate-y-px ${
+              active
+                ? 'border-indigo bg-indigo text-white shadow-lift'
+                : 'border-line bg-white/70 text-para hover:border-indigo-300 hover:text-indigo-700'
+            }`}
+            onClick={() => onSelect(suggestion)}
+          >
+            {suggestion}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -187,13 +201,18 @@ function SpecialistsResultsHeader({
 }) {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-base-content/55">
+      <h2 className="text-[14px] font-medium leading-5 text-ink">
         {count} {count === 1 ? 'resultado' : 'resultados'}
-        {hasFilters ? ' con los filtros actuales' : ''}
+        {hasFilters ? (
+          <span className="font-normal text-caption"> con los filtros actuales</span>
+        ) : null}
       </h2>
       {patientId ? (
-        <Link to={`/patients/${patientId}`} className="btn btn-ghost btn-xs gap-1.5">
-          <ArrowLeft className="h-3.5 w-3.5" />
+        <Link
+          to={`/patients/${patientId}`}
+          className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white/70 px-3 py-1.5 text-[11px] font-medium text-para transition duration-200 ease-smooth hover:-translate-y-px hover:border-indigo-300 hover:text-indigo-700"
+        >
+          <ArrowLeft className="h-3 w-3" />
           Volver a la ficha del paciente
         </Link>
       ) : null}
@@ -204,21 +223,23 @@ function SpecialistsResultsHeader({
 function SpecialistIdentity({ specialist }: { specialist: Specialist }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-secondary/10 text-sm font-bold text-secondary">
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-indigo-50 text-[15px] font-medium tracking-tight text-indigo-700 ring-1 ring-inset ring-indigo-100">
         {initials(specialist.name)}
       </span>
       <div className="min-w-0 flex-1">
-        <h3 className="truncate text-base font-semibold">{specialist.name}</h3>
-        <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-base-content/55">
-          <span className="badge badge-sm badge-secondary badge-outline gap-1">
-            <Stethoscope className="h-3 w-3" />
+        <h3 className="truncate text-[16.5px] font-medium leading-6 tracking-[-0.01em] text-ink">
+          {specialist.name}
+        </h3>
+        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span className="inline-flex items-center gap-1 rounded-full border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-[10.5px] font-medium leading-4 text-indigo-700">
+            <Stethoscope className="h-3 w-3" aria-hidden="true" />
             {specialist.specialty}
           </span>
-          <span className="inline-flex items-center gap-1">
-            <MapPin className="h-3 w-3" />
+          <span className="inline-flex items-center gap-1 text-[11.5px] leading-4 text-caption">
+            <MapPin className="h-3 w-3" aria-hidden="true" />
             {specialist.zone}
           </span>
-        </p>
+        </div>
       </div>
     </div>
   );
@@ -226,23 +247,23 @@ function SpecialistIdentity({ specialist }: { specialist: Specialist }) {
 
 function SpecialistBio({ bio }: { bio?: string | null }) {
   if (!bio) return null;
-  return <p className="line-clamp-2 text-[13px] leading-snug text-base-content/60">{bio}</p>;
+  return <p className="line-clamp-2 text-[12.5px] leading-[18px] text-para">{bio}</p>;
 }
 
 function SpecialistMetrics({ specialist }: { specialist: Specialist }) {
   return (
-    <dl className="mt-auto grid grid-cols-2 gap-2 border-t border-base-300/60 pt-3 text-[12px]">
-      <div>
+    <dl className="mt-auto grid grid-cols-2 gap-2">
+      <div className="vl-metric min-w-0">
         <dt className="vl-label flex items-center gap-1">
-          <Tag className="h-3 w-3" /> Desde
+          <Tag className="h-3 w-3" aria-hidden="true" /> Desde
         </dt>
-        <dd className="vl-value">{formatPrice(specialist.price_from)}</dd>
+        <dd className="vl-value mt-0.5 truncate">{formatPrice(specialist.price_from)}</dd>
       </div>
-      <div>
+      <div className="vl-metric min-w-0">
         <dt className="vl-label flex items-center gap-1">
-          <CalendarClock className="h-3 w-3" /> Próximo hueco
+          <CalendarClock className="h-3 w-3" aria-hidden="true" /> Próximo hueco
         </dt>
-        <dd className="vl-value truncate">
+        <dd className="vl-value mt-0.5 truncate">
           {specialist.next_slot ? relativeTime(specialist.next_slot) : 'Sin hueco'}
         </dd>
       </div>
@@ -254,15 +275,16 @@ function SpecialistCard({ specialist }: { specialist: Specialist }) {
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get('patient_id') ?? '';
   return (
-    <article className="vl-card flex flex-col gap-3 p-4 transition-shadow hover:shadow-card">
+    <article className="group flex flex-col gap-3.5 rounded-card border border-line bg-white/70 p-4 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-100 hover:bg-white/90 hover:shadow-card">
       <SpecialistIdentity specialist={specialist} />
       <SpecialistBio bio={specialist.bio} />
       <SpecialistMetrics specialist={specialist} />
       <Link
         to={specialistProfileHref(specialist.id, patientId)}
-        className="btn btn-primary btn-sm w-full gap-1.5"
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:bg-indigo-700"
       >
         Ver perfil y disponibilidad
+        <ArrowRight className="h-3.5 w-3.5 transition duration-200 ease-smooth group-hover:translate-x-0.5" />
       </Link>
     </article>
   );
@@ -350,7 +372,7 @@ function SpecialistsFooter({ query }: { query: ReturnType<typeof useSpecialists>
   if (!query.data || specialists.length === 0) return null;
   const withZone = specialists.map((item) => item.zone).filter(Boolean).length;
   return (
-    <p className="text-center text-[11px] text-base-content/35">
+    <p className="text-center text-[11px] text-caption/80">
       {withZone > 0
         ? 'Tarifas orientativas «desde» · disponibilidad actualizada en tiempo real'
         : formatDateTime(new Date().toISOString())}
@@ -364,21 +386,29 @@ export function Specialists() {
   const filters = useSpecialistFilters();
   const query = useSpecialists(filters.applied.specialty, filters.applied.zone);
   const hasFilters = Boolean(filters.applied.specialty || filters.applied.zone);
+  const count = query.data?.specialists?.length ?? 0;
 
   return (
     <div className="space-y-6">
-      <header>
-        <PageTitle
-          heading={{
-            eyebrow: 'VetNetwork · marketplace',
-            title: 'Especialistas',
-            description:
-              'Encuentra el especialista que necesita el caso: especialidad, zona, tarifa y próximo hueco.',
-            icon: Stethoscope,
-          }}
-        />
-      </header>
-      <SpecialistsToolbar filters={filters} query={query} patientId={patientId} />
+      <PageHeader
+        heading={{
+          eyebrow: 'VetNetwork · marketplace',
+          title: 'Especialistas',
+          description:
+            'Encuentra el especialista que necesita el caso: especialidad, zona, tarifa y próximo hueco.',
+          icon: Stethoscope,
+        }}
+      >
+        <div className="min-w-[92px] rounded-2xl border border-line bg-mist/75 px-3 py-1.5 text-center">
+          <p className="text-[20px] font-medium leading-6 tracking-[-0.02em] text-indigo-700">
+            {count}
+          </p>
+          <p className="vl-label mt-0.5">{count === 1 ? 'especialista' : 'especialistas'}</p>
+        </div>
+      </PageHeader>
+      <div className="space-y-4">
+        <SpecialistsToolbar filters={filters} query={query} patientId={patientId} />
+      </div>
       <SpecialistsBody
         query={query}
         hasFilters={hasFilters}

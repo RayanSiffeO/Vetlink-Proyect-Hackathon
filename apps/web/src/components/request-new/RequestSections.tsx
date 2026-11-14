@@ -4,6 +4,7 @@ import {
   ShieldCheck,
   UserRound,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { URGENCY_OPTIONS, usePatients, useSpecialists } from '../../api/hooks';
 import type { ShareLevel, Urgency } from '../../api/types';
 import {
@@ -23,15 +24,24 @@ interface SectionProps {
   onUpdate: (patch: RequestFormPatch) => void;
 }
 
+function SectionHeading({ icon, title }: { icon: LucideIcon; title: string }) {
+  const Icon = icon;
+  return (
+    <h2 className="flex items-center gap-2.5 text-[15px] font-medium leading-6 text-ink">
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100">
+        <Icon className="h-4 w-4" aria-hidden="true" />
+      </span>
+      {title}
+    </h2>
+  );
+}
+
 export function PatientSpecialistSection({ form, onUpdate }: SectionProps) {
   const patientsQuery = usePatients();
   const specialistsQuery = useSpecialists('', '');
   return (
-    <section className="vl-card space-y-4 p-5">
-      <h2 className="flex items-center gap-2 text-sm font-semibold">
-        <UserRound className="h-4 w-4 text-secondary" />
-        Paciente y especialista
-      </h2>
+    <section className="glass space-y-4 rounded-panel p-5">
+      <SectionHeading icon={UserRound} title="Paciente y especialista" />
       <PatientField
         value={form.patientId}
         onChange={(patientId) => onUpdate({ patientId })}
@@ -59,7 +69,7 @@ function MotivoField({
     <label className="block">
       <span className="vl-label">Motivo / observaciones</span>
       <textarea
-        className={`textarea textarea-bordered mt-1 min-h-[104px] w-full text-sm ${
+        className={`textarea textarea-bordered mt-1 min-h-[104px] w-full rounded-xl border-line bg-white/80 text-[12.5px] leading-[19px] ${
           error ? 'textarea-error' : ''
         }`}
         placeholder="Ej.: cojera intermitente en miembro posterior derecho de 3 semanas de evolución, sin respuesta a analgesia."
@@ -67,8 +77,8 @@ function MotivoField({
         onChange={(event) => onChange(event.target.value)}
         maxLength={MOTIVO_MAX_LENGTH}
       />
-      <span className="mt-1 flex items-center justify-between text-[11px] text-base-content/40">
-        <span>{error ?? `${value.length}/${MOTIVO_MAX_LENGTH} caracteres`}</span>
+      <span className="mt-1 flex items-center justify-between gap-2 text-[11px] leading-4 text-caption">
+        <span className={error ? 'text-crit' : ''}>{error ?? `${value.length}/${MOTIVO_MAX_LENGTH} caracteres`}</span>
         <span>Se comparte con el especialista</span>
       </span>
     </label>
@@ -86,24 +96,24 @@ function UrgencyOptionCard({
 }) {
   return (
     <label
-      className={`cursor-pointer rounded-xl border px-3 py-2 transition-colors ${
-        selected ? 'border-secondary bg-secondary/5' : 'border-base-300 hover:border-secondary/40'
+      className={`cursor-pointer rounded-xl border px-3 py-2.5 transition duration-200 ease-smooth hover:-translate-y-px ${
+        selected
+          ? 'border-indigo bg-indigo-50/80 ring-1 ring-inset ring-indigo-100'
+          : 'border-line bg-white/55 hover:border-indigo-300'
       }`}
     >
-      <span className="flex items-center gap-2 text-sm font-medium">
+      <span className="flex items-center gap-2 text-[12.5px] font-medium leading-4 text-ink">
         <input
           type="radio"
           name="urgencia"
-          className="radio radio-xs radio-secondary"
+          className="radio radio-xs radio-primary"
           value={option.value}
           checked={selected}
           onChange={onSelect}
         />
         {option.label}
       </span>
-      <span className="mt-0.5 block text-[11px] leading-snug text-base-content/45">
-        {option.hint}
-      </span>
+      <span className="mt-1 block text-[11px] leading-[16px] text-caption">{option.hint}</span>
     </label>
   );
 }
@@ -134,11 +144,8 @@ function UrgencyPicker({
 
 export function ReasonSection({ form, onUpdate }: SectionProps) {
   return (
-    <section className="vl-card space-y-4 p-5">
-      <h2 className="flex items-center gap-2 text-sm font-semibold">
-        <AlertCircle className="h-4 w-4 text-secondary" />
-        Motivo de la derivación
-      </h2>
+    <section className="glass space-y-4 rounded-panel p-5">
+      <SectionHeading icon={AlertCircle} title="Motivo de la derivación" />
       <MotivoField
         value={form.motivo}
         error={motivoValidationError(form)}
@@ -160,11 +167,13 @@ function ShareLevelOption({
 }) {
   return (
     <label
-      className={`cursor-pointer rounded-xl border px-3 py-2 transition-colors ${
-        selected ? 'border-primary bg-primary/5' : 'border-base-300 hover:border-primary/40'
+      className={`cursor-pointer rounded-xl border px-3 py-2.5 transition duration-200 ease-smooth hover:-translate-y-px ${
+        selected
+          ? 'border-indigo bg-indigo-50/80 ring-1 ring-inset ring-indigo-100'
+          : 'border-line bg-white/55 hover:border-indigo-300'
       }`}
     >
-      <span className="flex items-center gap-2 text-sm font-medium">
+      <span className="flex items-center gap-2 text-[12.5px] font-medium leading-4 text-ink">
         <input
           type="radio"
           name="share_level"
@@ -175,7 +184,7 @@ function ShareLevelOption({
         />
         {shareLevelLabel(level)}
       </span>
-      <span className="mt-0.5 block text-[11px] leading-snug text-base-content/45">
+      <span className="mt-1 block text-[11px] leading-[16px] text-caption">
         {shareLevelHint(level)}
       </span>
     </label>
@@ -190,11 +199,8 @@ export function ShareLevelSection({
   onChange: (value: ShareLevel) => void;
 }) {
   return (
-    <section className="vl-card space-y-3 p-5">
-      <h2 className="flex items-center gap-2 text-sm font-semibold">
-        <ShieldCheck className="h-4 w-4 text-secondary" />
-        Nivel de compartición
-      </h2>
+    <section className="glass space-y-3 rounded-panel p-5">
+      <SectionHeading icon={ShieldCheck} title="Nivel de compartición" />
       <div className="grid gap-2 sm:grid-cols-2">
         {SHARE_LEVELS.map((level) => (
           <ShareLevelOption
@@ -211,7 +217,7 @@ export function ShareLevelSection({
 
 function PresetSlotNote({ slot }: { slot: string }) {
   return (
-    <p className="rounded-lg bg-secondary/10 px-2.5 py-1.5 text-[11px] text-secondary">
+    <p className="rounded-xl border border-indigo-100 bg-indigo-50 px-2.5 py-1.5 text-[11px] leading-4 text-indigo-700">
       Franja del especialista: {new Date(slot).toLocaleString('es-ES')}
     </p>
   );
@@ -227,23 +233,20 @@ export function PreferredSlotsSection({
   onChange: (value: string) => void;
 }) {
   return (
-    <section className="vl-card space-y-3 p-5">
-      <h2 className="flex items-center gap-2 text-sm font-semibold">
-        <CalendarClock className="h-4 w-4 text-secondary" />
-        Franjas preferidas
-      </h2>
+    <section className="glass space-y-3 rounded-panel p-5">
+      <SectionHeading icon={CalendarClock} title="Franjas preferidas" />
       {presetSlot ? <PresetSlotNote slot={presetSlot} /> : null}
       <label className="block">
         <span className="vl-label">Fechas o franjas (separadas por comas)</span>
         <input
           type="text"
-          className="input input-bordered input-sm mt-1 h-10 w-full"
+          className="input input-bordered input-sm mt-1 h-10 w-full rounded-btn border-line bg-white/80 text-[12.5px]"
           placeholder="Ej.: martes tarde, jueves mañana"
           value={value}
           onChange={(event) => onChange(event.target.value)}
         />
       </label>
-      <p className="text-[11px] leading-snug text-base-content/45">
+      <p className="text-[11px] leading-[16px] text-caption">
         Opcional. El especialista confirmará una franja concreta al aceptar la solicitud.
       </p>
     </section>
