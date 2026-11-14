@@ -173,7 +173,7 @@ export function Nav() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[linear-gradient(180deg,rgba(240,237,230,0.92)_0%,rgba(240,237,230,0.58)_60%,rgba(240,237,230,0)_100%)] px-3 pb-1 pt-3 sm:px-6 sm:pt-4">
+    <header className="sticky top-0 z-40 bg-[linear-gradient(180deg,rgba(251,246,236,0.92)_0%,rgba(251,246,236,0.58)_60%,rgba(251,246,236,0)_100%)] px-3 pb-1 pt-3 sm:px-6 sm:pt-4">
       <div className="glass mx-auto w-full max-w-6xl rounded-[20px] px-3 py-2 sm:rounded-[22px] sm:px-4">
         <div className="flex items-center gap-3">
           <NavBrand home={homeFor(user)} />
