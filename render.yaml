@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: vetlink
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: frankfurt
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: VETLINK_SECRET_KEY
+        generateValue: true

@@ -1,7 +1,7 @@
 # scripts\e2e-api.ps1 — E2E de API completo (flujo clínica -> especialista)
 # Uso:  powershell -ExecutionPolicy Bypass -File scripts\e2e-api.ps1 [-Port 8040]
-# Genera reporte JSON en releases\cp2\e2e\api-report.json y devuelve exit 0 si todo pasa.
-param([int]$Port = 8040, [string]$Report = "releases\cp2\e2e\api-report.json")
+# Genera reporte JSON en artifacts\\e2e\\api-report.json y devuelve exit 0 si todo pasa.
+param([int]$Port = 8040, [string]$Report = "artifacts\\e2e\\api-report.json")
 
 $ErrorActionPreference = "Stop"
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
@@ -159,4 +159,5 @@ finally {
     Write-Host ("reporte: {0}" -f $reportPath)
     exit ([int]($failed -gt 0))
 }
+
 

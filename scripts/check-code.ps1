@@ -1,5 +1,5 @@
 # scripts\check-code.ps1 — barrido de clean code: comentarios, docstrings y TODOs
-# Regla del equipo (PLAYBOOK §7.1): cero comentarios explicativos y código autoexplicativo.
+# Cero comentarios explicativos y código autoexplicativo.
 # Uso:  powershell -ExecutionPolicy Bypass -File scripts\check-code.ps1
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 
@@ -45,3 +45,4 @@ if ($violations.Count -eq 0) {
 $violations | Select-Object -First 40 | ForEach-Object { Write-Host $_ -ForegroundColor Yellow }
 Write-Host "check-code FAIL: $($violations.Count) violaciones" -ForegroundColor Red
 exit 1
+
