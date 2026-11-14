@@ -1,0 +1,8 @@
+# `apps/web` se instala como proyecto independiente (la API se gestiona con uv).
+# En pnpm 11 la allowlist de scripts de instalación vive aquí: esbuild (Vite)
+# necesita su postinstall para funcionar, y sin esta configuración `pnpm install`
+# termina con ERR_PNPM_IGNORED_BUILDS (los paquetes sí quedan instalados).
+packages: []
+onlyBuiltDependencies:
+  - esbuild
+strictDepBuilds: false

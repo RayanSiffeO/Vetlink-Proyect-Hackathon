@@ -25,7 +25,7 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 | Diagramas navegables (`docs/diagramas/`) | ✅ 4 HTML validados |
 | Datos de ejemplo (3 pacientes, 3 formatos + CSV de robustez) | ✅ |
 | Modelo canónico + reglas de normalización | ✅ 3 registros JSON canónicos validados (1.785 campos, 22 alertas con evidencia) |
-| Aplicación (React + FastAPI + SQLite) | 🚧 en construcción |
+| Aplicación (React + FastAPI + SQLite) | 🟡 **H+0 funcional**: login demo, seed de los 3 pacientes, import cache, ficha con alertas, marketplace, solicitud, briefing con niveles de acceso y agenda |
 
 ## Documentación
 
@@ -78,23 +78,34 @@ Joniha/
 - **Demo:** **un solo proceso** — FastAPI sirve la SPA compilada y la API (`/api`), sin CORS ni servicios externos.
 - **IA:** extracción estructurada con validación de esquema y provenance; en la demo, extractores deterministas (sin LLM). El veterinario confirma.
 
-## Cómo arrancar
-
-> Se completará cuando el esqueleto de la aplicación esté creado (ver `docs/05-arquitectura-mvp.md`).
+## Cómo arrancar (H+0)
 
 ```powershell
-# Desarrollo (2 terminales)
-cd services/api;  uv run uvicorn app.main:app --reload --port 8000   # API + SQLite + seed
-cd apps/web;      pnpm dev                                           # Vite (proxy /api → 8000)
+# 1) Backend, una sola vez (crear venv e instalar dependencias)
+C:\Users\Usuario\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe -m venv services/api/.venv
+services/api/.venv\Scripts\python.exe -m pip install -r services/api/requirements.txt
 
-# Demo "un proceso" (la que se enseña)
-cd apps/web;      pnpm build            # genera apps/web/dist
-cd services/api;  uv run uvicorn app.main:app --port 8000
-# → http://localhost:8000 sirve la SPA y /api
+# 2) API + SQLite + seed (terminal 1)
+cd services/api; .venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+#    → http://127.0.0.1:8000/api/health  ·  Swagger: http://127.0.0.1:8000/docs
 
-# Reset de datos de demo
-curl -X POST http://localhost:8000/api/demo/reset
+# 3) Frontend en desarrollo (terminal 2)
+cd apps/web; pnpm install; pnpm dev
+#    → http://127.0.0.1:5173  (proxy /api → :8000)
+
+# 4) Demo "un proceso" (la que se enseña el sábado)
+cd apps/web; pnpm build
+cd services/api; .venv\Scripts\python.exe -m uvicorn app.main:app --port 8000
+#    → http://127.0.0.1:8000 sirve la SPA y /api, sin CORS
+
+# 5) Reset de datos demo (botón en la Nav una vez logueado, o)
+curl.exe -b cookies.txt -X POST http://127.0.0.1:8000/api/demo/reset
 ```
+
+- **Login demo:** dos botones en la app (Laura/Clínica y Marc/Especialista), sin password.
+- **Datos:** SQLite en `data/vetlink.db` (gitignored); se genera y reseeda al arrancar.
+- **Contrato:** `docs/contracts/openapi-v1.json` (23 endpoints) y Swagger en `/docs`.
+- **GitHub:** congelado por indicación del equipo; todo se guarda en local.
 
 ## Datos de ejemplo
 

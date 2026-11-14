@@ -18,6 +18,13 @@ __pycache__/
 *.key
 *.pem
 
+# Datos de ejecución de la demo (generados al arrancar)
+data/vetlink.db
+data/vetlink.db-*
+data/uploads/
+*.sqlite
+*.sqlite3
+
 # Artefactos de herramientas
 .archify/
 coverage/

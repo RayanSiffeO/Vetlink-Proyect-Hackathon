@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-base-200 text-base-content antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Foco visible y accesible en toda la app. */
+  :focus-visible {
+    outline: 2px solid #1e8e82;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Tarjeta base VetLink: rounded-2xl + sombra suave. */
+  .vl-card {
+    @apply rounded-2xl border border-base-300/70 bg-base-100 shadow-soft;
+  }
+
+  .vl-section-title {
+    @apply text-xs font-semibold uppercase tracking-wider text-base-content/50;
+  }
+
+  .vl-metric {
+    @apply rounded-xl bg-base-200/80 px-3 py-2;
+  }
+
+  .vl-label {
+    @apply text-[11px] font-semibold uppercase tracking-wide text-base-content/45;
+  }
+
+  .vl-value {
+    @apply text-sm font-medium text-base-content;
+  }
+}
