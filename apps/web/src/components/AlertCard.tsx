@@ -32,13 +32,13 @@ const ALERT_TONES: Record<string, AlertTone> = {
     icon: 'bg-warn text-white',
     label: 'text-warn',
     action: 'bg-warn-soft/70',
-    surface: 'alert-surface-high',
+    surface: 'border-t-2 border-t-warn/40 bg-white/80 hover:bg-white',
   },
   MEDIUM: {
     icon: 'bg-infoblue text-white',
     label: 'text-infoblue',
     action: 'bg-infoblue-soft/70',
-    surface: 'alert-surface-medium',
+    surface: 'border-t-2 border-t-infoblue/40 bg-white/80 hover:bg-white',
   },
 };
 
@@ -46,7 +46,7 @@ const FALLBACK_TONE: AlertTone = {
   icon: 'bg-ink text-white',
   label: 'text-caption',
   action: 'bg-mist',
-  surface: 'bg-white',
+  surface: 'border-t-2 border-t-line-strong bg-white/80 hover:bg-white',
 };
 
 function SeverityIcon({ severity }: { severity: string }) {
