@@ -120,6 +120,7 @@ La ficha, las alertas y la navegación están preparadas para móvil:
 ## Funcionalidades
 
 - **Importación multi-formato:** Word, Excel, JSON y CSV; los cuatro ejemplos del reto se cargan desde la caché de importación.
+- **Variantes de Word, Excel y JSON:** mapeadores genéricos que extraen paciente, visitas, alergias y datos clínicos, y marcan la ficha para revisión.
 - **CSV genérico:** las variantes de CSV se mapean por reglas y sinónimos, con conversión de fechas y pesos (kg/lb) y marca de revisión humana.
 - **Registro canónico:** paciente, tutores, encuentros, problemas, alertas, vacunas, tratamientos y procedencia.
 - **Alertas clínicas:** severidad ordenada (crítica → alta → media → baja → info), evidencia y acción recomendada.
@@ -141,7 +142,7 @@ En `data/samples/` están las historias anonimizadas del reto:
 | `historial.json` | Kira | API VetNexo Cloud |
 | `export_clinica_norte.csv` | Nala | Export de otra clínica (4º formato) |
 
-> Los cuatro ficheros exactos se resuelven por caché. Las **variantes de CSV** se procesan con el mapeador heurístico y quedan marcadas para revisión humana; los adaptadores genéricos de Word, Excel y JSON quedan como siguiente paso.
+> Los cuatro ficheros exactos se resuelven por caché. Las **variantes de CSV, JSON, Excel y Word** se procesan con mapeadores heurísticos y quedan marcadas para revisión humana.
 >
 > Prueba rápida del mapeador: sube `export_clinica_norte.csv` o cambia sus cabeceras (`nombre` → `nombre_completo`, `peso_lb` → `weight_lb`) y vuelve a subirlo. Se crea o actualiza **Nala** y queda en revisión.
 
@@ -226,3 +227,4 @@ Todos los datos son **ficticios y anonimizados**. El prototipo aplica mínimo pr
 Equipo **Joniha** · Jose Miguel (producto, frontend y demo) y Rayan (backend y datos).
 
 Reto 3 de la VIII Hackathon Boehringer Ingelheim España.
+

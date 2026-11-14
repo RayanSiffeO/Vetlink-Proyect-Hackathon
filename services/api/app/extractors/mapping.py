@@ -48,6 +48,7 @@ ALIASES: dict[str, Column] = {
     "weight_lb": Column("weight_lb", "patient"),
     "id_paciente": Column("external_id", "patient"),
     "patient_id": Column("external_id", "patient"),
+    "external_id": Column("external_id", "patient"),
     "id_mascota": Column("external_id", "patient"),
     "tutor": Column("owner", "owner"),
     "propietario": Column("owner", "owner"),
