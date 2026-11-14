@@ -7,14 +7,14 @@ import { identityConfidencePercent } from '../../lib/patients';
 function AlertsBadge({ count }: { count: number }) {
   if (count > 0) {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-crit/20 bg-crit-soft px-2 py-0.5 text-[10.5px] font-medium leading-4 text-crit">
+      <span className="inline-flex items-center gap-1 rounded-full border border-crit/15 bg-white/60 px-2 py-0.5 text-[10.5px] font-medium leading-4 text-crit">
         <AlertTriangle className="h-3 w-3" aria-hidden="true" />
         {count} {count === 1 ? 'alerta' : 'alertas'}
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-ok/20 bg-ok-soft px-2 py-0.5 text-[10.5px] font-medium leading-4 text-ok">
+    <span className="inline-flex items-center gap-1 rounded-full border border-ok/15 bg-white/60 px-2 py-0.5 text-[10.5px] font-medium leading-4 text-ok">
       <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
       Sin alertas
     </span>
@@ -24,7 +24,7 @@ function AlertsBadge({ count }: { count: number }) {
 function PatientIdentity({ patient }: { patient: PatientSummary }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[linear-gradient(135deg,#C46B4D_0%,#9E4C36_100%)] text-[15px] font-medium tracking-tight text-white shadow-lift">
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.95),rgba(246,221,196,0.62))] text-[15px] font-medium tracking-tight text-indigo-700 shadow-soft">
         {initials(patient.name)}
       </span>
       <div className="min-w-0 flex-1">
@@ -52,7 +52,7 @@ function PatientMetric({
   valueClassName?: string;
 }) {
   return (
-    <div className="vl-metric min-w-0">
+    <div className="min-w-0 rounded-xl border border-white/55 bg-white/40 px-3 py-2">
       <dt className="vl-label">{label}</dt>
       <dd className={`mt-0.5 ${valueClassName}`}>{value}</dd>
     </div>
@@ -96,7 +96,7 @@ function PatientFooter({ patient }: { patient: PatientSummary }) {
       </div>
       <Link
         to={`/patients/${patient.id}`}
-        className="group/cta inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+        className="group/cta inline-flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[11.5px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
       >
         Ver ficha
         <ArrowRight className="h-3.5 w-3.5 transition duration-200 ease-smooth group-hover/cta:translate-x-0.5" />
@@ -107,7 +107,7 @@ function PatientFooter({ patient }: { patient: PatientSummary }) {
 
 export function PatientCard({ patient }: { patient: PatientSummary }) {
   return (
-    <article className="group glass-soft flex flex-col gap-3.5 rounded-card p-4 transition duration-300 ease-smooth hover:-translate-y-0.5 hover:bg-white/65 hover:shadow-card">
+    <article className="group flex flex-col gap-4 rounded-[26px] border border-white/60 bg-white/55 p-5 shadow-soft backdrop-blur-xl transition duration-300 ease-smooth hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-card">
       <PatientIdentity patient={patient} />
       <PatientMetrics patient={patient} />
       <PatientFooter patient={patient} />
