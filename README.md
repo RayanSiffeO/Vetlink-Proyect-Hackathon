@@ -2,6 +2,8 @@
 
 > **Reto 3 — “Menos papeleo, más cuidado: los datos al servicio de la clínica”**
 > VIII Hackathon Boehringer Ingelheim España · 13–15 de noviembre de 2026 · Equipo **Joniha**
+>
+> **Demo online:** [vetlink-production-535cb6a5.up.railway.app](https://vetlink-production-535cb6a5.up.railway.app)
 
 VetLink convierte historias clínicas veterinarias dispersas en **una ficha única y compartible**, conecta a la clínica generalista con el **especialista** que necesita y entrega al especialista un **briefing pre-visita** antes de ver al paciente.
 
