@@ -11,6 +11,8 @@ import type {
   AppointmentsResponse,
   AuditResponse,
   BriefingResponse,
+  CloseRequestPayload,
+  CloseRequestResponse,
   CreateRequestPayload,
   DemoUserId,
   ImportResponse,
@@ -273,6 +275,21 @@ export function useDeclineRequest(id: string | undefined) {
 
 export function useCancelRequest(id: string | undefined) {
   return useRequestTransition<void>(id, 'cancel');
+}
+
+export function useCloseRequest(id: string | undefined) {
+  const queryClient = useQueryClient();
+  return useMutation<CloseRequestResponse, Error, CloseRequestPayload>({
+    mutationFn: (payload) =>
+      request<CloseRequestResponse>(`/requests/${encodeURIComponent(id!)}/close`, {
+        method: 'POST',
+        body: payload,
+      }),
+    onSuccess: (data) => {
+      invalidateRequestData(queryClient, id);
+      queryClient.invalidateQueries({ queryKey: qk.patientRecord(data.patient.id) });
+    },
+  });
 }
 
 export function useAppointments() {

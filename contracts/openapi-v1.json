@@ -1,1 +1,1368 @@
-{"openapi":"3.1.0","info":{"title":"VetLink API","description":"API de VetLink — historia clínica unificada y derivaciones entre clínicas y especialistas. Demo de hackathon: autenticación por cookie firmada, SQLite y briefing determinista (sin LLM).","version":"0.1.0-h0"},"paths":{"/api/health":{"get":{"tags":["health"],"summary":"Estado de la API","operationId":"health_api_health_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Health Api Health Get"}}}}}}},"/api/me":{"get":{"tags":["auth"],"summary":"Usuario de la sesión actual (/api/me)","operationId":"me_api_me_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Me Api Me Get"}}}}}}},"/api/auth/demo":{"post":{"tags":["auth"],"summary":"Login demo (laura | marc)","operationId":"demo_login_api_auth_demo_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DemoLoginIn"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Demo Login Api Auth Demo Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/auth/me":{"get":{"tags":["auth"],"summary":"Usuario de la sesión actual","operationId":"me_api_auth_me_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Me Api Auth Me Get"}}}}}}},"/api/auth/logout":{"post":{"tags":["auth"],"summary":"Cerrar sesión demo","operationId":"logout_api_auth_logout_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Logout Api Auth Logout Post"}}}}}}},"/api/patients":{"get":{"tags":["patients"],"summary":"Listado de pacientes con número de alertas","operationId":"list_patients_api_patients_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response List Patients Api Patients Get"}}}}}}},"/api/patients/{patient_id}/record":{"get":{"tags":["patients"],"summary":"Registro canónico completo + alertas","operationId":"get_record_api_patients__patient_id__record_get","parameters":[{"name":"patient_id","in":"path","required":true,"schema":{"type":"string","title":"Patient Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Get Record Api Patients  Patient Id  Record Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/imports":{"get":{"tags":["imports"],"summary":"Historial de importaciones","operationId":"list_imports_api_imports_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response List Imports Api Imports Get"}}}}}},"post":{"tags":["imports"],"summary":"Subir 1..N ficheros del PMS","operationId":"upload_files_api_imports_post","requestBody":{"content":{"multipart/form-data":{"schema":{"$ref":"#/components/schemas/Body_upload_files_api_imports_post"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Upload Files Api Imports Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/imports/{job_id}":{"get":{"tags":["imports"],"summary":"Estado de una importación","operationId":"get_import_api_imports__job_id__get","parameters":[{"name":"job_id","in":"path","required":true,"schema":{"type":"string","title":"Job Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Get Import Api Imports  Job Id  Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/specialists":{"get":{"tags":["specialists"],"summary":"Buscar especialistas por especialidad y zona","operationId":"list_specialists_api_specialists_get","parameters":[{"name":"specialty","in":"query","required":false,"schema":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Filtro por especialidad","title":"Specialty"},"description":"Filtro por especialidad"},{"name":"zone","in":"query","required":false,"schema":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Filtro por zona","title":"Zone"},"description":"Filtro por zona"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response List Specialists Api Specialists Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/specialists/{specialist_id}":{"get":{"tags":["specialists"],"summary":"Ficha del especialista con slots","operationId":"get_specialist_api_specialists__specialist_id__get","parameters":[{"name":"specialist_id","in":"path","required":true,"schema":{"type":"string","title":"Specialist Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Get Specialist Api Specialists  Specialist Id  Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests":{"get":{"tags":["requests"],"summary":"Solicitudes visibles según rol","operationId":"list_requests_api_requests_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response List Requests Api Requests Get"}}}}}},"post":{"tags":["requests"],"summary":"Crear una derivación","operationId":"create_request_api_requests_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestCreateIn"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Create Request Api Requests Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests/{request_id}":{"get":{"tags":["requests"],"summary":"Detalle de la solicitud","operationId":"get_request_api_requests__request_id__get","parameters":[{"name":"request_id","in":"path","required":true,"schema":{"type":"string","title":"Request Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Get Request Api Requests  Request Id  Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests/{request_id}/summary":{"get":{"tags":["requests"],"summary":"Resumen no identificativo pre/post aceptación","operationId":"get_summary_api_requests__request_id__summary_get","parameters":[{"name":"request_id","in":"path","required":true,"schema":{"type":"string","title":"Request Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Get Summary Api Requests  Request Id  Summary Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests/{request_id}/accept":{"post":{"tags":["requests"],"summary":"Aceptar la derivación (opcionalmente con slot)","operationId":"accept_request_api_requests__request_id__accept_post","parameters":[{"name":"request_id","in":"path","required":true,"schema":{"type":"string","title":"Request Id"}}],"requestBody":{"content":{"application/json":{"schema":{"anyOf":[{"$ref":"#/components/schemas/AcceptIn"},{"type":"null"}],"title":"Payload"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Accept Request Api Requests  Request Id  Accept Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests/{request_id}/decline":{"post":{"tags":["requests"],"summary":"Rechazar la derivación","operationId":"decline_request_api_requests__request_id__decline_post","parameters":[{"name":"request_id","in":"path","required":true,"schema":{"type":"string","title":"Request Id"}}],"requestBody":{"content":{"application/json":{"schema":{"anyOf":[{"$ref":"#/components/schemas/DeclineIn"},{"type":"null"}],"title":"Payload"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Decline Request Api Requests  Request Id  Decline Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests/{request_id}/cancel":{"post":{"tags":["requests"],"summary":"Cancelar la derivación (clínica)","operationId":"cancel_request_api_requests__request_id__cancel_post","parameters":[{"name":"request_id","in":"path","required":true,"schema":{"type":"string","title":"Request Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Cancel Request Api Requests  Request Id  Cancel Post"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests/{request_id}/briefing":{"get":{"tags":["requests"],"summary":"Briefing completo (solo tras aceptar)","operationId":"get_briefing_api_requests__request_id__briefing_get","parameters":[{"name":"request_id","in":"path","required":true,"schema":{"type":"string","title":"Request Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Get Briefing Api Requests  Request Id  Briefing Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/appointments":{"get":{"tags":["appointments"],"summary":"Citas en un rango de fechas","operationId":"list_appointments_api_appointments_get","parameters":[{"name":"from","in":"query","required":false,"schema":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Desde (YYYY-MM-DD)","title":"From"},"description":"Desde (YYYY-MM-DD)"},{"name":"to","in":"query","required":false,"schema":{"anyOf":[{"type":"string"},{"type":"null"}],"description":"Hasta (YYYY-MM-DD)","title":"To"},"description":"Hasta (YYYY-MM-DD)"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response List Appointments Api Appointments Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/requests/{request_id}/audit":{"get":{"tags":["audit"],"summary":"Eventos de auditoría de la solicitud","operationId":"request_audit_api_requests__request_id__audit_get","parameters":[{"name":"request_id","in":"path","required":true,"schema":{"type":"string","title":"Request Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Request Audit Api Requests  Request Id  Audit Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/audit":{"get":{"tags":["audit"],"summary":"Últimos eventos de auditoría","operationId":"global_audit_api_audit_get","parameters":[{"name":"limit","in":"query","required":false,"schema":{"type":"integer","maximum":200,"minimum":1,"description":"Máximo de eventos","default":50,"title":"Limit"},"description":"Máximo de eventos"}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"object","additionalProperties":true,"title":"Response Global Audit Api Audit Get"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/demo/reset":{"post":{"tags":["demo"],"summary":"Borra y reseeda la base de datos demo","operationId":"reset_demo_api_demo_reset_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Reset Demo Api Demo Reset Post"}}}}}}},"/api/demo/state":{"get":{"tags":["demo"],"summary":"Estado del dataset demo","operationId":"demo_state_api_demo_state_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"additionalProperties":true,"type":"object","title":"Response Demo State Api Demo State Get"}}}}}}}},"components":{"schemas":{"AcceptIn":{"properties":{"slot_iso":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Slot Iso","description":"Slot ISO ofrecido por el especialista"}},"type":"object","title":"AcceptIn"},"Body_upload_files_api_imports_post":{"properties":{"files":{"items":{"type":"string","contentMediaType":"application/octet-stream"},"type":"array","title":"Files","description":"Ficheros del PMS (docx, xlsx, json, csv)"}},"type":"object","required":["files"],"title":"Body_upload_files_api_imports_post"},"DeclineIn":{"properties":{"reason":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Reason"}},"type":"object","title":"DeclineIn"},"DemoLoginIn":{"properties":{"user":{"type":"string","title":"User","description":"Usuario demo: laura (clínica) o marc (especialista)"}},"type":"object","required":["user"],"title":"DemoLoginIn"},"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"RequestCreateIn":{"properties":{"patient_id":{"type":"string","title":"Patient Id"},"specialist_id":{"type":"string","title":"Specialist Id"},"motivo":{"type":"string","title":"Motivo","default":""},"urgencia":{"type":"string","enum":["BAJA","MEDIA","ALTA"],"title":"Urgencia","default":"MEDIA"},"share_level":{"type":"string","enum":["CLINICAL","FULL"],"title":"Share Level","default":"CLINICAL"},"preferred":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Preferred"}},"type":"object","required":["patient_id","specialist_id"],"title":"RequestCreateIn"},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"},"input":{"title":"Input"},"ctx":{"type":"object","title":"Context"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VetLink API",
+    "description": "API de VetLink — historia clínica unificada y derivaciones entre clínicas y especialistas. Demo de hackathon: autenticación por cookie firmada, SQLite y briefing determinista (sin LLM).",
+    "version": "0.1.0-h0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Estado de la API",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Api Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Usuario de la sesión actual (/api/me)",
+        "operationId": "me_api_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Me Api Me Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/demo": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login demo (laura | marc)",
+        "operationId": "demo_login_api_auth_demo_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoLoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Demo Login Api Auth Demo Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Usuario de la sesión actual",
+        "operationId": "me_api_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Me Api Auth Me Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Cerrar sesión demo",
+        "operationId": "logout_api_auth_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Logout Api Auth Logout Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patients": {
+      "get": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "Listado de pacientes con número de alertas",
+        "operationId": "list_patients_api_patients_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Patients Api Patients Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patients/{patient_id}/record": {
+      "get": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "Registro canónico completo + alertas",
+        "operationId": "get_record_api_patients__patient_id__record_get",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Patient Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Record Api Patients  Patient Id  Record Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/patients/{patient_id}/record/review": {
+      "patch": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "Confirmar la revisión humana de la ficha",
+        "operationId": "review_record_api_patients__patient_id__record_review_patch",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Patient Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Review Record Api Patients  Patient Id  Record Review Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/imports": {
+      "get": {
+        "tags": [
+          "imports"
+        ],
+        "summary": "Historial de importaciones",
+        "operationId": "list_imports_api_imports_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Imports Api Imports Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "imports"
+        ],
+        "summary": "Subir 1..N ficheros del PMS",
+        "operationId": "upload_files_api_imports_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_files_api_imports_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Upload Files Api Imports Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/imports/{job_id}": {
+      "get": {
+        "tags": [
+          "imports"
+        ],
+        "summary": "Estado de una importación",
+        "operationId": "get_import_api_imports__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Import Api Imports  Job Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/specialists": {
+      "get": {
+        "tags": [
+          "specialists"
+        ],
+        "summary": "Buscar especialistas por especialidad y zona",
+        "operationId": "list_specialists_api_specialists_get",
+        "parameters": [
+          {
+            "name": "specialty",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filtro por especialidad",
+              "title": "Specialty"
+            },
+            "description": "Filtro por especialidad"
+          },
+          {
+            "name": "zone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filtro por zona",
+              "title": "Zone"
+            },
+            "description": "Filtro por zona"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Specialists Api Specialists Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/specialists/{specialist_id}": {
+      "get": {
+        "tags": [
+          "specialists"
+        ],
+        "summary": "Ficha del especialista con slots",
+        "operationId": "get_specialist_api_specialists__specialist_id__get",
+        "parameters": [
+          {
+            "name": "specialist_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Specialist Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Specialist Api Specialists  Specialist Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests": {
+      "get": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Solicitudes visibles según rol",
+        "operationId": "list_requests_api_requests_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Requests Api Requests Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Crear una derivación",
+        "operationId": "create_request_api_requests_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestCreateIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Create Request Api Requests Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}": {
+      "get": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Detalle de la solicitud",
+        "operationId": "get_request_api_requests__request_id__get",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Request Api Requests  Request Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}/summary": {
+      "get": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Resumen no identificativo pre/post aceptación",
+        "operationId": "get_summary_api_requests__request_id__summary_get",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Summary Api Requests  Request Id  Summary Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}/accept": {
+      "post": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Aceptar la derivación (opcionalmente con slot)",
+        "operationId": "accept_request_api_requests__request_id__accept_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AcceptIn"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Accept Request Api Requests  Request Id  Accept Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}/decline": {
+      "post": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Rechazar la derivación",
+        "operationId": "decline_request_api_requests__request_id__decline_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/DeclineIn"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Decline Request Api Requests  Request Id  Decline Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}/cancel": {
+      "post": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Cancelar la derivación (clínica)",
+        "operationId": "cancel_request_api_requests__request_id__cancel_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Cancel Request Api Requests  Request Id  Cancel Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}/close": {
+      "post": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Cerrar la visita y devolver la nota a la ficha clínica",
+        "operationId": "close_request_api_requests__request_id__close_post",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Close Request Api Requests  Request Id  Close Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}/briefing": {
+      "get": {
+        "tags": [
+          "requests"
+        ],
+        "summary": "Briefing completo (solo tras aceptar)",
+        "operationId": "get_briefing_api_requests__request_id__briefing_get",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Briefing Api Requests  Request Id  Briefing Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/appointments": {
+      "get": {
+        "tags": [
+          "appointments"
+        ],
+        "summary": "Citas en un rango de fechas",
+        "operationId": "list_appointments_api_appointments_get",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Desde (YYYY-MM-DD)",
+              "title": "From"
+            },
+            "description": "Desde (YYYY-MM-DD)"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Hasta (YYYY-MM-DD)",
+              "title": "To"
+            },
+            "description": "Hasta (YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Appointments Api Appointments Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/requests/{request_id}/audit": {
+      "get": {
+        "tags": [
+          "audit"
+        ],
+        "summary": "Eventos de auditoría de la solicitud",
+        "operationId": "request_audit_api_requests__request_id__audit_get",
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Request Audit Api Requests  Request Id  Audit Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/audit": {
+      "get": {
+        "tags": [
+          "audit"
+        ],
+        "summary": "Últimos eventos de auditoría",
+        "operationId": "global_audit_api_audit_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "description": "Máximo de eventos",
+              "default": 50,
+              "title": "Limit"
+            },
+            "description": "Máximo de eventos"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Global Audit Api Audit Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/reset": {
+      "post": {
+        "tags": [
+          "demo"
+        ],
+        "summary": "Borra y reseeda la base de datos demo",
+        "operationId": "reset_demo_api_demo_reset_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Reset Demo Api Demo Reset Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/state": {
+      "get": {
+        "tags": [
+          "demo"
+        ],
+        "summary": "Estado del dataset demo",
+        "operationId": "demo_state_api_demo_state_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Demo State Api Demo State Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AcceptIn": {
+        "properties": {
+          "slot_iso": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slot Iso",
+            "description": "Slot ISO ofrecido por el especialista"
+          }
+        },
+        "type": "object",
+        "title": "AcceptIn"
+      },
+      "Body_upload_files_api_imports_post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "contentMediaType": "application/octet-stream"
+            },
+            "type": "array",
+            "title": "Files",
+            "description": "Ficheros del PMS (docx, xlsx, json, csv)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "title": "Body_upload_files_api_imports_post"
+      },
+      "CloseRequest": {
+        "properties": {
+          "note": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 3,
+            "title": "Note",
+            "description": "Nota de la visita del especialista"
+          },
+          "diagnosis": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosis"
+          },
+          "recommendations": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendations"
+          },
+          "next_visit": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Visit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "note"
+        ],
+        "title": "CloseRequest"
+      },
+      "DeclineIn": {
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "title": "DeclineIn"
+      },
+      "DemoLoginIn": {
+        "properties": {
+          "user": {
+            "type": "string",
+            "title": "User",
+            "description": "Usuario demo: laura (clínica) o marc (especialista)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "title": "DemoLoginIn"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "RequestCreateIn": {
+        "properties": {
+          "patient_id": {
+            "type": "string",
+            "title": "Patient Id"
+          },
+          "specialist_id": {
+            "type": "string",
+            "title": "Specialist Id"
+          },
+          "motivo": {
+            "type": "string",
+            "title": "Motivo",
+            "default": ""
+          },
+          "urgencia": {
+            "type": "string",
+            "enum": [
+              "BAJA",
+              "MEDIA",
+              "ALTA"
+            ],
+            "title": "Urgencia",
+            "default": "MEDIA"
+          },
+          "share_level": {
+            "type": "string",
+            "enum": [
+              "CLINICAL",
+              "FULL"
+            ],
+            "title": "Share Level",
+            "default": "CLINICAL"
+          },
+          "preferred": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferred"
+          }
+        },
+        "type": "object",
+        "required": [
+          "patient_id",
+          "specialist_id"
+        ],
+        "title": "RequestCreateIn"
+      },
+      "ReviewRequest": {
+        "properties": {
+          "reviewed_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reviewed Fields"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "title": "ReviewRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

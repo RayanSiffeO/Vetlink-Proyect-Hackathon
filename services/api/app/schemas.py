@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .db import loads_json
 from .models import Alert, Appointment, ImportJob, Patient, Record, Request, Specialist, User
@@ -27,6 +28,22 @@ class AcceptIn(BaseModel):
 
 class DeclineIn(BaseModel):
     reason: Optional[str] = None
+
+
+class CloseRequest(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    note: str = Field(min_length=3, max_length=2000, description="Nota de la visita del especialista")
+    diagnosis: Optional[str] = Field(default=None, max_length=1000)
+    recommendations: Optional[str] = Field(default=None, max_length=1000)
+    next_visit: Optional[str] = Field(default=None, pattern=r"^\d{4}-\d{2}-\d{2}$")
+
+    @field_validator("next_visit")
+    @classmethod
+    def validate_next_visit(cls, value: Optional[str]) -> Optional[str]:
+        if value is not None:
+            date.fromisoformat(value)
+        return value
 
 
 class ReviewRequest(BaseModel):

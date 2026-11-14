@@ -5,6 +5,7 @@ import { Loading } from '../components/Loading';
 import { AcceptPanel } from '../components/request/RequestAcceptPanel';
 import { AuditTab } from '../components/request/RequestAuditTab';
 import { BriefingTab } from '../components/request/RequestBriefingTab';
+import { RequestClosePanel } from '../components/request/RequestClosePanel';
 import { DetailTab } from '../components/request/RequestDetailTab';
 import { ActionErrorBanner, RequestHeaderCard } from '../components/request/RequestHeader';
 import {
@@ -76,6 +77,9 @@ function RequestDetailScreen({
       <UnlockedNotice status={status} />
       <RequestTabs tab={screen.tab} onSelect={screen.setTab} />
       <RequestTabPanels id={id} data={data} screen={screen} />
+      {specialistRole && screen.tab === 'detail' ? (
+        <RequestClosePanel request={request} />
+      ) : null}
       <ClosedNotice status={status} />
       <ConfirmedFooter status={status} />
       <UrgentNote request={request} />

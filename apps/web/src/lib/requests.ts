@@ -6,6 +6,7 @@ export const MOTIVO_MAX_LENGTH = 600;
 export type RequestTab = 'detail' | 'briefing' | 'audit';
 
 const LOCKED_ACTION_STATUSES = ['COMPLETED', 'CANCELLED', 'DECLINED'];
+const CLOSEABLE_STATUSES = ['ACCEPTED', 'SCHEDULED'];
 
 export interface RequestPresets {
   patientId: string;
@@ -90,6 +91,10 @@ export function toIsoFromLocal(value: string): string {
 
 export function canCancelRequest(status: string, specialistRole: boolean): boolean {
   return !specialistRole && !LOCKED_ACTION_STATUSES.includes(status);
+}
+
+export function isCloseableStatus(status: string | null | undefined): boolean {
+  return CLOSEABLE_STATUSES.includes(String(status ?? '').toUpperCase());
 }
 
 export function isHighUrgency(urgency: string | null | undefined): boolean {

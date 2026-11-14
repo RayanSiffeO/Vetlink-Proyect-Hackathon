@@ -387,6 +387,20 @@ export interface CreateRequestPayload {
   preferred: string;
 }
 
+export interface CloseRequestPayload {
+  note: string;
+  diagnosis?: string | null;
+  recommendations?: string | null;
+  next_visit?: string | null;
+}
+
+export interface CloseRequestResponse {
+  request: RequestRecord;
+  appointment: Appointment | null;
+  patient: PatientSummary;
+  record: RecordMeta;
+}
+
 export interface ResetResponse {
   ok?: boolean;
   message?: string;

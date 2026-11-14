@@ -12,6 +12,7 @@ from ..db import (
     alerts_for_patient,
     audit_events_for,
     audit_to_dict,
+    dumps_json,
     new_id,
     record_for_patient,
     request_or_404,
@@ -20,6 +21,7 @@ from ..errors import CONFLICT, UNPROCESSABLE, ensure, require_found
 from ..models import (
     Appointment,
     Patient,
+    Record,
     Request,
     RequestStatus,
     Role,
@@ -29,10 +31,13 @@ from ..models import (
 )
 from ..schemas import (
     AcceptIn,
+    CloseRequest,
     DeclineIn,
     RequestCreateIn,
     appointment_dict,
     canonical_of,
+    patient_dict,
+    record_dict,
     request_dict,
     request_status,
     specialist_dict,
@@ -55,9 +60,17 @@ NON_CANCELLABLE_STATUSES = {
     RequestStatus.CANCELLED,
     RequestStatus.DECLINED,
 }
+CLOSABLE_STATUSES = {
+    RequestStatus.ACCEPTED,
+    RequestStatus.SCHEDULED,
+}
 LOCKED_DETAIL = "La historia completa se desbloquea al aceptar la derivación"
 ACCEPT_DETAIL = "Solo el especialista asignado puede aceptar la derivación"
 DECLINE_DETAIL = "Solo el especialista asignado puede rechazar la derivación"
+CLOSE_DETAIL = "Solo el especialista asignado puede cerrar la visita"
+RECORD_MISSING_DETAIL = "El paciente de la solicitud no tiene registro canónico"
+SPECIALIST_SOURCE_SYSTEM = "VetLink · especialista"
+SPECIALIST_SOURCE_FORMAT = "VETLINK"
 
 
 def _patient_of(session, req: Request) -> Patient:
@@ -68,13 +81,12 @@ def _specialist_of(session, req: Request) -> Specialist | None:
     return session.get(Specialist, req.specialist_id)
 
 
+def _record_of_request(session, req: Request) -> Record:
+    return require_found(record_for_patient(session, req.patient_id), RECORD_MISSING_DETAIL, CONFLICT)
+
+
 def _canonical_of_request(session, req: Request) -> dict:
-    record = require_found(
-        record_for_patient(session, req.patient_id),
-        "El paciente de la solicitud no tiene registro canónico",
-        CONFLICT,
-    )
-    return canonical_of(record)
+    return canonical_of(_record_of_request(session, req))
 
 
 def _ensure_assigned_specialist(user: User, req: Request, detail: str) -> None:
@@ -151,6 +163,72 @@ def _cancel_appointments(session, req: Request) -> None:
     for appointment in appointments:
         appointment.status = "CANCELLED"
         session.add(appointment)
+
+
+def _complete_appointments(session, req: Request) -> Appointment | None:
+    appointments = session.exec(select(Appointment).where(Appointment.request_id == req.id)).all()
+    for appointment in appointments:
+        appointment.status = "COMPLETED"
+        session.add(appointment)
+    session.commit()
+    return appointments[0] if appointments else None
+
+
+def _close_encounter_meta(ctx: ApiContext, req: Request, now: datetime) -> dict:
+    return {
+        "source_system": SPECIALIST_SOURCE_SYSTEM,
+        "source_format": SPECIALIST_SOURCE_FORMAT,
+        "source_ref": f"request:{req.id}",
+        "extracted_at": now.isoformat(),
+        "extracted_by": f"specialist:{ctx.user.username}",
+        "reviewed_by": None,
+        "method": "direct",
+        "confidence": 1.0,
+    }
+
+
+def _close_encounter(ctx: ApiContext, req: Request, payload: CloseRequest) -> dict:
+    now = utcnow()
+    spec = _specialist_of(ctx.session, req)
+    return {
+        "_type": "Encounter",
+        "id": f"enc_vetlink_{req.id}",
+        "patient_id": req.patient_id,
+        "date": now.date().isoformat(),
+        "type": "RECHECK",
+        "reason": f"Cierre de visita · {spec.specialty if spec else 'especialista'}",
+        "clinician_ref": ctx.user.display_name,
+        "status": "SIGNED",
+        "diagnosis_summary": payload.diagnosis or payload.note[:140],
+        "soap": {"A": payload.diagnosis or "", "P": payload.note},
+        "recommendations": payload.recommendations,
+        "next_visit_date": payload.next_visit,
+        "_meta": _close_encounter_meta(ctx, req, now),
+    }
+
+
+def _append_encounter(canonical: dict, encounter: dict) -> bool:
+    encounters = canonical.setdefault("encounters", [])
+    current = next((item for item in encounters if item.get("id") == encounter["id"]), None)
+    if current is None:
+        encounters.append(encounter)
+        return True
+    current.update(encounter)
+    return False
+
+
+def _bump_entities(canonical: dict, created: bool) -> None:
+    if not created:
+        return
+    provenance = canonical.setdefault("provenance_summary", {})
+    provenance["entities"] = int(provenance.get("entities") or 0) + 1
+
+
+def _store_record(session, record: Record, canonical: dict) -> None:
+    record.canonical_json = dumps_json(canonical)
+    session.add(record)
+    session.commit()
+    session.refresh(record)
 
 
 def _request_item(session, req: Request) -> dict:
@@ -326,6 +404,32 @@ def cancel_request(request_id: str, ctx: ApiCtx) -> dict:
     _apply_status(ctx, req, RequestStatus.CANCELLED)
     ctx.audit("Request", req.id, "REQUEST_CANCELLED")
     return {"request": request_dict(req), "detail": "Derivación cancelada"}
+
+
+@router.post("/{request_id}/close", summary="Cerrar la visita y devolver la nota a la ficha clínica")
+def close_request(request_id: str, payload: CloseRequest, ctx: ApiCtx) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    _ensure_assigned_specialist(ctx.user, req, CLOSE_DETAIL)
+    ensure(
+        req.status in CLOSABLE_STATUSES,
+        f"La solicitud no admite el cierre de visita (estado: {request_status(req)})",
+        CONFLICT,
+    )
+    record = _record_of_request(ctx.session, req)
+    canonical = canonical_of(record)
+    created = _append_encounter(canonical, _close_encounter(ctx, req, payload))
+    _bump_entities(canonical, created)
+    _store_record(ctx.session, record, canonical)
+    appointment = _complete_appointments(ctx.session, req)
+    _apply_status(ctx, req, RequestStatus.COMPLETED)
+    ctx.audit("Request", req.id, "REQUEST_CLOSED")
+    ctx.audit("Record", record.id, "SPECIALIST_NOTE_ADDED")
+    return {
+        "request": request_dict(req),
+        "appointment": appointment_dict(appointment) if appointment else None,
+        "patient": patient_dict(_patient_of(ctx.session, req)),
+        "record": record_dict(record),
+    }
 
 
 @router.get("/{request_id}/briefing", summary="Briefing completo (solo tras aceptar)")
