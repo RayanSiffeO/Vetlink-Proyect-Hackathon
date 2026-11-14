@@ -24,7 +24,7 @@ function AlertsBadge({ count }: { count: number }) {
 function PatientIdentity({ patient }: { patient: PatientSummary }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[linear-gradient(135deg,#4E8C6A_0%,#2E6B52_100%)] text-[15px] font-medium tracking-tight text-white shadow-lift">
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[linear-gradient(135deg,#C46B4D_0%,#9E4C36_100%)] text-[15px] font-medium tracking-tight text-white shadow-lift">
         {initials(patient.name)}
       </span>
       <div className="min-w-0 flex-1">

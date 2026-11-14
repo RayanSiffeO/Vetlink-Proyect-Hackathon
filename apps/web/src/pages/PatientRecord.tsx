@@ -150,7 +150,7 @@ function RecordHeaderCard({ data }: { data: PatientRecordResponse }) {
     <header className="glass-strong overflow-hidden rounded-panel">
       <div className="px-5 py-5 sm:px-6 sm:py-6">
         <div className="flex flex-wrap items-start gap-4 sm:gap-5">
-          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-[linear-gradient(135deg,#4E8C6A_0%,#2E6B52_100%)] text-xl font-medium tracking-tight text-white shadow-lift">
+          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-[linear-gradient(135deg,#C46B4D_0%,#9E4C36_100%)] text-xl font-medium tracking-tight text-white shadow-lift">
             {facts.initial}
           </span>
           <div className="min-w-0 flex-1">

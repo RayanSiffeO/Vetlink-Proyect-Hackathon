@@ -28,7 +28,7 @@ interface RoleTone {
 
 const ROLE_TONES: Record<'primary' | 'secondary', RoleTone> = {
   primary: {
-    card: 'border-white/10 bg-[linear-gradient(135deg,#4E8C6A_0%,#2E6B52_72%)] text-white shadow-lift hover:shadow-card',
+    card: 'border-white/10 bg-[linear-gradient(135deg,#C46B4D_0%,#9E4C36_72%)] text-white shadow-lift hover:shadow-card',
     icon: 'border border-white/20 bg-white/15 text-white',
     title: 'text-white',
     badge: 'border-white/20 bg-indigo-900/35 text-white/90',

@@ -3,7 +3,6 @@ import { Loader2, RotateCcw, Search, Stethoscope, Users } from 'lucide-react';
 import { EmptyState, ErrorState } from '../components/EmptyState';
 import { LoadingCards } from '../components/Loading';
 import { CardGrid } from '../components/CardGrid';
-import { PageHeader } from '../components/PageHeader';
 import { ImportSection } from '../components/patients/ImportSection';
 import { PatientCard } from '../components/patients/PatientCard';
 import { usePatients, useResetDemo } from '../api/hooks';
@@ -34,7 +33,7 @@ function DemoLoadButton({ demo }: { demo: DemoAction }) {
   );
 }
 
-function PatientStat({
+function HeroStat({
   value,
   label,
   tone = 'text-ink',
@@ -44,9 +43,9 @@ function PatientStat({
   tone?: string;
 }) {
   return (
-    <div className="glass-soft min-w-[76px] rounded-2xl px-3 py-1.5 text-center">
-      <p className={`text-[20px] font-medium leading-6 tracking-[-0.02em] ${tone}`}>{value}</p>
-      <p className="vl-label mt-0.5">{label}</p>
+    <div className="min-w-[92px] rounded-[22px] border border-white/60 bg-white/55 px-4 py-3 text-center shadow-soft">
+      <p className={`text-[32px] font-medium leading-none tracking-[-0.03em] ${tone}`}>{value}</p>
+      <p className="vl-label mt-1">{label}</p>
     </div>
   );
 }
@@ -60,39 +59,45 @@ function PatientsHeader({
   alertCount: number;
   demo: DemoAction;
 }) {
+  const description =
+    count > 0
+      ? `${count} pacientes · ${alertCount} alertas activas en la bandeja de la clínica.`
+      : 'Sube historias clínicas y VetLink construye el registro canónico.';
   return (
-    <PageHeader
-      heading={{
-        eyebrow: 'VetRecord · clínica',
-        title: 'Pacientes',
-        description:
-          count > 0
-            ? `${count} pacientes · ${alertCount} alertas activas`
-            : 'Sube historias clínicas y VetLink construye el registro canónico.',
-        icon: Users,
-      }}
-    >
-      <div className="flex w-full flex-col gap-2.5 sm:w-auto sm:items-end">
+    <section className="glass relative overflow-hidden rounded-panel px-5 py-6 sm:px-8 sm:py-8">
+      <span className="dash-ring dash-ring-lg" aria-hidden="true" />
+      <span className="dash-ring dash-ring-sm" aria-hidden="true" />
+      <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+        <div>
+          <p className="vl-section-title text-indigo-700">VetRecord · clínica</p>
+          <h1 className="mt-2 flex items-center gap-3 text-[clamp(34px,4vw,52px)] font-medium leading-[1.02] tracking-[-0.03em] text-ink">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-indigo-50 text-indigo-700 ring-1 ring-inset ring-indigo-100">
+              <Users className="h-5 w-5" aria-hidden="true" />
+            </span>
+            Pacientes
+          </h1>
+          <p className="mt-2 max-w-xl text-[13px] leading-5 text-para">{description}</p>
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <DemoLoadButton demo={demo} />
+            <Link
+              to="/specialists"
+              className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+            >
+              <Stethoscope className="h-3.5 w-3.5" />
+              Buscar especialista
+            </Link>
+          </div>
+        </div>
         <div className="flex items-stretch gap-2">
-          <PatientStat value={count} label={count === 1 ? 'paciente' : 'pacientes'} />
-          <PatientStat
+          <HeroStat value={count} label={count === 1 ? 'paciente' : 'pacientes'} />
+          <HeroStat
             value={alertCount}
             label={alertCount === 1 ? 'alerta activa' : 'alertas activas'}
             tone="text-crit"
           />
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <DemoLoadButton demo={demo} />
-          <Link
-            to="/specialists"
-            className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
-          >
-            <Stethoscope className="h-3.5 w-3.5" />
-            Buscar especialista
-          </Link>
-        </div>
       </div>
-    </PageHeader>
+    </section>
   );
 }
 
@@ -154,7 +159,16 @@ export function Patients() {
         demo={{ pending: resetDemo.isPending, onLoad: loadDemo }}
       />
       <ImportSection />
-      <section aria-label="Pacientes de la clínica">
+      <section aria-label="Pacientes de la clínica" className="space-y-3">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <p className="vl-section-title">Bandeja clínica</p>
+            <h2 className="mt-1 text-h2 text-ink">Pacientes recientes</h2>
+          </div>
+          <span className="rounded-full border border-line bg-white/50 px-3 py-1 text-[11px] text-caption">
+            {patients.length} fichas · orden por alerta
+          </span>
+        </div>
         <PatientsList query={query} onLoadDemo={loadDemo} />
       </section>
       <p className="text-center text-[11px] text-caption/80">
