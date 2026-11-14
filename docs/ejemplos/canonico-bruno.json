@@ -1,0 +1,2148 @@
+{
+  "schema_version": "vetlink.record/1.0",
+  "record_id": "vlr_bruno_vs-2024-00387",
+  "generated_at": "2026-11-14T01:20:00+01:00",
+  "as_of": "2026-11-14",
+  "source": {
+    "system": "Clínica Veterinaria Vall del Sol (Word)",
+    "format": "DOCX",
+    "file": "Clínica Veterinaria Vall del Sol.docx",
+    "version": null,
+    "generated_at": null,
+    "source_as_of": "2026-11-03",
+    "clinic": "Vall del Sol, Sant Cugat del Vallès",
+    "units": {
+      "weight": "kg",
+      "bcs": "1-9",
+      "currency": null
+    },
+    "row_counts": {
+      "encounters": 11,
+      "immunizations": 12,
+      "weights": 9,
+      "problems": 4,
+      "reminders": 4
+    }
+  },
+  "privacy": {
+    "classification": "IDENTIFIED_PII",
+    "pii_present": true,
+    "masked_fields": [
+      "owners[0].tax_id_masked"
+    ],
+    "pii_fields": [
+      "owners[0].legal_name",
+      "owners[0].tax_id_masked",
+      "owners[0].birth_date",
+      "owners[0].address",
+      "owners[0].phones",
+      "owners[0].emails"
+    ],
+    "note": "PII completa del tutor en origen; cifrar en reposo y limitar al nivel 2."
+  },
+  "identity": {
+    "match_key": "mch_941000012345678",
+    "identity_confidence": 1.0,
+    "status": "IDENTIFIED",
+    "basis": [
+      "microchip_exact",
+      "name",
+      "species",
+      "birth_date",
+      "passport"
+    ],
+    "notes": "Microchip completo (dato ficticio) y pasaporte ES-0412345."
+  },
+  "patient": {
+    "_type": "Patient",
+    "id": "pat_vs-2024-00387",
+    "external_ids": [
+      {
+        "system": "Vall del Sol",
+        "id": "VS-2024-00387"
+      }
+    ],
+    "name": "Bruno",
+    "species_code": "CAN",
+    "species_label": "Canis lupus familiaris",
+    "breed_code": "BRD-LAB",
+    "breed_label": "Labrador Retriever",
+    "sex": "MALE",
+    "neutered": true,
+    "neutered_on": "2025-01-10",
+    "birth_date": "2024-02-02",
+    "birth_precision": "DAY",
+    "coat": "Chocolate",
+    "microchip": "941000012345678",
+    "microchip_implanted_on": "2024-03-12",
+    "passport": "ES-0412345",
+    "registry": "Sant Cugat del Vallès · Nº 2024-5521",
+    "owner_ids": [
+      "own_vs-2024-00387-01"
+    ],
+    "weight_current_kg": 32.4,
+    "weight_current_on": "2026-11-03",
+    "bcs": 6,
+    "bcs_scale": "1-9",
+    "status": "ACTIVE",
+    "deceased": false,
+    "insured": true,
+    "insurance": {
+      "provider_ref": "PP-7781234",
+      "coverage": null
+    },
+    "temperament": {
+      "score": null,
+      "scale": null,
+      "muzzle_required": false,
+      "notes": "Sociable y tranquilo; se manipula sin dificultad; no requiere bozal."
+    },
+    "diet": "Pienso hipoalergénico con proteína de pescado",
+    "lifestyle": [
+      "Piso con terraza",
+      "Paseos diarios",
+      "Salidas al campo los fines de semana"
+    ],
+    "flags": [],
+    "field_provenance": {
+      "breed_code": {
+        "method": "normalized",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila1",
+        "confidence": 0.9,
+        "note": "código interno VetLink; el Word no trae código"
+      },
+      "sex": {
+        "method": "normalized",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila1",
+        "confidence": 1.0
+      },
+      "neutered": {
+        "method": "normalized",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila1",
+        "confidence": 1.0
+      },
+      "neutered_on": {
+        "method": "normalized",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila1",
+        "confidence": 1.0
+      },
+      "weight_current_kg": {
+        "method": "derived_latest",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila5",
+        "confidence": 1.0
+      },
+      "bcs": {
+        "method": "normalized",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila5",
+        "confidence": 1.0
+      }
+    },
+    "_meta": {
+      "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+      "source_format": "DOCX",
+      "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2",
+      "extracted_at": "2026-11-14T01:20:00+01:00",
+      "extracted_by": "vetlink-ingest/0.1",
+      "reviewed_by": null,
+      "method": "direct",
+      "confidence": 0.9,
+      "note": "ficha de cliente y paciente"
+    }
+  },
+  "owners": [
+    {
+      "_type": "Owner",
+      "id": "own_vs-2024-00387-01",
+      "external_ids": [
+        {
+          "system": "Vall del Sol",
+          "id": "VS-2024-00387"
+        }
+      ],
+      "display_name": "Carmen Roldán Puig",
+      "legal_name": "Carmen Roldán Puig",
+      "tax_id_masked": "***678Z",
+      "birth_date": "1981-09-14",
+      "profession": "Arquitecta técnica",
+      "address": {
+        "line": "C/ de la Floresta, 24, 3º 2ª",
+        "city": "Sant Cugat del Vallès",
+        "province": "Barcelona",
+        "postal_code": "08172",
+        "country": "ES"
+      },
+      "phones": [
+        {
+          "type": "MOBILE",
+          "e164": "+34600123456",
+          "raw": "600 123 456"
+        },
+        {
+          "type": "LANDLINE",
+          "e164": "+34935550123",
+          "raw": "93 555 01 23"
+        }
+      ],
+      "emails": [
+        {
+          "address": "carmen.roldan@ejemplo.com"
+        }
+      ],
+      "languages": [
+        "es",
+        "ca"
+      ],
+      "preferred_language": "es",
+      "preferred_channel": "WHATSAPP",
+      "consents": {
+        "reminders": true,
+        "marketing": null,
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla1/fila5"
+      },
+      "account": null,
+      "payment_method": "CARD",
+      "data_classification": "IDENTIFIED_PII",
+      "is_primary": true,
+      "field_provenance": {
+        "tax_id_masked": {
+          "method": "masked",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla1/fila0",
+          "confidence": 1.0,
+          "note": "DNI ficticio 12345678Z enmascarado"
+        },
+        "phones": {
+          "method": "normalized",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla1/fila3",
+          "confidence": 0.95,
+          "note": "E.164 derivado de 600 123 456 y 93 555 01 23"
+        },
+        "languages": {
+          "method": "normalized",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla1/fila4",
+          "confidence": 0.9
+        }
+      },
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95,
+        "note": "PII completa del tutor"
+      }
+    }
+  ],
+  "encounters": [
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2024-03-12",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2024-03-12",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "FIRST_VISIT",
+      "reason": "Primera visita. Revisión general y primovacunación",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 4.1,
+        "mucous_membranes": "normales"
+      },
+      "soap": {
+        "s": null,
+        "o": "Cachorro de 6 semanas. Peso: 4,1 kg. Auscultación y mucosas normales. Sin parásitos externos visibles.",
+        "a": null,
+        "p": "Implantación de microchip. 1.ª vacuna polivalente (moquillo, parvovirosis, hepatitis, parainfluenza). Desparasitación interna con pirantel."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2024-04-09",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "2.ª dosis",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila1",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2024-04-09",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2024-04-09",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "VACCINATION",
+      "reason": "Refuerzo de vacunación",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 8.3
+      },
+      "soap": {
+        "s": null,
+        "o": "Peso: 8,3 kg. Buen estado general. Heces normales.",
+        "a": null,
+        "p": "2.ª vacuna polivalente + leptospirosis. Desparasitación interna. Inicio de antiparasitario externo mensual."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2024-05-07",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "3.ª dosis",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila2",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2024-05-07",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2024-05-07",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "VACCINATION",
+      "reason": "Refuerzo de vacunación y rabia",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 12.6
+      },
+      "soap": {
+        "s": null,
+        "o": "Peso: 12,6 kg. Sin hallazgos relevantes.",
+        "a": null,
+        "p": "3.ª vacuna polivalente + leptospirosis. Vacuna antirrábica (lote RB-2231). Emisión de pasaporte."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2025-05-31",
+      "next_visit_precision": "MONTH",
+      "next_visit_text": "Revisión anual en mayo de 2025",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+          "confidence": 1.0
+        },
+        "next_visit_date": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2025-01-10",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2025-01-10",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "SURGERY",
+      "reason": "Castración electiva",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 27.8
+      },
+      "soap": {
+        "s": null,
+        "o": "Analítica preanestésica dentro de la normalidad. Peso: 27,8 kg.",
+        "a": null,
+        "p": "Orquiectomía sin incidencias bajo anestesia general. Analgesia con meloxicam 3 días. Collar isabelino 10 días."
+      },
+      "diagnosis_summary": null,
+      "procedures": [
+        {
+          "code": null,
+          "name": "Orquiectomía electiva",
+          "anesthesia": null
+        }
+      ],
+      "lab_results": [],
+      "next_visit_date": "2025-01-24",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Retirada de puntos",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila4",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2025-01-24",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2025-01-24",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "RECHECK",
+      "reason": "Control postoperatorio",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {},
+      "soap": {
+        "s": null,
+        "o": "Herida quirúrgica con buena cicatrización, sin inflamación ni exudado.",
+        "a": null,
+        "p": "Retirada de puntos. Alta quirúrgica."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2025-05-31",
+      "next_visit_precision": "MONTH",
+      "next_visit_text": "Revisión anual en mayo de 2025",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila5",
+          "confidence": 1.0
+        },
+        "next_visit_date": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila5",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2025-05-14",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2025-05-14",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "WELLNESS",
+      "reason": "Revisión anual y refuerzos",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 29.5
+      },
+      "soap": {
+        "s": null,
+        "o": "Peso: 29,5 kg. Salud dental buena. Auscultación normal.",
+        "a": null,
+        "p": "Refuerzo polivalente + leptospirosis. Refuerzo antirrábico. Test de leishmania negativo. Desparasitación interna y externa."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [
+        {
+          "panel": "Serología rápida",
+          "analyte": "Leishmania infantum Ac",
+          "value": "NEG",
+          "unit": null,
+          "ref": "NEG",
+          "flag": "N"
+        }
+      ],
+      "next_visit_date": "2026-05-31",
+      "next_visit_precision": "MONTH",
+      "next_visit_text": "Mayo de 2026",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+          "confidence": 1.0
+        },
+        "next_visit_date": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2025-09-22",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2025-09-22",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Picor intenso, otitis y diarrea intermitente desde hace 3 semanas",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 30.8
+      },
+      "soap": {
+        "s": null,
+        "o": "Eritema en axilas, abdomen y patas. Otitis externa bilateral leve (citología: abundantes levaduras tipo Malassezia). Peso: 30,8 kg. Sin pulgas ni ácaros en el examen.",
+        "a": null,
+        "p": "Limpieza ótica y tratamiento tópico ótico durante 10 días. Baño con champú antiséptico. Inicio de dieta de eliminación con proteína hidrolizada durante 8 semanas."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [
+        {
+          "panel": "Citología ótica",
+          "analyte": "Levaduras",
+          "value": "abundantes tipo Malassezia",
+          "unit": null,
+          "ref": null,
+          "flag": null
+        }
+      ],
+      "next_visit_date": "2025-10-20",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Revisión",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila7",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila7",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2025-10-20",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2025-10-20",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "RECHECK",
+      "reason": "Control de otitis y dermatitis",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {},
+      "soap": {
+        "s": null,
+        "o": "Otitis resuelta. Picor reducido, aunque persisten lesiones leves en axilas.",
+        "a": null,
+        "p": "Se mantiene la dieta de eliminación. Se pauta suplemento de ácidos grasos omega-3."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2025-11-19",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Revisión",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila8",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila8",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2025-11-19",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2025-11-19",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "RECHECK",
+      "reason": "Fin de dieta de eliminación y reintroducción",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 31.2
+      },
+      "soap": {
+        "s": null,
+        "o": "Piel sin lesiones. Heces normales. Peso: 31,2 kg.",
+        "a": "Diagnóstico de sospecha: alergia alimentaria al pollo.",
+        "p": "Reintroducción de pollo: reaparece el picor a los 5 días. Se pauta pienso hipoalergénico con proteína de pescado de forma definitiva."
+      },
+      "diagnosis_summary": "Diagnóstico de sospecha: alergia alimentaria al pollo.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2026-05-31",
+      "next_visit_precision": "MONTH",
+      "next_visit_text": "Revisión anual en mayo de 2026",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila9",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila9",
+          "confidence": 1.0
+        },
+        "next_visit_date": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila9",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2026-05-18",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2026-05-18",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "WELLNESS",
+      "reason": "Revisión anual y refuerzos",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 32.0,
+        "bcs": 6
+      },
+      "soap": {
+        "s": null,
+        "o": "Peso: 32,0 kg. Piel y oídos normales. Condición corporal 6/9.",
+        "a": null,
+        "p": "Refuerzo polivalente + leptospirosis. Refuerzo antirrábico. Test de leishmania negativo. Desparasitación interna y externa. Se recomienda control de peso."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [
+        {
+          "panel": "Serología rápida",
+          "analyte": "Leishmania infantum Ac",
+          "value": "NEG",
+          "unit": null,
+          "ref": "NEG",
+          "flag": "N"
+        }
+      ],
+      "next_visit_date": "2027-05-31",
+      "next_visit_precision": "MONTH",
+      "next_visit_text": "Revisión anual en mayo de 2027",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila10",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila10",
+          "confidence": 1.0
+        },
+        "next_visit_date": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila10",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "vs-enc-2026-11-03",
+      "patient_id": "pat_vs-2024-00387",
+      "date": "2026-11-03",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Cojera leve del miembro posterior derecho tras paseo por el monte",
+      "clinic": {
+        "code": "VALLSOL",
+        "name": "Clínica Veterinaria Vall del Sol"
+      },
+      "clinician_ref": "Dra. Marta Ventura",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 32.4,
+        "bcs": 6
+      },
+      "soap": {
+        "s": null,
+        "o": "Peso: 32,4 kg. Dolor leve a la flexión de rodilla derecha. Prueba de cajón negativa. Sin inflamación articular. Sin signos de lesión en la almohadilla.",
+        "a": "Sobrecarga muscular.",
+        "p": "Antiinflamatorio (meloxicam) durante 5 días y reposo relativo durante 2 semanas. Se recomienda plan de pérdida de peso."
+      },
+      "diagnosis_summary": "Sobrecarga muscular.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2026-11-17",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Control",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_ddmmYYYY",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11",
+          "confidence": 1.0
+        },
+        "bcs": {
+          "method": "derived_from_table",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila5",
+          "confidence": 0.9
+        }
+      }
+    }
+  ],
+  "problems": [
+    {
+      "_type": "Problem",
+      "id": "prb_vs_alergia_pollo",
+      "patient_id": "pat_vs-2024-00387",
+      "label": "Alergia alimentaria al pollo",
+      "code": null,
+      "category": "ALLERGY",
+      "status": "ACTIVE",
+      "certainty": "CONFIRMED",
+      "onset_date": "2025-09-22",
+      "resolved_date": null,
+      "severity": "MODERATE",
+      "first_encounter_ref": null,
+      "notes": "Confirmada por reintroducción el 19/11/2025: el picor reapareció a los 5 días. Dieta hipoalergénica de pescado de por vida.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila9",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.98
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_vs_sobrepeso",
+      "patient_id": "pat_vs-2024-00387",
+      "label": "Sobrepeso leve",
+      "code": null,
+      "category": "NUTRITION",
+      "status": "ACTIVE",
+      "certainty": "CONFIRMED",
+      "onset_date": "2026-05-18",
+      "resolved_date": null,
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": "BCS 6/9 el 18/05/2026 y el 03/11/2026; 32,4 kg. Plan de pérdida de peso recomendado.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_vs_sobrecarga",
+      "patient_id": "pat_vs-2024-00387",
+      "label": "Sobrecarga muscular miembro posterior derecho",
+      "code": null,
+      "category": "ORTHOPEDIC",
+      "status": "ACTIVE",
+      "certainty": "CONFIRMED",
+      "onset_date": "2026-11-03",
+      "resolved_date": null,
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": "Dolor leve a la flexión de rodilla derecha; cajón negativo; sin inflamación. Reposo relativo 2 semanas.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_vs_otitis",
+      "patient_id": "pat_vs-2024-00387",
+      "label": "Otitis externa bilateral (Malassezia)",
+      "code": null,
+      "category": "OTIC",
+      "status": "RESOLVED",
+      "certainty": "CONFIRMED",
+      "onset_date": "2025-09-22",
+      "resolved_date": "2025-10-20",
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": "Resuelta al control del 20/10/2025.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila8",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "immunizations": [
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_01",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2024-03-12",
+      "vaccine_code": "DHPPI",
+      "vaccine_label": "Polivalente (moquillo, parvovirosis, hepatitis, parainfluenza)",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2024-03-12",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_02",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2024-04-09",
+      "vaccine_code": "DHPPI",
+      "vaccine_label": "Polivalente 2.ª dosis",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2024-04-09",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_03",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2024-04-09",
+      "vaccine_code": "LEPTOSPIRA",
+      "vaccine_label": "Leptospirosis",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2024-04-09",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_04",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2024-05-07",
+      "vaccine_code": "DHPPI",
+      "vaccine_label": "Polivalente 3.ª dosis",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2024-05-07",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_05",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2024-05-07",
+      "vaccine_code": "LEPTOSPIRA",
+      "vaccine_label": "Leptospirosis",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2024-05-07",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_06",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2024-05-07",
+      "vaccine_code": "RABIES",
+      "vaccine_label": "Antirrábica",
+      "product_ref": null,
+      "batch": "RB-2231",
+      "given_on": "2024-05-07",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_07",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2025-05-14",
+      "vaccine_code": "POLYVALENT",
+      "vaccine_label": "Refuerzo polivalente",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2025-05-14",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_08",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2025-05-14",
+      "vaccine_code": "LEPTOSPIRA",
+      "vaccine_label": "Refuerzo leptospirosis",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2025-05-14",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_09",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2025-05-14",
+      "vaccine_code": "RABIES",
+      "vaccine_label": "Refuerzo antirrábico",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2025-05-14",
+      "due_on": null,
+      "due_precision": null,
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_10",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2026-05-18",
+      "vaccine_code": "POLYVALENT",
+      "vaccine_label": "Refuerzo polivalente",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2026-05-18",
+      "due_on": "2027-05-31",
+      "due_precision": "MONTH",
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila10",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      },
+      "field_provenance": {
+        "due_on": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila1",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_11",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2026-05-18",
+      "vaccine_code": "LEPTOSPIRA",
+      "vaccine_label": "Refuerzo leptospirosis",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2026-05-18",
+      "due_on": "2027-05-31",
+      "due_precision": "MONTH",
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila10",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      },
+      "field_provenance": {
+        "due_on": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila1",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_vs_12",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2026-05-18",
+      "vaccine_code": "RABIES",
+      "vaccine_label": "Refuerzo antirrábico",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2026-05-18",
+      "due_on": "2027-05-31",
+      "due_precision": "MONTH",
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila10",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      },
+      "field_provenance": {
+        "due_on": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila1",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    }
+  ],
+  "parasite_control": [
+    {
+      "_type": "ParasiteControl",
+      "id": "par_vs_endo",
+      "patient_id": "pat_vs-2024-00387",
+      "type": "ENDO",
+      "product": null,
+      "last_given": "2026-05-18",
+      "next_due": "2026-08-18",
+      "given_at": "CLINIC",
+      "status": "OVERDUE",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9,
+        "note": "proxima fecha derivada de pauta cada 3 meses; la ficha la marca pendiente"
+      },
+      "field_provenance": {
+        "next_due": {
+          "method": "interval_3_months",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila5",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "ParasiteControl",
+      "id": "par_vs_ecto",
+      "patient_id": "pat_vs-2024-00387",
+      "type": "ECTO",
+      "product": null,
+      "last_given": "2026-05-18",
+      "next_due": null,
+      "given_at": "HOME",
+      "status": "UNKNOWN",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9,
+        "note": "pauta mensual domiciliaria; no hay registro de dosis administradas"
+      }
+    }
+  ],
+  "weights": [
+    {
+      "_type": "Weight",
+      "id": "w_vs_01",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2024-03-12",
+      "kg": 4.1,
+      "bcs": null,
+      "encounter_ref": "vs-enc-2024-03-12",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "bcs": {
+          "method": "absent_in_source",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila1",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_02",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2024-04-09",
+      "kg": 8.3,
+      "bcs": null,
+      "encounter_ref": "vs-enc-2024-04-09",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "bcs": {
+          "method": "absent_in_source",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila2",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_03",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2024-05-07",
+      "kg": 12.6,
+      "bcs": null,
+      "encounter_ref": "vs-enc-2024-05-07",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "bcs": {
+          "method": "absent_in_source",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila3",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_04",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2025-01-10",
+      "kg": 27.8,
+      "bcs": null,
+      "encounter_ref": "vs-enc-2025-01-10",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "bcs": {
+          "method": "absent_in_source",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila4",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_05",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2025-05-14",
+      "kg": 29.5,
+      "bcs": null,
+      "encounter_ref": "vs-enc-2025-05-14",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "bcs": {
+          "method": "absent_in_source",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila6",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_06",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2025-09-22",
+      "kg": 30.8,
+      "bcs": null,
+      "encounter_ref": "vs-enc-2025-09-22",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila7",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "bcs": {
+          "method": "absent_in_source",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila7",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_07",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2025-11-19",
+      "kg": 31.2,
+      "bcs": null,
+      "encounter_ref": "vs-enc-2025-11-19",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila9",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "bcs": {
+          "method": "absent_in_source",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila9",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_08",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2026-05-18",
+      "kg": 32.0,
+      "bcs": 6,
+      "encounter_ref": "vs-enc-2026-05-18",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila10",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_vs_09",
+      "patient_id": "pat_vs-2024-00387",
+      "measured_on": "2026-11-03",
+      "kg": 32.4,
+      "bcs": 6,
+      "encounter_ref": "vs-enc-2026-11-03",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    }
+  ],
+  "reminders": [
+    {
+      "_type": "Reminder",
+      "id": "RMD-VS-01",
+      "patient_id": "pat_vs-2024-00387",
+      "type": "CONTROL",
+      "text": "Control de cojera MPD",
+      "due": "2026-11-17",
+      "due_precision": "DAY",
+      "status": "PENDING",
+      "channel": "PHONE",
+      "origin_encounter_ref": "vs-enc-2026-11-03",
+      "source_status": null,
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-VS-02",
+      "patient_id": "pat_vs-2024-00387",
+      "type": "VACCINE",
+      "text": "Refuerzo anual (polivalente + leptospirosis + rabia) y revisión anual",
+      "due": "2027-05-31",
+      "due_precision": "MONTH",
+      "status": "PENDING",
+      "channel": "PHONE",
+      "origin_encounter_ref": null,
+      "source_status": null,
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.85
+      },
+      "field_provenance": {
+        "due": {
+          "method": "month_end",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila1",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-VS-03",
+      "patient_id": "pat_vs-2024-00387",
+      "type": "PARASITE",
+      "text": "Desparasitación interna (cada 3 meses)",
+      "due": "2026-08-18",
+      "due_precision": "DAY",
+      "status": "OVERDUE",
+      "channel": "PHONE",
+      "origin_encounter_ref": null,
+      "source_status": "pendiente de renovar",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.85
+      },
+      "field_provenance": {
+        "due": {
+          "method": "interval_3_months",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila5",
+          "confidence": 0.8,
+          "assumed": true
+        }
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-VS-04",
+      "patient_id": "pat_vs-2024-00387",
+      "type": "PARASITE",
+      "text": "Antiparasitario externo mensual (domicilio)",
+      "due": null,
+      "due_precision": null,
+      "status": "UNKNOWN",
+      "channel": "PHONE",
+      "origin_encounter_ref": null,
+      "source_status": "continuo",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.7
+      }
+    }
+  ],
+  "prescriptions": [
+    {
+      "_type": "Prescription",
+      "id": "rx_vs_pirantel",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2024-03-12",
+      "drug_name": null,
+      "drug_name_raw": "Pirantel",
+      "dose_text": null,
+      "duration_days": null,
+      "started_on": "2024-03-12",
+      "ends_on": null,
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": "Desparasitación interna administrada en la primovacunación.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "rx_vs_meloxicam_2025",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2025-01-10",
+      "drug_name": "Meloxicam susp. oral",
+      "drug_name_raw": "Meloxicam",
+      "dose_text": null,
+      "duration_days": 3,
+      "started_on": "2025-01-10",
+      "ends_on": "2025-01-13",
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": "Analgesia postoperatoria; no consta dosis.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "rx_vs_otico_2025",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2025-09-22",
+      "drug_name": null,
+      "drug_name_raw": "Tratamiento tópico ótico (producto no especificado)",
+      "dose_text": null,
+      "duration_days": 10,
+      "started_on": "2025-09-22",
+      "ends_on": "2025-10-02",
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": "Producto no identificado en la ficha.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila7",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "rx_vs_meloxicam_2026",
+      "patient_id": "pat_vs-2024-00387",
+      "encounter_ref": "vs-enc-2026-11-03",
+      "drug_name": "Meloxicam susp. oral",
+      "drug_name_raw": "Meloxicam",
+      "dose_text": null,
+      "duration_days": 5,
+      "started_on": "2026-11-03",
+      "ends_on": "2026-11-08",
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": "Antiinflamatorio para la sobrecarga muscular; finalizado.",
+      "_meta": {
+        "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+        "source_format": "DOCX",
+        "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "invoices": [],
+  "documents": [],
+  "alerts": [
+    {
+      "_type": "Alert",
+      "id": "alr_vs_01",
+      "patient_id": "pat_vs-2024-00387",
+      "code": "ALLERGY_ACTIVE",
+      "rule_id": "R01",
+      "severity": "HIGH",
+      "category": "ALLERGY",
+      "title": "Alergia alimentaria al pollo",
+      "message": "Evitar pollo y derivados (incluidos premios y snacks). Confirmada por reintroducción (19/11/2025); dieta hipoalergénica de pescado.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_vs_alergia_pollo",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila9"
+        },
+        {
+          "entity": "Patient",
+          "id": "pat_vs-2024-00387",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila6"
+        }
+      ],
+      "action": "Avisar a la tutora y revisar etiquetas de premios/snacks antes de cualquier ingreso.",
+      "due_date": null,
+      "confidence": 0.98,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R01",
+        "method": "derived",
+        "confidence": 0.98,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_vs_02",
+      "patient_id": "pat_vs-2024-00387",
+      "code": "PARASITE_OVERDUE",
+      "rule_id": "R07",
+      "severity": "HIGH",
+      "category": "PREVENTIVE",
+      "title": "Desparasitación interna vencida (88 días)",
+      "message": "Última desparasitación interna registrada el 18/05/2026; pauta cada 3 meses. Próxima fecha estimada 18/08/2026: 88 días vencida a 14/11/2026.",
+      "evidence": [
+        {
+          "entity": "ParasiteControl",
+          "id": "par_vs_endo",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila5"
+        },
+        {
+          "entity": "Reminder",
+          "id": "RMD-VS-03",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila5"
+        }
+      ],
+      "action": "Pautar desparasitación interna en la visita o confirmar administración domiciliaria.",
+      "due_date": "2026-08-18",
+      "confidence": 0.85,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R07",
+        "method": "derived",
+        "confidence": 0.85,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_vs_03",
+      "patient_id": "pat_vs-2024-00387",
+      "code": "APPOINTMENT_SOON",
+      "rule_id": "R05",
+      "severity": "MEDIUM",
+      "category": "APPOINTMENT",
+      "title": "Control de cojera el 17/11/2026",
+      "message": "Control fijado en la visita del 03/11/2026, dentro de 3 días. Reposo relativo 2 semanas desde el 03/11.",
+      "evidence": [
+        {
+          "entity": "Reminder",
+          "id": "RMD-VS-01",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11"
+        },
+        {
+          "entity": "Encounter",
+          "id": "vs-enc-2026-11-03",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11"
+        }
+      ],
+      "action": "Revisar dolor a la flexión de rodilla derecha y valorar alta del reposo.",
+      "due_date": "2026-11-17",
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R05",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_vs_04",
+      "patient_id": "pat_vs-2024-00387",
+      "code": "ACTIVE_PROBLEM",
+      "rule_id": "R02",
+      "severity": "MEDIUM",
+      "category": "PROBLEM",
+      "title": "Sobrecarga muscular MPD activa",
+      "message": "Cojera leve del miembro posterior derecho desde el 03/11/2026; dolor leve a flexión de rodilla, cajón negativo, sin inflamación.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_vs_sobrecarga",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11"
+        }
+      ],
+      "action": "Explorar miembro posterior derecho y confirmar resolución antes del alta.",
+      "due_date": null,
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R02",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_vs_05",
+      "patient_id": "pat_vs-2024-00387",
+      "code": "WEIGHT_RISK",
+      "rule_id": "R06",
+      "severity": "MEDIUM",
+      "category": "WEIGHT",
+      "title": "Sobrepeso leve (BCS 6/9)",
+      "message": "32,4 kg y BCS 6/9 el 03/11/2026; se recomendó plan de pérdida de peso. Riesgo anestésico/ortopédico a vigilar.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_vs_sobrepeso",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla2/fila5"
+        },
+        {
+          "entity": "Weight",
+          "id": "w_vs_09",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11"
+        }
+      ],
+      "action": "Mantener consejo de peso y revisar evolución en el control.",
+      "due_date": null,
+      "confidence": 0.9,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R06",
+        "method": "derived",
+        "confidence": 0.9,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_vs_06",
+      "patient_id": "pat_vs-2024-00387",
+      "code": "NSAID_RECENT",
+      "rule_id": "R04",
+      "severity": "INFO",
+      "category": "MEDICATION",
+      "title": "Meloxicam finalizado hace 6 días",
+      "message": "Antiinflamatorio (meloxicam) durante 5 días desde el 03/11/2026; terminado el 08/11/2026. No repetir AINE sin valorar.",
+      "evidence": [
+        {
+          "entity": "Prescription",
+          "id": "rx_vs_meloxicam_2026",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla3/fila11"
+        }
+      ],
+      "action": "Confirmar que no hay AINE activo antes de pautar uno nuevo.",
+      "due_date": null,
+      "confidence": 0.9,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R04",
+        "method": "derived",
+        "confidence": 0.9,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_vs_07",
+      "patient_id": "pat_vs-2024-00387",
+      "code": "DATA_QUALITY",
+      "rule_id": "R09",
+      "severity": "LOW",
+      "category": "DATA_QUALITY",
+      "title": "Ficha Word incompleta y con fechas de mes",
+      "message": "Sin facturación ni adjuntos; sin hora de visita; vacunas con precisión de mes (mayo 2027); próxima desparasitación derivada. Última actualización del documento: 03/11/2026 (hace 11 días).",
+      "evidence": [
+        {
+          "entity": "Patient",
+          "id": "pat_vs-2024-00387",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4"
+        },
+        {
+          "entity": "ParasiteControl",
+          "id": "par_vs_endo",
+          "source_system": "Clínica Veterinaria Vall del Sol (Word)",
+          "source_ref": "Clínica Veterinaria Vall del Sol.docx#tabla4/fila5"
+        }
+      ],
+      "action": "Confirmar fechas exactas de vacuna y desparasitación en la próxima llamada.",
+      "due_date": null,
+      "confidence": 0.8,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R09",
+        "method": "derived",
+        "confidence": 0.8,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    }
+  ],
+  "briefing": {
+    "generated_at": "2026-11-14T01:20:00+01:00",
+    "patient_label": "Bruno · Labrador Retriever · 2a 9m · macho castrado",
+    "headline": "Bruno · Labrador Retriever · 2a 9m · macho castrado - 7 alertas (2 altas, 3 medias, 1 baja, 1 informativa)",
+    "alert_counts": {
+      "CRITICAL": 0,
+      "HIGH": 2,
+      "MEDIUM": 3,
+      "LOW": 1,
+      "INFO": 1
+    },
+    "next_appointment": {
+      "date": "2026-11-17",
+      "text": "Control de cojera MPD",
+      "reminder_id": "RMD-VS-01",
+      "status": "PENDING"
+    },
+    "priority_actions": [
+      {
+        "alert_id": "alr_vs_01",
+        "severity": "HIGH",
+        "action": "Avisar a la tutora y revisar etiquetas de premios/snacks antes de cualquier ingreso."
+      },
+      {
+        "alert_id": "alr_vs_02",
+        "severity": "HIGH",
+        "action": "Pautar desparasitación interna en la visita o confirmar administración domiciliaria."
+      },
+      {
+        "alert_id": "alr_vs_03",
+        "severity": "MEDIUM",
+        "action": "Revisar dolor a la flexión de rodilla derecha y valorar alta del reposo."
+      }
+    ]
+  },
+  "provenance_summary": {
+    "entities": 48,
+    "fields_populated": 530,
+    "provenance": {
+      "entity_coverage_pct": 100.0,
+      "source_systems": [
+        "Clínica Veterinaria Vall del Sol (Word)"
+      ],
+      "source_refs": 17,
+      "field_level_entries": 39,
+      "assumed_fields": 11
+    },
+    "alerts": {
+      "total": 7,
+      "by_severity": {
+        "CRITICAL": 0,
+        "HIGH": 2,
+        "MEDIUM": 3,
+        "LOW": 1,
+        "INFO": 1
+      }
+    },
+    "rules_applied": [
+      "R01",
+      "R02",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R09"
+    ]
+  },
+  "fhir_profile": {
+    "Patient": "Patient",
+    "Owner": "RelatedPerson",
+    "Encounter": "Encounter",
+    "Problem": "Condition",
+    "Prescription": "MedicationStatement",
+    "AllergyIntolerance": "Condition.category=ALLERGY|ADVERSE_REACTION",
+    "Immunization": "Immunization",
+    "Weight": "Observation (body weight / BCS)",
+    "ParasiteControl": "MedicationStatement (preventive)",
+    "Reminder": "Task",
+    "Document": "DocumentReference",
+    "Invoice": "Invoice",
+    "Alert": "Flag (VetLink extension)",
+    "Provenance": "meta.provenance (embedded in _meta)"
+  },
+  "review": {
+    "policy": "Campos críticos (alergias, dosis, medicación, microchip) exigen revision humana si confidence < umbral. El briefing no se publica con critical_fields pendientes; el LLM solo extrae texto libre, nunca calcula alertas.",
+    "critical_fields": [
+      {
+        "field": "problem.label",
+        "entity_id": "prb_vs_alergia_pollo",
+        "type": "Problem",
+        "confidence": 0.98,
+        "threshold": 0.95,
+        "review_required": false,
+        "reason": "alergia / efecto adverso"
+      },
+      {
+        "field": "prescription.drug_name|dose_text",
+        "entity_id": "rx_vs_pirantel",
+        "type": "Prescription",
+        "confidence": 0.9,
+        "threshold": 0.9,
+        "review_required": true,
+        "reason": "medicación o dosis incompleta/ambigua"
+      },
+      {
+        "field": "prescription.drug_name|dose_text",
+        "entity_id": "rx_vs_meloxicam_2025",
+        "type": "Prescription",
+        "confidence": 0.9,
+        "threshold": 0.9,
+        "review_required": true,
+        "reason": "medicación o dosis incompleta/ambigua"
+      },
+      {
+        "field": "prescription.drug_name|dose_text",
+        "entity_id": "rx_vs_otico_2025",
+        "type": "Prescription",
+        "confidence": 0.9,
+        "threshold": 0.9,
+        "review_required": true,
+        "reason": "medicación o dosis incompleta/ambigua"
+      },
+      {
+        "field": "prescription.drug_name|dose_text",
+        "entity_id": "rx_vs_meloxicam_2026",
+        "type": "Prescription",
+        "confidence": 0.9,
+        "threshold": 0.9,
+        "review_required": true,
+        "reason": "medicación o dosis incompleta/ambigua"
+      }
+    ],
+    "pending_review": 4,
+    "reviewed_by": null
+  }
+}

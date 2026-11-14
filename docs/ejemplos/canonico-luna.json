@@ -1,0 +1,1573 @@
+{
+  "schema_version": "vetlink.record/1.0",
+  "record_id": "vlr_luna_mas-0004587",
+  "generated_at": "2026-11-14T01:20:00+01:00",
+  "as_of": "2026-11-14",
+  "source": {
+    "system": "PMS export MAS-0004587 (Excel)",
+    "format": "XLSX",
+    "file": "export_MAS-0004587_anonimizado.xlsx",
+    "version": null,
+    "generated_at": "2026-11-06T12:15:00",
+    "source_as_of": "2026-11-06",
+    "clinic": "Centro Veterinario CanVerd",
+    "units": {
+      "weight": "kg",
+      "temperature": "C",
+      "currency": "EUR"
+    },
+    "row_counts": {
+      "encounters": 6,
+      "immunizations": 3,
+      "weights": 5,
+      "reminders": 3,
+      "problems": 4,
+      "documents": 3
+    }
+  },
+  "privacy": {
+    "classification": "PSEUDONYMIZED",
+    "pii_present": false,
+    "masked_fields": [
+      "owners[0].display_name"
+    ],
+    "pii_fields": [],
+    "note": "Export anonimizado: sin nombre, contacto ni microchip del paciente."
+  },
+  "identity": {
+    "match_key": "ext_MAS-0004587",
+    "identity_confidence": 0.5,
+    "status": "PSEUDONYMIZED",
+    "basis": [
+      "external_id:MAS-0004587",
+      "name",
+      "species",
+      "birth_date",
+      "breed"
+    ],
+    "notes": "Sin microchip ni identificador del tutor más allá de CLI-0002193."
+  },
+  "patient": {
+    "_type": "Patient",
+    "id": "pat_mas-0004587",
+    "external_ids": [
+      {
+        "system": "PMS MAS",
+        "id": "MAS-0004587"
+      }
+    ],
+    "name": "Luna",
+    "species_code": "CAN",
+    "species_label": "Canis lupus familiaris",
+    "breed_code": "BRD-BEAGLE",
+    "breed_label": "Beagle",
+    "sex": "FEMALE",
+    "neutered": true,
+    "neutered_on": null,
+    "birth_date": "2019-03-14",
+    "birth_precision": "DAY",
+    "coat": "Tricolor",
+    "microchip": null,
+    "microchip_implanted_on": null,
+    "passport": null,
+    "registry": null,
+    "owner_ids": [
+      "own_cli-0002193"
+    ],
+    "weight_current_kg": 12.8,
+    "weight_current_on": "2026-11-06",
+    "bcs": 5,
+    "bcs_scale": "1-9",
+    "status": "ACTIVE",
+    "deceased": false,
+    "insured": null,
+    "insurance": null,
+    "temperament": null,
+    "diet": null,
+    "lifestyle": [],
+    "flags": [],
+    "field_provenance": {
+      "breed_code": {
+        "method": "normalized",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Mascota!fila2",
+        "confidence": 0.9,
+        "note": "código interno VetLink; el PMS no trae código"
+      },
+      "sex": {
+        "method": "normalized",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Mascota!fila2",
+        "confidence": 1.0
+      },
+      "neutered": {
+        "method": "normalized",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Mascota!fila2",
+        "confidence": 1.0
+      },
+      "microchip": {
+        "method": "absent_in_source",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Mascota!fila2",
+        "confidence": 1.0
+      },
+      "passport": {
+        "method": "absent_in_source",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Mascota!fila2",
+        "confidence": 1.0
+      },
+      "weight_current_kg": {
+        "method": "derived_latest",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Evolucion_Peso!fila6",
+        "confidence": 1.0
+      },
+      "bcs": {
+        "method": "derived_latest",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Evolucion_Peso!fila6",
+        "confidence": 1.0
+      }
+    },
+    "_meta": {
+      "source_system": "PMS export MAS-0004587 (Excel)",
+      "source_format": "XLSX",
+      "source_ref": "export_MAS-0004587_anonimizado.xlsx#Mascota!fila2",
+      "extracted_at": "2026-11-14T01:20:00+01:00",
+      "extracted_by": "vetlink-ingest/0.1",
+      "reviewed_by": null,
+      "method": "direct",
+      "confidence": 0.9,
+      "note": "export anonimizado del PMS"
+    }
+  },
+  "owners": [
+    {
+      "_type": "Owner",
+      "id": "own_cli-0002193",
+      "external_ids": [
+        {
+          "system": "PMS MAS",
+          "id": "CLI-0002193"
+        }
+      ],
+      "display_name": "CLI-0002193",
+      "legal_name": null,
+      "tax_id_masked": null,
+      "birth_date": null,
+      "profession": null,
+      "address": {
+        "line": null,
+        "city": "Barcelona",
+        "province": null,
+        "postal_code": null,
+        "country": "ES"
+      },
+      "phones": [],
+      "emails": [],
+      "languages": [],
+      "preferred_language": "UNKNOWN",
+      "preferred_channel": "UNKNOWN",
+      "consents": {
+        "reminders": null,
+        "marketing": null,
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2"
+      },
+      "account": {
+        "balance": 14.93,
+        "currency": "EUR",
+        "status": "PENDING"
+      },
+      "payment_method": null,
+      "data_classification": "PSEUDONYMIZED",
+      "is_primary": true,
+      "field_provenance": {
+        "preferred_language": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2",
+          "confidence": 1.0
+        },
+        "phones": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2",
+          "confidence": 1.0
+        },
+        "emails": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2",
+          "confidence": 1.0
+        },
+        "account.balance": {
+          "method": "direct",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2",
+          "confidence": 1.0
+        }
+      },
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9,
+        "note": "tutor anonimizado: solo ID de cliente, población y saldo"
+      }
+    }
+  ],
+  "encounters": [
+    {
+      "_type": "Encounter",
+      "id": "VIS-2026-11-06-0458",
+      "patient_id": "pat_mas-0004587",
+      "date": "2026-11-06",
+      "time": "10:30",
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Molestias en oído derecho, prurito y mal olor",
+      "clinic": {
+        "code": "CANVERD",
+        "name": "Centro Veterinario CanVerd"
+      },
+      "clinician_ref": "PROF-0012",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.7,
+        "heart_rate_bpm": 96,
+        "respiratory_rate_rpm": 24,
+        "weight_kg": 12.8,
+        "bcs": 5,
+        "mucous_membranes": "rosadas",
+        "crt_s": 2,
+        "crt_comparator": "<"
+      },
+      "soap": {
+        "s": "Sacude la cabeza y se rasca el oído derecho desde hace 3 días. La tutora refiere mal olor y leve secreción. Apetito y actividad normales. Sin vómitos ni diarrea. Antecedente de otitis recurrente.",
+        "o": "Oído derecho: eritema, exudado marrón moderado y dolor leve a la manipulación. Oído izquierdo: sin alteraciones relevantes. Otoscopia: conducto derecho inflamado; membrana timpánica no valorable por exudado.",
+        "a": "Otitis externa derecha (reagudización), probable base alérgica.",
+        "p": "Limpieza ótica diaria 7 días. Gotas óticas cada 12 h 10 días. Evitar manipulación excesiva del oído. Revisión en 7 días. Valorar control de prurito estacional si recurrencia."
+      },
+      "diagnosis_summary": "Otitis externa derecha (reagudización), probable base alérgica.",
+      "procedures": [],
+      "lab_results": [
+        {
+          "panel": "Otología",
+          "analyte": "Otoscopia",
+          "value": "Conducto derecho inflamado; membrana timpánica no valorable por exudado",
+          "unit": null,
+          "ref": null,
+          "flag": null
+        },
+        {
+          "panel": "Otología",
+          "analyte": "Citología ótica derecha",
+          "value": "Abundantes levaduras compatibles con Malassezia y escasos cocos",
+          "unit": null,
+          "ref": null,
+          "flag": null
+        }
+      ],
+      "next_visit_date": "2026-11-13",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Revisión en 7 días",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_iso",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila2",
+          "confidence": 1.0
+        },
+        "time": {
+          "method": "normalized",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila2",
+          "confidence": 1.0
+        },
+        "next_visit_date": {
+          "method": "derived_from_treatment",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Tratamiento!fila6",
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "VIS-2026-02-12-0071",
+      "patient_id": "pat_mas-0004587",
+      "date": "2026-02-12",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "VACCINATION",
+      "reason": "Vacunación anual",
+      "clinic": {
+        "code": "CANVERD",
+        "name": "Centro Veterinario CanVerd"
+      },
+      "clinician_ref": "PROF-0012",
+      "status": "SIGNED",
+      "vitals": {},
+      "soap": {
+        "s": null,
+        "o": null,
+        "a": "Administradas vacunas Rabia, Polivalente y Leptospirosis. Sin incidencias.",
+        "p": null
+      },
+      "diagnosis_summary": "Administradas vacunas Rabia, Polivalente y Leptospirosis. Sin incidencias.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": null,
+      "next_visit_precision": null,
+      "next_visit_text": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_iso",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila3",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "VIS-2025-09-28-0812",
+      "patient_id": "pat_mas-0004587",
+      "date": "2025-09-28",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Gastroenteritis aguda (resuelta)",
+      "clinic": {
+        "code": "CANVERD",
+        "name": "Centro Veterinario CanVerd"
+      },
+      "clinician_ref": "PROF-0012",
+      "status": "SIGNED",
+      "vitals": {},
+      "soap": {
+        "s": null,
+        "o": null,
+        "a": "Gastroenteritis aguda (resuelta).",
+        "p": "Cuadro de vómitos y diarrea leve. Tratamiento sintomático. Evolución favorable."
+      },
+      "diagnosis_summary": "Gastroenteritis aguda (resuelta).",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": null,
+      "next_visit_precision": null,
+      "next_visit_text": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_iso",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila4",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "VIS-2025-08-10-0655",
+      "patient_id": "pat_mas-0004587",
+      "date": "2025-08-10",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "RECHECK",
+      "reason": "Revisión ótica",
+      "clinic": {
+        "code": "CANVERD",
+        "name": "Centro Veterinario CanVerd"
+      },
+      "clinician_ref": "PROF-0012",
+      "status": "SIGNED",
+      "vitals": {},
+      "soap": {
+        "s": null,
+        "o": "Control de otitis externa. Conductos sin exudado, buena evolución.",
+        "a": null,
+        "p": null
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": null,
+      "next_visit_precision": null,
+      "next_visit_text": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_iso",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila5",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "VIS-2025-05-15-0398",
+      "patient_id": "pat_mas-0004587",
+      "date": "2025-05-15",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "PREVENTIVE",
+      "reason": "Control antiparasitario",
+      "clinic": {
+        "code": "CANVERD",
+        "name": "Centro Veterinario CanVerd"
+      },
+      "clinician_ref": "PROF-0012",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 12.6,
+        "bcs": 5
+      },
+      "soap": {
+        "s": null,
+        "o": null,
+        "a": null,
+        "p": "Desparasitación interna y externa. Peso: 12,6 kg. BCS: 5/9."
+      },
+      "diagnosis_summary": null,
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": null,
+      "next_visit_precision": null,
+      "next_visit_text": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_iso",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila6",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "VIS-2025-03-20-0214",
+      "patient_id": "pat_mas-0004587",
+      "date": "2025-03-20",
+      "time": null,
+      "started_at": null,
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Consulta dermatológica",
+      "clinic": {
+        "code": "CANVERD",
+        "name": "Centro Veterinario CanVerd"
+      },
+      "clinician_ref": "PROF-0012",
+      "status": "SIGNED",
+      "vitals": {},
+      "soap": {
+        "s": null,
+        "o": null,
+        "a": "Prurito estacional. Se pauta tratamiento y control en revisión.",
+        "p": null
+      },
+      "diagnosis_summary": "Prurito estacional. Se pauta tratamiento y control en revisión.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": null,
+      "next_visit_precision": null,
+      "next_visit_text": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila7",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "normalized_iso",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila7",
+          "confidence": 1.0
+        }
+      }
+    }
+  ],
+  "problems": [
+    {
+      "_type": "Problem",
+      "id": "prb_luna_otitis",
+      "patient_id": "pat_mas-0004587",
+      "label": "Otitis externa recurrente",
+      "code": null,
+      "category": "OTIC",
+      "status": "ACTIVE",
+      "certainty": "CONFIRMED",
+      "onset_date": null,
+      "resolved_date": null,
+      "severity": "MODERATE",
+      "first_encounter_ref": null,
+      "notes": "Reagudización derecha el 06/11/2026 con Malassezia; antecedente de otitis recurrente.",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_luna_prurito",
+      "patient_id": "pat_mas-0004587",
+      "label": "Prurito estacional",
+      "code": null,
+      "category": "DERMATOLOGIC",
+      "status": "ACTIVE",
+      "certainty": "SUSPECTED",
+      "onset_date": null,
+      "resolved_date": null,
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": "Base alérgica probable según la valoración del 06/11/2026.",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_luna_digestiva",
+      "patient_id": "pat_mas-0004587",
+      "label": "Sensibilidad digestiva leve",
+      "code": null,
+      "category": "GI",
+      "status": "ACTIVE",
+      "certainty": "REPORTED",
+      "onset_date": null,
+      "resolved_date": null,
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_luna_nkda",
+      "patient_id": "pat_mas-0004587",
+      "label": "Sin alergias medicamentosas conocidas",
+      "code": null,
+      "category": "ALLERGY",
+      "status": "RULED_OUT",
+      "certainty": "CONFIRMED",
+      "onset_date": null,
+      "resolved_date": null,
+      "severity": "UNKNOWN",
+      "first_encounter_ref": null,
+      "notes": "Hallazgo negativo explícito; no debe tratarse como alergia.",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_luna_gastro",
+      "patient_id": "pat_mas-0004587",
+      "label": "Gastroenteritis aguda",
+      "code": null,
+      "category": "GI",
+      "status": "RESOLVED",
+      "certainty": "CONFIRMED",
+      "onset_date": "2025-09-28",
+      "resolved_date": null,
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "immunizations": [
+    {
+      "_type": "Immunization",
+      "id": "imm_luna_01",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": null,
+      "vaccine_code": "RABIES",
+      "vaccine_label": "Rabia",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2026-02-12",
+      "due_on": "2027-02-12",
+      "due_precision": "DAY",
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      },
+      "field_provenance": {
+        "route": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila2",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_luna_02",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": null,
+      "vaccine_code": "POLYVALENT",
+      "vaccine_label": "Polivalente",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2026-02-12",
+      "due_on": "2027-02-12",
+      "due_precision": "DAY",
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      },
+      "field_provenance": {
+        "route": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila3",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_luna_03",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": null,
+      "vaccine_code": "LEPTOSPIRA",
+      "vaccine_label": "Leptospirosis",
+      "product_ref": null,
+      "batch": null,
+      "given_on": "2026-02-12",
+      "due_on": "2027-02-12",
+      "due_precision": "DAY",
+      "route": "UNKNOWN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      },
+      "field_provenance": {
+        "route": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila4",
+          "confidence": 1.0
+        }
+      }
+    }
+  ],
+  "parasite_control": [
+    {
+      "_type": "ParasiteControl",
+      "id": "par_luna_endo",
+      "patient_id": "pat_mas-0004587",
+      "type": "ENDO",
+      "product": null,
+      "last_given": "2025-05-15",
+      "next_due": "2026-09-01",
+      "given_at": "UNKNOWN",
+      "status": "OVERDUE",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.7,
+        "note": "ULTIMA_APLICACION vacia en el PMS; ultima administracion conocida por Historial_Visitas 15/05/2025"
+      },
+      "field_provenance": {
+        "last_given": {
+          "method": "derived_cross_sheet",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila6",
+          "confidence": 0.7
+        },
+        "product": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila5",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "ParasiteControl",
+      "id": "par_luna_ecto",
+      "patient_id": "pat_mas-0004587",
+      "type": "ECTO",
+      "product": null,
+      "last_given": "2025-05-15",
+      "next_due": "2026-09-01",
+      "given_at": "UNKNOWN",
+      "status": "OVERDUE",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.7,
+        "note": "ULTIMA_APLICACION vacia en el PMS; ultima administracion conocida por Historial_Visitas 15/05/2025"
+      },
+      "field_provenance": {
+        "last_given": {
+          "method": "derived_cross_sheet",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila6",
+          "confidence": 0.7
+        },
+        "product": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila6",
+          "confidence": 1.0
+        }
+      }
+    }
+  ],
+  "weights": [
+    {
+      "_type": "Weight",
+      "id": "w_luna_01",
+      "patient_id": "pat_mas-0004587",
+      "measured_on": "2025-02-15",
+      "kg": 12.4,
+      "bcs": 5,
+      "encounter_ref": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Evolucion_Peso!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_luna_02",
+      "patient_id": "pat_mas-0004587",
+      "measured_on": "2025-05-14",
+      "kg": 12.6,
+      "bcs": 5,
+      "encounter_ref": "VIS-2025-05-15-0398",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Evolucion_Peso!fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      },
+      "field_provenance": {
+        "measured_on": {
+          "method": "date_mismatch_resolved",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila6",
+          "confidence": 0.8,
+          "note": "Evolucion_Peso 14/05/2025 vs Historial_Visitas 15/05/2025; se conserva la tabla de pesos"
+        }
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_luna_03",
+      "patient_id": "pat_mas-0004587",
+      "measured_on": "2025-08-12",
+      "kg": 12.7,
+      "bcs": 5,
+      "encounter_ref": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Evolucion_Peso!fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_luna_04",
+      "patient_id": "pat_mas-0004587",
+      "measured_on": "2025-11-10",
+      "kg": 12.8,
+      "bcs": 5,
+      "encounter_ref": null,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Evolucion_Peso!fila5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_luna_05",
+      "patient_id": "pat_mas-0004587",
+      "measured_on": "2026-11-06",
+      "kg": 12.8,
+      "bcs": 5,
+      "encounter_ref": "VIS-2026-11-06-0458",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Evolucion_Peso!fila6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    }
+  ],
+  "reminders": [
+    {
+      "_type": "Reminder",
+      "id": "RMD-LUNA-01",
+      "patient_id": "pat_mas-0004587",
+      "type": "VACCINE",
+      "text": "Refuerzo anual vacunas",
+      "due": "2027-02-12",
+      "due_precision": "DAY",
+      "status": "PENDING",
+      "channel": "UNKNOWN",
+      "origin_encounter_ref": "VIS-2026-02-12-0071",
+      "source_status": "Pendiente",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Recordatorios!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-LUNA-02",
+      "patient_id": "pat_mas-0004587",
+      "type": "RECHECK",
+      "text": "Revisión ótica",
+      "due": "2026-11-13",
+      "due_precision": "DAY",
+      "status": "OVERDUE",
+      "channel": "UNKNOWN",
+      "origin_encounter_ref": "VIS-2026-11-06-0458",
+      "source_status": "Pendiente",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Recordatorios!fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-LUNA-03",
+      "patient_id": "pat_mas-0004587",
+      "type": "CONTROL",
+      "text": "Control dermatológico si recurrencia",
+      "due": null,
+      "due_precision": null,
+      "status": "CONDITIONAL",
+      "channel": "UNKNOWN",
+      "origin_encounter_ref": "VIS-2026-11-06-0458",
+      "source_status": "Condicional",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Recordatorios!fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "prescriptions": [
+    {
+      "_type": "Prescription",
+      "id": "rx_luna_20261106_01",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": "VIS-2026-11-06-0458",
+      "drug_name": null,
+      "drug_name_raw": "Gotas óticas",
+      "dose_text": "cada 12 h",
+      "duration_days": 10,
+      "started_on": "2026-11-06",
+      "ends_on": "2026-11-16",
+      "status": "ACTIVE",
+      "stop_reason": null,
+      "notes": "Producto no identificado en el PMS; el albarán factura 'Medicación ótica' 24,5 EUR.",
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Tratamiento!fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.8
+      }
+    }
+  ],
+  "invoices": [
+    {
+      "_type": "Invoice",
+      "id": "inv_luna_01",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": "VIS-2026-11-06-0458",
+      "document_type": "ALBARAN",
+      "invoice_no": "ALB-2026-11-06-0312",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-CONS",
+          "description": "Consulta general",
+          "qty": 1,
+          "unit_price": 39.0,
+          "vat_rate": 0.21,
+          "line_total": 39.0
+        },
+        {
+          "sku": "SRV-CITO",
+          "description": "Citología ótica",
+          "qty": 1,
+          "unit_price": 18.0,
+          "vat_rate": 0.21,
+          "line_total": 18.0
+        },
+        {
+          "sku": "SRV-LIMP",
+          "description": "Limpieza ótica",
+          "qty": 1,
+          "unit_price": 12.0,
+          "vat_rate": 0.21,
+          "line_total": 12.0
+        },
+        {
+          "sku": "MED-OTICO",
+          "description": "Medicación ótica",
+          "qty": 1,
+          "unit_price": 24.5,
+          "vat_rate": 0.21,
+          "line_total": 24.5
+        }
+      ],
+      "net": null,
+      "vat": null,
+      "total": 93.5,
+      "currency": "EUR",
+      "paid": null,
+      "balance": 14.93,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Facturacion!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.85
+      },
+      "field_provenance": {
+        "net": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Facturacion!fila2",
+          "confidence": 1.0
+        },
+        "vat": {
+          "method": "absent_in_source",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Facturacion!fila2",
+          "confidence": 1.0
+        },
+        "paid": {
+          "method": "derived_from_balance",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2",
+          "confidence": 0.8
+        },
+        "balance": {
+          "method": "derived_cross_sheet",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2",
+          "confidence": 0.9
+        }
+      }
+    }
+  ],
+  "documents": [
+    {
+      "_type": "Document",
+      "id": "doc_luna_rec",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": "VIS-2026-11-06-0458",
+      "kind": "PRESCRIPTION",
+      "filename": "REC-2026-11-06-0037.pdf",
+      "mime": "application/pdf",
+      "size_bytes": null,
+      "size_text": "142 KB",
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Documentos!fila2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Document",
+      "id": "doc_luna_inf",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": "VIS-2026-11-06-0458",
+      "kind": "REPORT",
+      "filename": "INF-VIS-2026-11-06-0458.pdf",
+      "mime": "application/pdf",
+      "size_bytes": null,
+      "size_text": "287 KB",
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Documentos!fila3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Document",
+      "id": "doc_luna_cito",
+      "patient_id": "pat_mas-0004587",
+      "encounter_ref": "VIS-2026-11-06-0458",
+      "kind": "CYTOLOGY",
+      "filename": "CITO-2026-11-06-0021.pdf",
+      "mime": "application/pdf",
+      "size_bytes": null,
+      "size_text": "1,2 MB",
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "PMS export MAS-0004587 (Excel)",
+        "source_format": "XLSX",
+        "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Documentos!fila4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.85
+      }
+    }
+  ],
+  "alerts": [
+    {
+      "_type": "Alert",
+      "id": "alr_luna_01",
+      "patient_id": "pat_mas-0004587",
+      "code": "PARASITE_OVERDUE",
+      "rule_id": "R07",
+      "severity": "HIGH",
+      "category": "PREVENTIVE",
+      "title": "Desparasitación vencida (74 días)",
+      "message": "Desparasitación interna y externa con próxima fecha 01/09/2026, vencida 74 días a 14/11/2026. El PMS no registra la última aplicación; la última conocida es del 15/05/2025.",
+      "evidence": [
+        {
+          "entity": "ParasiteControl",
+          "id": "par_luna_endo",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila5"
+        },
+        {
+          "entity": "ParasiteControl",
+          "id": "par_luna_ecto",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Medicina_Preventiva!fila6"
+        }
+      ],
+      "action": "Actualizar pauta antiparasitaria y registrar la última dosis administrada.",
+      "due_date": "2026-09-01",
+      "confidence": 0.85,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R07",
+        "method": "derived",
+        "confidence": 0.85,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_luna_02",
+      "patient_id": "pat_mas-0004587",
+      "code": "APPOINTMENT_OVERDUE",
+      "rule_id": "R05",
+      "severity": "HIGH",
+      "category": "APPOINTMENT",
+      "title": "Revisión ótica vencida ayer",
+      "message": "La visita del 06/11/2026 fijó revisión en 7 días (13/11/2026). El recordatorio sigue 'Pendiente' y a 14/11/2026 está 1 día vencido.",
+      "evidence": [
+        {
+          "entity": "Reminder",
+          "id": "RMD-LUNA-02",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Recordatorios!fila3"
+        },
+        {
+          "entity": "Encounter",
+          "id": "VIS-2026-11-06-0458",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Historial_Visitas!fila2"
+        }
+      ],
+      "action": "Reprogramar revisión ótica y valorar si el oído derecho ha mejorado.",
+      "due_date": "2026-11-13",
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R05",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_luna_03",
+      "patient_id": "pat_mas-0004587",
+      "code": "ACTIVE_PROBLEM",
+      "rule_id": "R02",
+      "severity": "MEDIUM",
+      "category": "PROBLEM",
+      "title": "Otitis externa recurrente activa",
+      "message": "Reagudización derecha con Malassezia (citología 06/11/2026); probable base alérgica. Sin resolución registrada.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_luna_otitis",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila4"
+        }
+      ],
+      "action": "Otoscopia de control y decisión de mantener o retirar gotas.",
+      "due_date": null,
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R02",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_luna_04",
+      "patient_id": "pat_mas-0004587",
+      "code": "ACTIVE_PROBLEM",
+      "rule_id": "R02",
+      "severity": "MEDIUM",
+      "category": "PROBLEM",
+      "title": "Prurito estacional activo",
+      "message": "Prurito estacional marcado como problema activo; prurito reducido pero con lesiones leves en axilas en octubre de 2025.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_luna_prurito",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila5"
+        }
+      ],
+      "action": "Valorar control del prurito si reaparece tras la otitis.",
+      "due_date": null,
+      "confidence": 0.9,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R02",
+        "method": "derived",
+        "confidence": 0.9,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_luna_05",
+      "patient_id": "pat_mas-0004587",
+      "code": "ACTIVE_MEDICATION",
+      "rule_id": "R03",
+      "severity": "MEDIUM",
+      "category": "MEDICATION",
+      "title": "Gotas óticas activas hasta el 16/11/2026",
+      "message": "Pauta de gotas óticas cada 12 h durante 10 días desde el 06/11/2026 (2 días restantes). Producto no especificado en el PMS.",
+      "evidence": [
+        {
+          "entity": "Prescription",
+          "id": "rx_luna_20261106_01",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Visita_Tratamiento!fila3"
+        }
+      ],
+      "action": "Confirmar producto y cumplimiento antes de repetir o cambiar tratamiento.",
+      "due_date": "2026-11-16",
+      "confidence": 0.9,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R03",
+        "method": "derived",
+        "confidence": 0.9,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_luna_06",
+      "patient_id": "pat_mas-0004587",
+      "code": "DATA_QUALITY",
+      "rule_id": "R09",
+      "severity": "MEDIUM",
+      "category": "DATA_QUALITY",
+      "title": "Identidad débil y export de hace 8 días",
+      "message": "Sin microchip y tutor anonimizado (CLI-0002193, sin teléfono/email). Export del 06/11/2026 (hace 8 días). Datos del propietario insuficientes para contactar.",
+      "evidence": [
+        {
+          "entity": "Patient",
+          "id": "pat_mas-0004587",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Mascota!fila2"
+        },
+        {
+          "entity": "Owner",
+          "id": "own_cli-0002193",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Tutor!fila2"
+        }
+      ],
+      "action": "Verificar identidad y contacto en el check-in antes de confirmar la visita.",
+      "due_date": null,
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R09",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_luna_07",
+      "patient_id": "pat_mas-0004587",
+      "code": "ACTIVE_PROBLEM",
+      "rule_id": "R02",
+      "severity": "LOW",
+      "category": "PROBLEM",
+      "title": "Sensibilidad digestiva leve",
+      "message": "Marcada como alerta activa en el PMS; sin tratamiento ni episodio reciente registrado.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_luna_digestiva",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila3"
+        }
+      ],
+      "action": "Tener en cuenta si se pautan fármacos por vía oral.",
+      "due_date": null,
+      "confidence": 0.85,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R02",
+        "method": "derived",
+        "confidence": 0.85,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_luna_08",
+      "patient_id": "pat_mas-0004587",
+      "code": "ALLERGY_NKDA",
+      "rule_id": "R11",
+      "severity": "INFO",
+      "category": "ALLERGY",
+      "title": "Sin alergias medicamentosas conocidas",
+      "message": "Hallazgo negativo explícito del 06/11/2026: no consta alergia a medicamentos. No confundir con una alergia activa.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_luna_nkda",
+          "source_system": "PMS export MAS-0004587 (Excel)",
+          "source_ref": "export_MAS-0004587_anonimizado.xlsx#Alertas_Problemas!fila2"
+        }
+      ],
+      "action": "Registrar como negativo vigente; revaluar si aparece una reacción.",
+      "due_date": null,
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R11",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    }
+  ],
+  "briefing": {
+    "generated_at": "2026-11-14T01:20:00+01:00",
+    "patient_label": "Luna · Beagle · 7a 8m · hembra esterilizada",
+    "headline": "Luna · Beagle · 7a 8m · hembra esterilizada - 8 alertas (2 altas, 4 medias, 1 baja, 1 informativa)",
+    "alert_counts": {
+      "CRITICAL": 0,
+      "HIGH": 2,
+      "MEDIUM": 4,
+      "LOW": 1,
+      "INFO": 1
+    },
+    "next_appointment": {
+      "date": "2026-11-13",
+      "text": "Revisión ótica",
+      "reminder_id": "RMD-LUNA-02",
+      "status": "OVERDUE"
+    },
+    "priority_actions": [
+      {
+        "alert_id": "alr_luna_01",
+        "severity": "HIGH",
+        "action": "Actualizar pauta antiparasitaria y registrar la última dosis administrada."
+      },
+      {
+        "alert_id": "alr_luna_02",
+        "severity": "HIGH",
+        "action": "Reprogramar revisión ótica y valorar si el oído derecho ha mejorado."
+      },
+      {
+        "alert_id": "alr_luna_03",
+        "severity": "MEDIUM",
+        "action": "Otoscopia de control y decisión de mantener o retirar gotas."
+      }
+    ]
+  },
+  "provenance_summary": {
+    "entities": 31,
+    "fields_populated": 333,
+    "provenance": {
+      "entity_coverage_pct": 100.0,
+      "source_systems": [
+        "PMS export MAS-0004587 (Excel)"
+      ],
+      "source_refs": 30,
+      "field_level_entries": 31,
+      "assumed_fields": 0
+    },
+    "alerts": {
+      "total": 8,
+      "by_severity": {
+        "CRITICAL": 0,
+        "HIGH": 2,
+        "MEDIUM": 4,
+        "LOW": 1,
+        "INFO": 1
+      }
+    },
+    "rules_applied": [
+      "R02",
+      "R03",
+      "R05",
+      "R07",
+      "R09",
+      "R11"
+    ]
+  },
+  "fhir_profile": {
+    "Patient": "Patient",
+    "Owner": "RelatedPerson",
+    "Encounter": "Encounter",
+    "Problem": "Condition",
+    "Prescription": "MedicationStatement",
+    "AllergyIntolerance": "Condition.category=ALLERGY|ADVERSE_REACTION",
+    "Immunization": "Immunization",
+    "Weight": "Observation (body weight / BCS)",
+    "ParasiteControl": "MedicationStatement (preventive)",
+    "Reminder": "Task",
+    "Document": "DocumentReference",
+    "Invoice": "Invoice",
+    "Alert": "Flag (VetLink extension)",
+    "Provenance": "meta.provenance (embedded in _meta)"
+  },
+  "review": {
+    "policy": "Campos críticos (alergias, dosis, medicación, microchip) exigen revision humana si confidence < umbral. El briefing no se publica con critical_fields pendientes; el LLM solo extrae texto libre, nunca calcula alertas.",
+    "critical_fields": [
+      {
+        "field": "patient.microchip",
+        "entity_id": "pat_mas-0004587",
+        "type": "Patient",
+        "confidence": 0.0,
+        "threshold": 1.0,
+        "review_required": true,
+        "reason": "microchip ausente en la fuente"
+      },
+      {
+        "field": "problem.label",
+        "entity_id": "prb_luna_nkda",
+        "type": "Problem",
+        "confidence": 0.9,
+        "threshold": 0.95,
+        "review_required": true,
+        "reason": "alergia / efecto adverso"
+      },
+      {
+        "field": "prescription.drug_name|dose_text",
+        "entity_id": "rx_luna_20261106_01",
+        "type": "Prescription",
+        "confidence": 0.8,
+        "threshold": 0.9,
+        "review_required": true,
+        "reason": "medicación o dosis incompleta/ambigua"
+      }
+    ],
+    "pending_review": 3,
+    "reviewed_by": null
+  }
+}

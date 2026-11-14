@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "26e31ed3-1b48-4d8b-a09f-57b9e92cfb71",
+  "status": "current",
+  "command": "deliver",
+  "type": "sequence",
+  "input": "D:\\hackaton\\Programa\\Joniha\\.archify\\sequence-secuencia-importacion-briefing-20261114-011538\\candidate.json",
+  "output": "D:\\hackaton\\Programa\\Joniha\\docs\\diagramas\\secuencia-importacion-briefing.html",
+  "specification": {
+    "sha256": "33a5af900eb2c7c0e01617a043be4609544bf80b384696b179bfd9dbb44343a9",
+    "bytes": 7349
+  },
+  "artifact": {
+    "sha256": "6e301f9f1f7eb64d1a076ca8d72294f8dfb1ef6fe09dfe088700e4c957e69d1c",
+    "bytes": 863489
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "646612ea-061a-4d56-a3e7-c61ed7314e22",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\hackaton\\Programa\\Joniha\\.archify\\architecture-arquitectura-vetlink-20261114-011538\\candidate.json",
+  "output": "D:\\hackaton\\Programa\\Joniha\\docs\\diagramas\\arquitectura-vetlink.html",
+  "specification": {
+    "sha256": "67538c97652252a73efab8e13f7bf770838e1dc20de8868a7a8e6f0b4f7d8624",
+    "bytes": 7355
+  },
+  "artifact": {
+    "sha256": "865a05c83a1915bf65d8e98dd5684a96c1e7f0091c181f8cfedc622b521077f7",
+    "bytes": 874412
+  }
+}

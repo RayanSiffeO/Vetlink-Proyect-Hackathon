@@ -1,0 +1,406 @@
+# PLAYBOOK · VetLink — Reto 3 · VIII Hackathon Boehringer Ingelheim España
+
+> **Documento maestro de trabajo y ritmo del equipo.**  
+> Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
+> Versión 1.2 · 14/11/2026 01:20 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.2: cierra las decisiones abiertas con Data (`docs/02-modelo-datos.md`): congelar nombres v1 + `fhir_profile`, gate de revisión con banner, alcance del resumen pre-aceptación y fixture CSV de robustez.  
+> Cambios v1.1: integra el debate red-team (`docs/03-debate-diseno.md`) y la investigación (`docs/06-investigacion-mercado.md`): recorte a **C'** (5 pantallas), briefing determinista, resumen no identificativo antes de aceptar, demo local-first y reloj de congelaciones.
+
+---
+
+## 0. Resumen en 60 segundos
+
+- **Qué es:** la VIII Hackathon de Boehringer Ingelheim España, virtual, del 13 al 15 de noviembre de 2026. Tres retos, premios de 3.000/2.500/2.000 € por reto, y un jurado que evalúa **viabilidad técnica y funcionamiento del prototipo** el domingo.
+- **Nuestro reto (Reto 3):** *"Menos papeleo, más cuidado: los datos al servicio de la clínica"* — homogeneizar la historia clínica veterinaria que llega en Word/Excel/JSON, montar un marketplace de especialistas y conectar ambas piezas para que el especialista vea el caso antes de la visita.
+- **Nuestra apuesta:** **VetLink** = la historia clínica en un formato único + la red de especialistas + el **briefing pre-visita**. Pitch: *"La historia clínica de tu paciente llega completa al especialista antes de la visita."*
+- **Decisiones clave del debate:** alcance **C' recortado** (5 pantallas, ~40–48 h-persona), **briefing determinista** (la IA solo extrae), **resumen no identificativo antes de aceptar**, **demo local-first** con seed y vídeo.
+- **Estado:** repo con documentación y estructura (0 código de app), ~36 h de reloj, equipo pequeño. Plan por bloques con hitos demoables y congelación progresiva.
+
+---
+
+## 1. La hackathon: qué es y cómo se gana
+
+| Dato | Valor |
+|---|---|
+| Organiza | Boehringer Ingelheim España (IT Hub España) · VIII edición |
+| Lema | *"Arquitectos del futuro de la salud en España"* |
+| Formato | Virtual, por equipos · **13–15 noviembre 2026** |
+| Premios | **3.000 € / 2.500 € / 2.000 €** (uno por reto) |
+| Evaluación | Jurado al cierre del domingo: **viabilidad técnica y funcionamiento de los prototipos** |
+| Entrega | Solo por el repo del equipo: `github.com/HackathonBoehringerIT/Joniha` → **todo en `main`** antes del deadline |
+| Nuestro reto | Reto 3: datos clínicos veterinarios + marketplace de especialistas + conexión entre ambos |
+
+**Cómo se gana una hackathon (reglas no escritas):**
+1. **Que la demo funcione.** El jurado recordará lo que vio funcionar; un botón muerto es peor que una feature ausente.
+2. **Resolver el problema exacto que se pidió**, con los datos exactos que te dieron.
+3. **Una historia de 60 segundos**: antes → después → impacto.
+4. **Un "wow" diferencial** que nadie más tenga: el briefing pre-visita con procedencia y control de acceso.
+5. **Rigor en salud:** datos sintéticos, minimización, consentimiento y auditoría visibles.
+6. **Cero scope creep.** Cada minuto que no se ve en la demo es un minuto perdido.
+
+**Nuestra ventaja:** los otros equipos tenderán a elegir el normalizador *o* el marketplace. Nosotros hacemos **el puente entre ambos**, que es el tercer requisito del dossier y el que más duele en la vida real.
+
+**El jurado no evalúa la idea: evalúa si el prototipo aguanta que él lo toque.** En cuatro minutos pedirá: entrar, subir un fichero, preguntar "¿de dónde sale este dato?", "¿quién puede verlo?", "¿y con un formato que no es de los vuestros?", "¿esto es un dispositivo médico?" y pulsar "contratar". Esas seis respuestas van ensayadas.
+
+---
+
+## 2. El tema: qué nos piden de verdad
+
+> Detalle completo en **[`docs/01-reto-analisis.md`](01-reto-analisis.md)**.
+
+**Problema.** La información clínica existe, pero está incompleta, desordenada o infrautilizada. Laura (generalista) no tiene especialista a mano y no sabe a quién llamar; Marc (especialista ambulante) llega a la clínica y dedica los primeros minutos a reconstruir la historia que le ha llegado en Word, Excel o un JSON de otro sistema.
+
+**Los 3 requisitos literales del reto:**
+1. Subir la información clínica en **formatos distintos** y **homogeneizarla dinámicamente** en un único formato comprensible por cualquier veterinario. *(Matiz: "usarlos como guía, no como los únicos archivos"; cada clínica puede tener formatos distintos.)*
+2. Ser un **marketplace**: clínicas encuentran/contratan especialistas; especialistas ofrecen servicios y organizan su agenda.
+3. **Conectar ambas piezas**: la historia llega completa y ordenada, y el especialista puede **verla antes de ver al paciente**.
+
+**Personas:** Laura (CLINIC), Marc (SPECIALIST). Tutora (Carmen) fuera del MVP, en el relato de roadmap.
+
+**Datos de ejemplo (3 pacientes, 3 ontologías):** Bruno (Word clínico), Luna (Excel de PMS, 13 hojas), Kira (JSON de API) + **fixture CSV de robustez** (`data/samples/export_clinica_norte.csv`, paciente Nala) para demostrar homogeneización dinámica. Ver `docs/01-reto-analisis.md`, `docs/02-modelo-datos.md` y `data/samples/`. El modelo canónico ya está implementado y validado en `docs/ejemplos/canonico-*.json` (132 entidades, 1.785 campos, 22 alertas con evidencia).
+
+**Datos de mercado que sostienen el pitch** (fuente: `docs/06-investigacion-mercado.md`): **7.032 clínicas** de animales de compañía en España; **~92% independientes**; **~70% con 1–2 veterinarios**; **~400 especialistas diplomados**, más de la mitad trabajando fuera; **64%** de los veterinarios encuestados por la FVE dice que el papeleo se ha duplicado; **>10 h/semana** en tareas administrativas de prescripción. El mercado de software/clínicas factura **3.069 M€**. No hay un estándar de intercambio veterinario operativo en España (VetXML es UK).
+
+**Criterios de éxito medibles del MVP:** 3 fichas canónicas en <30 s · alertas correctas por paciente · búsqueda + solicitud de especialista · briefing antes de aceptar · calendario sincronizado · **4º formato desconocido (CSV) que no rompe** · métrica 10–15 min → 90 s.
+
+---
+
+## 3. Producto: VetLink
+
+**Pitch de 30 segundos:**
+> *"Cada clínica veterinaria pequeña trabaja con un software distinto y un papeleo distinto. Cuando necesita un especialista, llama, cruza los dedos y le manda la historia como puede. VetLink normaliza la historia clínica en un formato único, conecta a la clínica con el especialista que necesita y le entrega un informe que puede leer antes de ver al paciente. Menos papeleo, más cuidado."*
+
+### Los 3 pilares (mapean 1:1 con los requisitos)
+
+| Pilar | Qué es | Cómo se ve en la demo |
+|---|---|---|
+| **VetRecord (normalización)** | Ingesta Word/Excel/JSON/CSV → registro canónico con provenance y alertas | Subir 3 ficheros + un CSV con columnas raras → 4 fichas con alertas |
+| **VetNetwork (marketplace)** | Directorio de especialistas por especialidad, zona, disponibilidad y tarifa; solicitud + agenda | Laura busca dermatología y solicita |
+| **VetBriefing (puente)** | Briefing pre-visita determinista + resumen no identificativo antes de aceptar | Marc lo lee *antes* de aceptar y ve la historia al aceptar |
+
+### Alcance MVP — versión C' (recortada, ver §4)
+
+**Pantallas del MVP (5):**
+1. **Login/rol** (clínica o especialista).
+2. **Paciente + subida + revisión** (bandeja con los 3 pacientes, importador multi-fichero, panel de revisión con procedencia).
+3. **Búsqueda + ficha de especialista** (servicio, precio, disponibilidad, solicitud).
+4. **Reserva/agenda** (franjas, aceptación, cita confirmada).
+5. **Informe/briefing** (resumen no identificativo antes de aceptar; historia completa después; auditoría de acceso).
+
+| | Incluye |
+|---|---|
+| **Must** | Las 5 pantallas · 3 formatos + 1 CSV desconocido · registro canónico + provenance + confianza · alertas · solicitud/aceptación/cita · briefing con resumen no identificativo y control post-aceptación · seed + botón reset · README + vídeo |
+| **Should** | Mapeador asistido de columnas · panel de auditoría de accesos · estados de error claros · "matriz de soporte de formatos" en README |
+| **Could** | Chat del caso · cierre de visita del especialista · landing pública · área del dueño (solo mención) · exportar informe a PDF · teleconsulta (mencionar) |
+| **Won't** | Pagos reales · OCR/PDF escaneado · integración directa con PMS/FHIR · estrellas/reseñas · notificaciones reales · app móvil nativa · IA diagnóstica · multi-idioma |
+
+**Regla del red-team que se aplica:** "5 pantallas sin callejones sin salida valen más que 12 con 3 muertas".
+
+### Modelo de negocio (slide, no código)
+
+- **SaaS clínica:** 39 €/mes (hasta 200 historias/mes) → normalización + red de especialistas.
+- **Comisión por derivación:** 12 % del importe del servicio (fase 2; en la demo solo se muestra el precio del servicio).
+- **Plan especialista:** 19 €/mes o gratis hasta 3 visitas (efecto red).
+- **Partner Boehringer:** datos agregados de prevención/adherencia (vacunas, desparasitación, revisiones) con consentimiento → encaje con su agenda de salud animal. *Nunca datos individuales sin consentimiento.*
+- **TAM/SAM/SOM orientativo** (`docs/06`): TAM SaaS ≈ 4,2 M€/año; SOM año 1 realista 90–360 k€ ARR con 150–300 clínicas. No presentar el mercado de 3.069 M€ como "mercado de software".
+
+### Por qué ganamos (y por qué no es otro PMS)
+
+| Alternativa | Por qué VetLink no la sustituye |
+|---|---|
+| Software de gestión clínica (QVET, Wakyma, Provet, Winvet…) | No competimos: nos integramos por export/API; el pivot es la **red de especialistas** y el briefing |
+| Marketplace genérico de servicios (Gobuddie, Vetyou) | No es un directorio muerto: el briefing es el **motivo de contratación** y la normalización es el foso técnico |
+| Telemedicina (FirstVet, Joii, Vetster) | No operan en España o son virtuales puros; aquí se prepara la visita presencial, no se diagnostica |
+| "Chat con IA que resume historias" | No basta con resumir: hay que **estructurar**, validar y llevar el caso a una **transacción** (visita) |
+
+**Roadmap post-hackathon:** app del tutor con recordatorios · OCR/PDF · conectores PMS (API/exportadores) · pagos con Stripe Connect · matching inteligente · export FHIR R4 (`Patient-animal`) · métricas de prevención.
+
+---
+
+## 4. Debate y decisiones (brainstorm documentado)
+
+> Debate completo con puntuaciones, falsadores y objeciones del jurado en **[`docs/03-debate-diseno.md`](03-debate-diseno.md)**.
+
+### Opciones debatidas (nota /10 con pesos: encaje 35%, funciona 25%, viabilidad 20%, wow 10%, riesgo 10%)
+
+| Opción | Nota | Esfuerzo | Veredicto |
+|---|---:|---|---|
+| A) Normalizador puro | 5,90 | 25–30 h | Plan B si no hay equipo; incumple el reto |
+| B) Marketplace puro | 4,80 | 30–35 h | No: commodity, no usa los datos |
+| C) Capa + marketplace + briefing (mi propuesta inicial) | 7,65 | 55–65 h | Dirección correcta, inviable tal cual |
+| **C') C recortado** ✅ | **8,35** | **40–48 h** | **Recomendado:** 5 pantallas, +mapeador, briefing determinista |
+| D) Solo briefing con IA | 5,20 | 15–20 h | No: riesgo de alucinación, incumple marketplace |
+
+**Veredicto:** **C'**. No es una versión tímida de C: es C sin el ~40% de alcance que no puntúa (dueño, chat, reseñas, landing, notificaciones) y con dos cambios que sí puntúan (mapeador asistido + resumen no identificativo antes de aceptar).
+
+### Decisiones cerradas
+
+| # | Decisión | Por qué |
+|---|---|---|
+| D1 | **Tres pilares** y el briefing como "wow" | Es el 3er requisito y el diferencial frente a otros equipos |
+| D2 | **Sin pagos reales** (comisión como slide; precio de servicio sí visible) | Stripe/KYC/impuestos no caben; "contratar" se demuestra con estado |
+| D3 | **Briefing determinista** (plantilla sobre el registro canónico); el LLM solo extrae texto libre | Es la pantalla que más mira el jurado y la de mayor riesgo legal |
+| D4 | **Provenance + confidence por campo**, revisión humana obligatoria en campos críticos | Es salud; protege la demo y la credibilidad |
+| D5 | **Resumen no identificativo antes de aceptar; historia completa después** | Minimización RGPD + la mejor demostración de "conectar" |
+| D6 | **Dueño/tutor fuera de la demo** (fase 2) | El reto es clínica↔especialista |
+| D7 | **Stack congelado:** React + FastAPI + PostgreSQL. Supabase **solo como Postgres**; demo **local-first** (Docker) | Menos servicios = menos fallos; Auth/Storage/Realtime de Supabase comen horas |
+| D8 | **Mapeador asistido** para tabulares + **4º formato CSV** con cabeceras no vistas | "Homogeneizar dinámicamente" ≠ 3 importadores hardcodeados |
+| D9 | **Marca VetLink congelada**; tagline de pitch: "La historia clínica llega completa al especialista" | Hay prior art de "VetLink" en UK/UAE/IDEXX: no invertir en dominio; el nombre no puntúa, el mensaje sí |
+| D10 | **Demo local-first** + seed/reset + vídeo + segundo portátil | El jurado evalúa funcionamiento; la wifi no puede decidir |
+| D11 | **Congelaciones:** esquema sáb 18:00 · dependencias sáb 20:00 · features dom 10:00 · código dom 12:00 · repo verificado dom 13:30 | El buffer no es opcional |
+| D12 | **Formato canónico inspirado en FHIR** (Patient, Encounter, Condition, MedicationStatement, AllergyIntolerance, Immunization, Observation, DocumentReference) + provenance | Es el idioma que un director de IT respeta y da respuesta a "¿de dónde sale este dato?" |
+| D13 | **Congelar nombres v1 en los JSON** (`problems`, `documents`…) + `fhir_profile` 1:1; renombrar a v1.1 después de la demo | Renombrar a mitad rompe UI y contratos; el `fhir_profile` demuestra la equivalencia sin coste |
+| D14 | **Gate de revisión con banner**, no bloqueo: el briefing se puede ver con "N campos críticos pendientes de revisión" y `reviewed_by` visible | La demo necesita enseñar el flujo completo; el banner demuestra rigor sin callejón sin salida |
+| D15 | **Resumen pre-aceptación:** especie, raza, edad, sexo/esterilización, peso/BCS, motivo, 2–3 alertas, urgencia, servicio y **precio orientativo**. Se ocultan siempre PII del tutor, microchip completo, documentos y facturas | Fija el texto exacto de la pantalla y evita filtrar datos antes de contratar |
+
+### Supuestos peligrosos (resumen del red-team)
+
+| Supuesto | Falsador | Mitigación |
+|---|---|---|
+| "Con los 3 ficheros basta; el jurado no probará otro" | CSV sintético con cabeceras raras subido por alguien ajeno | Mapeador asistido + matriz de soporte en README |
+| "El LLM extrae bien dosis y alergias" | 10–20 documentos sintéticos held-out; si acierto crítico <90%, cambiar discurso | Reglas para lo estructurado; LLM solo texto libre; revisión obligatoria |
+| "La demo en vivo saldrá" | 3 ensayos con la red del evento, arranque en frío | Local-first, seed, vídeo, segundo portátil |
+| "30 h alcanzan" | Burn-down sábado 20:00: ¿flujo end-to-end? Si no, recorta ese mismo día | Vertical slice; congelación de alcance |
+| "El deadline es domingo 15:00" | Anuncio oficial | Tratar dom 13:30 como deadline real; versión enviable el sábado noche |
+| "Los ficheros no tienen PII" | El Word trae nombre/DNI/teléfono ficticios del tutor | Demo con datos sintéticos; no enviar PII a LLM; aviso en UI |
+| "El briefing puede decir cualquier cosa" | Revisión veterinaria del texto | Plantilla determinista, sin diagnóstico/dosis, disclaimer "no sustituye el juicio clínico" |
+
+### Preguntas abiertas para el equipo/usuario
+
+1. **Deadline exacto** (y zona horaria) — confirmar con la organización y anotarlo en `docs/00`.
+2. **Composición real del equipo** (para mapear roles del §7 y validar las 40–48 h-persona de C').
+3. Proyecto **PostgreSQL/Supabase** disponible; credenciales en el gestor del equipo.
+4. ¿Alguien ha aceptado la invitación a la org de GitHub y puede pushear? (probar hoy).
+5. ¿Quién narra el pitch y quién hace la demo?
+6. ¿Requisitos de entrega de la organización (vídeo, URL, README)?
+
+---
+
+## 5. Arquitectura y datos
+
+> Detalle en **[`docs/05-arquitectura-mvp.md`](05-arquitectura-mvp.md)** y **[`docs/02-modelo-datos.md`](02-modelo-datos.md)**.
+
+**Stack (cerrado):** React + Vite + TS + Tailwind · FastAPI (Python 3.12) · PostgreSQL (Supabase o Docker local) · LLM solo para texto libre · despliegue opcional: Vercel/Netlify (web), Render/Fly (API).
+
+**Pipeline diferencial:** `upload → sniff de formato → adaptador (docx/xlsx/json/csv/generic-LLM) → validación de esquema → revisión humana de campos dudosos → normalización → matching de paciente → merge con provenance → registro canónico JSONB → alertas → briefing determinista`.
+
+**Reglas:**
+- El pipeline devuelve resultado parcial, nunca un error global.
+- Añadir un formato = añadir un adaptador, no tocar el core.
+- El **mapeador asistido** propone mapeo de columnas desconocidas y el usuario confirma.
+- El **briefing es determinista**; el LLM no redacta el informe.
+- Modelo canónico **versionado y FHIR-inspired** con `system`/`code`/`display` donde aplique (SNOMED VetSCT/VeNom como mapeo declarado, no como estándar propio).
+
+**Estructura de repo (ya creada):**
+
+```
+Joniha/
+├── README.md              # pitch, arranque, links, matriz de soporte de formatos
+├── PLAYBOOK.md            # este documento
+├── docs/                  # 00 contexto · 01 reto · 02 datos · 03 debate · 04 flujos · 05 arquitectura · 06 mercado
+│   ├── diagramas/         # 4 diagramas HTML navegables (Archify)
+│   └── ejemplos/          # registros canónicos JSON de ejemplo
+├── apps/web/              # React + Vite + TS (README con pantallas y rutas)
+├── services/api/          # FastAPI (README con estructura y contrato)
+├── data/samples/          # los 3 ficheros del reto (copias)
+└── docker-compose.yml     # previsto: fallback local
+```
+
+**Herramientas del equipo:** plugin **Archify** instalado en el perfil DSH (skill-only, sin UI propia) → genera los diagramas HTML navegables de `docs/diagramas/` (flujos, arquitectura, secuencia) y sirve para el pitch.
+
+---
+
+## 6. Flujos de usuario y de uso de la app
+
+> Detalle en **[`docs/04-flujos-usuarios.md`](04-flujos-usuarios.md)**. Diagramas en `docs/diagramas/`:
+> - `flujo-usuarios.html` — viaje completo Laura → VetLink → Marc (con ramas)
+> - `flujo-uso-app.html` — recorrido pantalla a pantalla
+> - `arquitectura-vetlink.html` — componentes y fronteras
+> - `secuencia-importacion-briefing.html` — pipeline técnico y aceptación
+
+**Pantallas:** S1 Landing · S2 Login · S3 Home clínica · S4 Importar · S5 Ficha canónica · S6 Marketplace · S7 Perfil especialista · S8 Solicitud · S9 Home especialista · S10 Briefing · S11 Calendario · S12 Chat · S13 Cierre · S14 Configuración.
+
+**Recorte C' para la demo (importante):** se implementan **S2 · S4+S5 · S6+S7 · S8+S11 · S10** (agrupadas en 5 pantallas). S1/S12/S13/S14 quedan fuera del MVP; S3 se simplifica a bandeja de pacientes. El flujo completo (A–E) sigue documentado como referencia y para el roadmap.
+
+**Flujos clave:** A) importar historias · B) buscar y solicitar especialista · C) recibir, leer briefing y aceptar · D) visita y cierre · E) recorrido de demo · F) tutor (fase 2).
+
+**Estados:** solicitud `DRAFT → REQUESTED → ACCEPTED → SCHEDULED → COMPLETED` (+ `DECLINED`/`CANCELLED`/`EXPIRED`); importación `UPLOADING → PARSING → NEEDS_REVIEW → READY` (+ `FAILED`).
+
+---
+
+## 7. Estructura de trabajo: equipo, roles y reglas
+
+### Roles (5 funciones; adaptables si sois menos)
+
+| Rol | Dueño de | Entregable del día | Persona sugerida |
+|---|---|---|---|
+| **Capitán / PM + pitch** | Playbook, decisiones, tiempos, GitHub/entrega, guion | Daily status + demo script | Lead del equipo |
+| **Data / AI** | `docs/02`, adaptadores, canónico, alertas, mapeador, briefing | 4 fichas normalizadas + briefing | Perfil datos/IA |
+| **Backend** | API FastAPI, roles, Postgres, solicitudes, agenda, seed, Docker | API viva + seed reproducible | Perfil back |
+| **Frontend** | 5 pantallas MVP, design system VetLink, estados vacío/error | Pantallas demoables | Perfil front |
+| **Demo / UX / QA** | Datos demo, guion visual, vídeo, README, QA cruzada, métricas | Vídeo + README + bugs P0 | Perfil producto/QA |
+
+*Si sois 3:* capitán+frontend, data+backend, demo/QA/pitch. *Si sois 4:* capitán+demo, data, backend, frontend.
+
+### Reglas del repo (se votan y no se cambian el domingo)
+
+1. `main` **siempre desplegable**. Commits pequeños; push al menos cada hora.
+2. Ramas cortas `feat/...`, `fix/...`, `docs/...`; PR solo si toca código de otro dueño; merge rápido.
+3. **Commits:** `feat:`, `fix:`, `docs:`, `data:`, `chore:`, `demo:` + descripción corta en español.
+4. **Nada de secretos** (`.env`, claves); `.env.example` sí.
+5. Los **4 ficheros de ejemplo** (3 del reto + 1 CSV de robustez) viven en `data/samples/`.
+6. **Contrato API** de `docs/05` es la frontera front/back: si cambia, avisar en el canal.
+7. No se toca el modelo canónico sin avisar a Data + Frontend.
+8. `README.md` se actualiza **hoy**, no el domingo.
+
+### Gestión de tareas
+
+- Tablero (GitHub Projects o Issues): **Backlog · En curso (WIP máx. 2/persona) · En revisión · Hecho**.
+- Cada tarea con dueño, criterio de aceptación observable y marca 🏁 si entra en la demo.
+- Revisión del tablero en cada checkpoint.
+- **Definición de Hecho (DoD):** visible en la demo · estados vacío y error · sin secretos · commit en `main` · documentación tocada si aplica · 0 bugs P0.
+
+---
+
+## 8. Ritmo: plan hora a hora
+
+> Ancla: **ahora** = sábado 14/11 01:15. Si el equipo arranca más tarde, comprimir según §8.3. El plan del red-team manda: vertical slice primero y recorte en el mismo día si el burn-down falla.
+
+### 8.1 Sábado 14
+
+| Franja | Bloque | Objetivo | Entregable/Hito | Checkpoint |
+|---|---|---|---|---|
+| 01:15–02:30 | **H0 · Alineación** | Leer playbook + `01` + `04`; cerrar D1–D15; tablero y scaffold | Playbook v1.2, docs, tablero | — |
+| 08:00–09:00 | Kickoff | Verificar push a `main` y deadline oficial; reparto; entorno local (Docker + Postgres) | Entorno listo | Standup 10' |
+| 09:00–14:00 | **B1 · Esqueleto vertical** | Esquema canónico, auth/roles, seed, XLSX+JSON end-to-end, pantalla paciente/subida/revisión | **H1 (14:00): esquema + auth + seed + XLSX/JSON E2E** | Demo interna 1 |
+| 14:00–15:00 | Comida | — | — | — |
+| 15:00–18:00 | **B2 · DOCX + marketplace + reserva** | Adaptador DOCX, LLM solo texto libre, búsqueda/ficha especialista, solicitud/aceptación/agenda | **H2 (18:00): flujo completo con DOCX y reserva** | Congelar **esquema 18:00** |
+| 18:00–20:00 | **B3 · Briefing + mapeador** | Briefing determinista, resumen no identificativo, mapeador CSV, alertas | **H3 (20:00): briefing + CSV desconocido** | Congelar **dependencias 20:00** |
+| 20:00–21:00 | Cena + demo interna 2 | — | — | Demo interna 2 |
+| 21:00–24:00 | **B4 · Auditoría + pulido demo** | Auditoría de accesos, estados error, responsive briefing, seed reset, vídeo de respaldo | **H4 (24:00): producto demoable + vídeo grabado** | Demo interna 3 |
+| 00:00–08:00 | **Descanso obligatorio** | Dormir. El domingo se gana con cabeza fresca | — | — |
+
+### 8.2 Domingo 15
+
+| Franja | Bloque | Objetivo | Entregable/Hito | Checkpoint |
+|---|---|---|---|---|
+| 08:00–09:00 | Standup | Revisar bugs P0 y burn-down | Lista P0 | 10' |
+| 09:00–10:00 | **B5 · QA** | Repasar los 3 casos + CSV, ensayo del guion | **H5 (10:00): feature freeze** | Solo bugs |
+| 10:00–12:00 | **B6 · Ensayo + README** | Ensayo cronometrado, README final, matriz de soporte, verificar repo | **H6 (12:00): code freeze** | Ensayo |
+| 12:00–13:30 | **B7 · Entrega** | Push final, verificar `main` en GitHub, vídeo, checklist §11 | **H7 (13:30): entregado** | Checklist §11 |
+| 13:30–15:00 | Colchón | Solo P0 real; nada de features | — | — |
+
+### 8.3 Si el equipo empieza más tarde (versión comprimida)
+
+| Horas disponibles | Plan mínimo que SÍ se entrega |
+|---|---|
+| ≥ 16 h | Plan completo (B1–B7) |
+| ~10 h | Login + paciente/subida/revisión + búsqueda/ficha + reserva + briefing + seed + vídeo; sin mapeador CSV ni auditoría |
+| ~6 h | Normalizador + 3 fichas + briefing con datos reales; marketplace mock; vídeo grabado |
+| < 6 h | Registro canónico de Bruno + ficha + briefing + vídeo; documentación y README |
+
+**Nunca se recorta:** los tres ficheros de ejemplo, el briefing de Marc, el resumen no identificativo pre-aceptación y el vídeo.
+
+### 8.4 Cadencia y rituales
+
+- **Standup de 10 min** al inicio de cada bloque: qué hice / qué haré / qué me bloquea.
+- **Demo interna de 10 min** al final de cada bloque: solo lo que funciona, en el orden del guion.
+- **Regla de los 20 min:** bloqueado >20 min → pide ayuda.
+- **Regla del corte:** si una feature no entra en la demo, se corta sin drama y se apunta como fase 2.
+- **Congelaciones duras:** esquema sáb 18:00 · dependencias sáb 20:00 · features dom 10:00 · código dom 12:00 · repo verificado dom 13:30.
+- **Canal único** de coordinación + hilo con la organización. Decisiones y enlaces se pegan ahí.
+- **Métrica de ritmo:** cada bloque acaba con algo enseñable a alguien ajeno al equipo.
+
+---
+
+## 9. Plan de demo y pitch
+
+### 9.1 Guion de 3 minutos (red-team, ensayado)
+
+| Min | Qué se enseña |
+|---|---|
+| 0:00 | Laura entra; bandeja con Bruno (Word), Luna (Excel) y Kira (JSON); banner "Entorno de demostración — datos sin PII". |
+| 0:30 | Sube un **CSV con cabeceras raras**; el mapeador propone columnas; Laura confirma; aparecen alertas y procedencia. |
+| 1:15 | Busca especialista; ficha con precio y hueco; solicita derivación de Kira con **resumen no identificativo**. |
+| 2:00 | Cambia a Marc; acepta; ve la **historia completa** y el briefing con badges de procedencia; audita el acceso. |
+| 2:45 | Cierre: 3 pacientes, 3 formatos, 1 desconocido, 0 datos reales, todo trazable. |
+
+**Versión 6 minutos (si el jurado da margen):** 0:00–0:20 problema · 0:20–2:20 importación 3 formatos + fichas + alertas · 2:20–3:20 marketplace/solicitud · 3:20–4:40 briefing + aceptación · 4:40–5:20 agenda/auditoría · 5:20–6:00 métricas, modelo y equipo.
+
+**Métricas que se dicen en voz alta:** 3+1 formatos → 1 registro en <30 s · ~37 campos con provenance · 9 alertas detectadas · reconstrucción manual 10–15 min → briefing 90 s · 0 re-tecleo · 7.032 clínicas y 92% independientes esperando esto.
+
+### 9.2 Plan B (cuando la demo en vivo falla)
+
+1. **Botón "Cargar datos demo"** + reset (seed reproducible).
+2. **Vídeo de 3 min** grabado el sábado noche / domingo 11:00 con el mismo recorrido.
+3. **Modo local** (`docker compose up`) si la red del evento falla.
+4. **README** con capturas y enlaces por si ni el vídeo se puede reproducir.
+5. **Segundo portátil** con el entorno preparado.
+
+### 9.3 Preguntas probables del jurado (respuestas cortas)
+
+| Pregunta | Respuesta |
+|---|---|
+| "¿Y si la clínica usa otro formato?" | Mapeador asistido + adaptadores enchufables + extracción parcial + revisión humana; hay matriz de soporte en el README. |
+| "¿La IA inventa datos clínicos?" | No: esquema estricto, confidence por campo, provenance y confirmación del veterinario; el briefing es determinista. |
+| "¿Mandáis datos clínicos a OpenAI?" | Demo con datos sintéticos; producción: DPA, endpoint UE, sin entrenamiento, minimización; el briefing no lo genera el LLM. |
+| "¿De quién son los datos?" | De la clínica (responsable); VetLink encargado del tratamiento (DPA); consentimiento del tutor; auditoría y revocación. |
+| "¿Sin pagos no es un marketplace?" | Hay oferta, servicio, precio, disponibilidad, solicitud, aceptación y cita; el pago es un rail posterior. |
+| "¿No es otro PMS?" | No: capa de ingesta + derivación PMS-agnóstica; el sistema de registro sigue siendo el de la clínica. |
+| "¿Y si el especialista cancela?" | Estados y reglas de reprogramación; alternativa sugerida. |
+| "¿Por qué Boehringer?" | Prevención y adherencia (vacunas, desparasitación, revisiones) es su negocio; VetLink estructura justo esos datos (y el RD 986/2026 lo exigirá en 2027). |
+| "¿Y el tutor?" | Fase 2: recordatorios y ficha compartida; ya previsto en el modelo (consentimiento, canal, idioma). |
+| "¿Esto es un dispositivo médico?" | No: documenta y comunica entre profesionales; no diagnostica ni prescribe; disclaimer en el informe. |
+
+---
+
+## 10. Riesgos y mitigaciones (top 12)
+
+| Riesgo | Prob. | Impacto | Mitigación | Dueño |
+|---|---|---|---|---|
+| No llegar a capa + marketplace en 20 h | Alta | Alto | C' recortado, vertical slice, hitos demoables, recorte sábado 20:00 | Capitán |
+| LLM devuelve JSON inválido / inventa | Media | Alto | Validación de esquema + reglas para estructurado + revisión humana; medir en held-out | Data |
+| Demo en directo se cae | Media | Alto | Local-first + seed + vídeo + segundo portátil | Demo/QA |
+| Deadline antes de lo asumido | Media | Alto | Versión enviable en `main` el sábado noche; domingo = mejora | Capitán |
+| Permisos de push en GitHub org | Media | Crítico | Verificar hoy; si falla, avisar a organización YA | Capitán |
+| Fiebre de features (pagos, OCR, reviews, chat) | Alta | Medio | Scope killers §4 y regla del corte | Capitán |
+| Formato desconocido delata el sistema | Media | Alto | Mapeador asistido + CSV en la demo + matriz de soporte | Data |
+| IA en datos clínicos: mala extracción | Media | Alto | Umbral de confianza + revisión obligatoria + discurso "asistido" | Data/QA |
+| PII de los ficheros en la demo | Baja | Alto | Datos sintéticos, banner, no enviar PII al LLM | Demo/QA |
+| Privacidad mal contada en la UI | Baja | Alto | Matriz de permisos + auditoría + textos legales de `docs/03` §7 | Demo/QA |
+| Supabase/deploy falla | Media | Medio | Postgres local Docker; la nube es extra | Backend |
+| Nombre "VetLink" con prior art | Media | Bajo | No invertir en dominio/registro; pitch de hackathon; tagline descriptivo | Capitán |
+
+---
+
+## 11. Checklist de entrega (domingo)
+
+- [ ] Deadline exacto confirmado con la organización y anotado en `docs/00`.
+- [ ] `main` actualizado, pusheado y **verificado abriéndolo en GitHub** (13:30).
+- [ ] README con: pitch, stack, arranque en 3 pasos, enlaces a `docs/` y diagramas, vídeo, demo URL, **matriz de soporte de formatos**.
+- [ ] `docs/00`–`06` completos y sin contradicciones.
+- [ ] `docs/diagramas/` con los 4 HTML y abren en navegador.
+- [ ] `data/samples/` con los 3 ficheros del reto + `export_clinica_norte.csv` (4º formato de robustez).
+- [ ] Validación clínica de las reglas de alerta R01–R11 (textos y umbrales) por alguien con criterio veterinario del equipo antes del pitch.
+- [ ] Sin secretos: buscar `supabase`, `sk-`, `password`, `postgres://` en el repo.
+- [ ] Datos semilla reproducibles (`docker compose up` o script `seed`).
+- [ ] Banner de demo + aviso "no usar con datos reales".
+- [ ] Vídeo de 3 min accesible + enlace en README.
+- [ ] Copia local `.zip` del repo por si acaso.
+- [ ] Aviso al canal de la organización de que la entrega está hecha (con enlace al repo).
+
+---
+
+## 12. Supuestos de este playbook (ajústalos y avísame)
+
+| # | Supuesto | Si es distinto |
+|---|---|---|
+| 1 | Deadline domingo 15/11 ~15:00 CET; tratamos 13:30 como real | Confirmar y recomprimir §8 |
+| 2 | Equipo de 4–5 personas (~40–48 h-persona) | Si menos, usar versión comprimida §8.3 y bajar a A+D sin llamarlo marketplace |
+| 3 | PostgreSQL/Supabase disponible hoy | Si no, Postgres Docker y migrar luego |
+| 4 | Push a `HackathonBoehringerIT/Joniha` operativo | Probar hoy; si no, escalar a organización |
+| 5 | Se mantiene marca VetLink; tagline de pitch descriptivo | Ya hay logo; no invertir en naming ni dominio |
+| 6 | Demo en directo el domingo ante jurado | Si es vídeo obligatorio, invertir el orden: grabar antes |
+| 7 | El jurado premia prototipo funcional | El guion cubre también narrativa de impacto para minimizar riesgo |
+
+**Siguiente acción inmediata del Lead:** integrar el modelo de datos (`02`) y los diagramas, revisar coherencia entre documentos, commitear todo en `main` y pasar el playbook al equipo con el reparto de roles.

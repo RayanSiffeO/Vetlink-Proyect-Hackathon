@@ -1,0 +1,28 @@
+# Dependencias y entornos
+node_modules/
+dist/
+build/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Artefactos de herramientas
+.archify/
+coverage/
+*.log
+*.zip
+.DS_Store
+Thumbs.db
+dsh-session.jsonl

@@ -1,0 +1,2443 @@
+{
+  "schema_version": "vetlink.record/1.0",
+  "record_id": "vlr_kira_5d2e8b90",
+  "generated_at": "2026-11-14T01:20:00+01:00",
+  "as_of": "2026-11-14",
+  "source": {
+    "system": "VetNexo Cloud v3.2.1",
+    "format": "JSON_API",
+    "file": "historial.json",
+    "version": "v3.2.1",
+    "export_id": "exp_7f3a9c21-4be0-4d1e-9a6f-02c58e1d77b4",
+    "generated_at": "2026-11-10T08:42:17+01:00",
+    "tenant": "tnt_0193 / HVB-TER",
+    "units": {
+      "weight": "kg",
+      "temperature": "C",
+      "currency": "EUR"
+    },
+    "row_counts": {
+      "encounters": 9,
+      "immunizations": 4,
+      "attachments": 5,
+      "problem_list": 5,
+      "weights": 7,
+      "reminders": 4
+    }
+  },
+  "privacy": {
+    "classification": "PSEUDONYMIZED",
+    "pii_present": false,
+    "masked_fields": [
+      "patient.microchip",
+      "patient.passport",
+      "owners[0].display_name",
+      "owners[0].postal_code"
+    ],
+    "pii_fields": [],
+    "note": "Datos ficticios de hackathon; export origen SHA-256 + salt por tenant."
+  },
+  "identity": {
+    "match_key": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+    "identity_confidence": 0.6,
+    "status": "PSEUDONYMIZED",
+    "basis": [
+      "name",
+      "species",
+      "birth_date",
+      "breed",
+      "microchip_prefix_suffix"
+    ],
+    "notes": "Microchip enmascarado: no usar como clave exacta; requiere verificación."
+  },
+  "patient": {
+    "_type": "Patient",
+    "id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+    "external_ids": [
+      {
+        "system": "VetNexo",
+        "id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315"
+      },
+      {
+        "system": "VetNexo",
+        "id": "HVB-PAC-018842"
+      }
+    ],
+    "name": "Kira",
+    "species_code": "CAN",
+    "species_label": "Canis lupus familiaris",
+    "breed_code": "BRD-0412",
+    "breed_label": "Border Collie",
+    "sex": "FEMALE",
+    "neutered": false,
+    "neutered_on": null,
+    "birth_date": "2021-06-14",
+    "birth_precision": "DAY",
+    "coat": "Negro y blanco (merle no)",
+    "microchip": "9410000XXXXX207",
+    "microchip_implanted_on": "2021-08-30",
+    "passport": "ES-08XXXXXX",
+    "registry": null,
+    "owner_ids": [
+      "own_a81c4f0e-77d2-4c65-91e0-3b5f2d9e1a60"
+    ],
+    "weight_current_kg": 17.8,
+    "weight_current_on": "2026-11-07",
+    "bcs": 5,
+    "bcs_scale": "1-9",
+    "status": "ACTIVE",
+    "deceased": false,
+    "insured": true,
+    "insurance": {
+      "provider_ref": "INS-***-552",
+      "coverage": "Accidente + enfermedad"
+    },
+    "temperament": {
+      "score": 2,
+      "scale": "1-5",
+      "muzzle_required": false,
+      "notes": "Nerviosa en la báscula; mejor con premios."
+    },
+    "diet": "Pienso seco adulto activo + húmedo 2 días/semana",
+    "lifestyle": [
+      "Casa con jardín",
+      "Agility amateur",
+      "Excursiones por Sant Llorenç del Munt"
+    ],
+    "flags": [
+      {
+        "code": "FLG-NSAID",
+        "severity": "HIGH",
+        "text": "Vómitos tras carprofeno (2024). Evitar carprofeno; meloxicam tolerado.",
+        "since": "2024-04-18"
+      },
+      {
+        "code": "FLG-ENTERA",
+        "severity": "INFO",
+        "text": "Hembra entera. Antecedente de pseudogestación.",
+        "since": "2024-09-03"
+      }
+    ],
+    "field_provenance": {
+      "microchip": {
+        "method": "masked_in_source",
+        "source_ref": "historial.json#/patient/identifiers/0",
+        "confidence": 0.6,
+        "note": "valor enmascarado 9410000XXXXX207"
+      },
+      "passport": {
+        "method": "masked_in_source",
+        "source_ref": "historial.json#/patient/identifiers/1",
+        "confidence": 0.6
+      },
+      "sex": {
+        "method": "normalized",
+        "source_ref": "historial.json#/patient/sex",
+        "confidence": 1.0
+      },
+      "neutered": {
+        "method": "normalized",
+        "source_ref": "historial.json#/patient/neutered",
+        "confidence": 1.0
+      },
+      "weight_current_kg": {
+        "method": "derived_latest",
+        "source_ref": "historial.json#/weights/6",
+        "confidence": 1.0
+      },
+      "bcs": {
+        "method": "derived_latest",
+        "source_ref": "historial.json#/weights/6",
+        "confidence": 1.0
+      }
+    },
+    "_meta": {
+      "source_system": "VetNexo Cloud v3.2.1",
+      "source_format": "JSON_API",
+      "source_ref": "historial.json#/patient",
+      "extracted_at": "2026-11-14T01:20:00+01:00",
+      "extracted_by": "vetlink-ingest/0.1",
+      "reviewed_by": null,
+      "method": "direct",
+      "confidence": 0.95,
+      "note": "export seudonimizado"
+    }
+  },
+  "owners": [
+    {
+      "_type": "Owner",
+      "id": "own_a81c4f0e-77d2-4c65-91e0-3b5f2d9e1a60",
+      "external_ids": [
+        {
+          "system": "VetNexo",
+          "id": "own_a81c4f0e-77d2-4c65-91e0-3b5f2d9e1a60"
+        }
+      ],
+      "display_name": "TUTOR_8F2C",
+      "legal_name": null,
+      "tax_id_masked": null,
+      "birth_date": null,
+      "profession": null,
+      "address": {
+        "line": null,
+        "city": "Terrassa",
+        "province": null,
+        "postal_code": "082**",
+        "country": "ES"
+      },
+      "phones": [],
+      "emails": [],
+      "languages": [
+        "ca"
+      ],
+      "preferred_language": "ca",
+      "preferred_channel": "SMS",
+      "consents": {
+        "reminders": true,
+        "marketing": false,
+        "source_ref": "historial.json#/owner"
+      },
+      "account": {
+        "balance": 0.0,
+        "currency": "EUR",
+        "status": "CLEAR"
+      },
+      "payment_method": "BIZUM",
+      "data_classification": "PSEUDONYMIZED",
+      "is_primary": true,
+      "field_provenance": {
+        "account.balance": {
+          "method": "derived",
+          "source_ref": "historial.json#/owner/account",
+          "confidence": 1.0
+        },
+        "postal_code": {
+          "method": "masked_in_source",
+          "source_ref": "historial.json#/owner/postal_code_prefix",
+          "confidence": 0.7
+        }
+      },
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/owner",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9,
+        "note": "nombre y contacto seudonimizados en origen"
+      }
+    }
+  ],
+  "encounters": [
+    {
+      "_type": "Encounter",
+      "id": "enc_2026-11-07_1187",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2026-11-07",
+      "time": "11:05",
+      "started_at": "2026-11-07T11:05:00+01:00",
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Ojo izquierdo rojo con legañas",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-031",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.6,
+        "heart_rate_bpm": 98,
+        "respiratory_rate_rpm": 22,
+        "weight_kg": 17.8,
+        "bcs": 5
+      },
+      "soap": {
+        "s": "Desde hace 2 días, secreción amarillenta en OS. Se frota la cara. Apetito y actividad normales.",
+        "o": "OS: hiperemia conjuntival, secreción mucopurulenta. Fluoresceína negativa. Schirmer OD 21 / OS 19 mm/min. PIO OD 15 / OS 16 mmHg. OD normal.",
+        "a": "Conjuntivitis bacteriana OS. Sin úlcera corneal.",
+        "p": "Limpieza con suero fisiológico. Tobramicina colirio 1 gota/8 h 7 días. Collar isabelino si se frota. Control en 7 días."
+      },
+      "diagnosis_summary": "Conjuntivitis bacteriana OS. Sin úlcera corneal.",
+      "procedures": [],
+      "lab_results": [
+        {
+          "panel": "Oftalmología",
+          "analyte": "Fluoresceína OS",
+          "value": "NEG",
+          "unit": null,
+          "ref": "NEG",
+          "flag": "N"
+        },
+        {
+          "panel": "Oftalmología",
+          "analyte": "Schirmer OS",
+          "value": 19,
+          "unit": "mm/min",
+          "ref": ">15",
+          "flag": "N"
+        },
+        {
+          "panel": "Oftalmología",
+          "analyte": "PIO OS",
+          "value": 16,
+          "unit": "mmHg",
+          "ref": "10-25",
+          "flag": "N"
+        }
+      ],
+      "next_visit_date": "2026-11-14",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Control en 7 días",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/0/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2026-06-02_0633",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2026-06-02",
+      "time": "18:20",
+      "started_at": "2026-06-02T18:20:00+02:00",
+      "timezone": "Europe/Madrid",
+      "type": "WELLNESS",
+      "reason": "Revisión anual y vacunas",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-031",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.5,
+        "heart_rate_bpm": 94,
+        "respiratory_rate_rpm": 22,
+        "weight_kg": 18.0,
+        "bcs": 5
+      },
+      "soap": {
+        "s": "Activa, sin incidencias. Hará viaje a Francia en agosto.",
+        "o": "Exploración normal. Placa dental leve.",
+        "a": "Sana.",
+        "p": "Vacunas anuales + tos de las perreras. Test Leishmania negativo. Revisar pasaporte para viaje: OK."
+      },
+      "diagnosis_summary": "Sana.",
+      "procedures": [],
+      "lab_results": [
+        {
+          "panel": "Serología rápida",
+          "analyte": "Leishmania infantum Ac",
+          "value": "NEG",
+          "unit": null,
+          "ref": "NEG",
+          "flag": "N"
+        }
+      ],
+      "next_visit_date": "2027-06-02",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Revisión anual",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/1/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2026-04-08_0466",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2026-04-08",
+      "time": "09:40",
+      "started_at": "2026-04-08T09:40:00+02:00",
+      "timezone": "Europe/Madrid",
+      "type": "RECHECK",
+      "reason": "Retirada de puntos almohadilla",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-058",
+      "status": "SIGNED",
+      "vitals": {
+        "weight_kg": 17.9
+      },
+      "soap": {
+        "s": "Sin cojera desde hace 5 días.",
+        "o": "Herida cicatrizada, sin exudado.",
+        "a": "Resuelto.",
+        "p": "Retirada de puntos. Alta."
+      },
+      "diagnosis_summary": "Resuelto.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": null,
+      "next_visit_precision": null,
+      "next_visit_text": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/2/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2026-03-22_0412",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2026-03-22",
+      "time": "12:15",
+      "started_at": "2026-03-22T12:15:00+01:00",
+      "timezone": "Europe/Madrid",
+      "type": "EMERGENCY",
+      "reason": "Corte en almohadilla tras excursión",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-044",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.8,
+        "heart_rate_bpm": 112,
+        "respiratory_rate_rpm": 28,
+        "weight_kg": 17.9,
+        "bcs": 5
+      },
+      "soap": {
+        "s": "Se cortó con un cristal en el monte. Sangrado controlado con vendaje casero.",
+        "o": "Laceración 1,5 cm en almohadilla metacarpiana MAD, limpia, sin cuerpo extraño.",
+        "a": "Laceración almohadilla plantar MAD.",
+        "p": "Sedación, lavado, sutura y vendaje. Amoxicilina-clavulánico 7 días. Cambio de vendaje cada 48-72 h."
+      },
+      "diagnosis_summary": "Laceración almohadilla plantar MAD.",
+      "procedures": [
+        {
+          "code": "PRC-SUT-02",
+          "name": "Sutura almohadilla + vendaje",
+          "anesthesia": {
+            "premed": "Dexmedetomidina",
+            "induction": null,
+            "maintenance": null,
+            "duration_min": 25,
+            "asa": "I",
+            "complications": "Ninguna"
+          }
+        }
+      ],
+      "lab_results": [],
+      "next_visit_date": "2026-04-08",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Retirada de puntos",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/3/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2025-06-10_0588",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2025-06-10",
+      "time": "17:00",
+      "started_at": "2025-06-10T17:00:00+02:00",
+      "timezone": "Europe/Madrid",
+      "type": "WELLNESS",
+      "reason": "Revisión anual y vacunas",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-031",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.6,
+        "heart_rate_bpm": 96,
+        "respiratory_rate_rpm": 22,
+        "weight_kg": 18.4,
+        "bcs": 5
+      },
+      "soap": {
+        "s": "Sin incidencias. Tutor cepilla dientes 2-3 veces/semana.",
+        "o": "Exploración general normal. Boca: gingivitis mínima.",
+        "a": "Sana.",
+        "p": "Vacunación anual. Test Leishmania negativo; se inicia vacuna Leishmania."
+      },
+      "diagnosis_summary": "Sana.",
+      "procedures": [],
+      "lab_results": [
+        {
+          "panel": "Serología rápida",
+          "analyte": "Leishmania infantum Ac",
+          "value": "NEG",
+          "unit": null,
+          "ref": "NEG",
+          "flag": "N"
+        }
+      ],
+      "next_visit_date": "2026-06-02",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Revisión anual",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/4/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2025-02-11_0091",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2025-02-11",
+      "time": "08:30",
+      "started_at": "2025-02-11T08:30:00+01:00",
+      "timezone": "Europe/Madrid",
+      "type": "SURGERY",
+      "reason": "Profilaxis dental programada",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-044",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.3,
+        "heart_rate_bpm": 84,
+        "respiratory_rate_rpm": 20,
+        "weight_kg": 18.1,
+        "bcs": 5
+      },
+      "soap": {
+        "s": "Mal aliento. Ayuno de 12 h correcto.",
+        "o": "Sarro grado 2 en premolares superiores. Gingivitis leve. Sin movilidad dental.",
+        "a": "Enfermedad periodontal grado 1. ASA I.",
+        "p": "Limpieza con ultrasonidos y pulido. Sin extracciones. Cepillado 3 veces/semana."
+      },
+      "diagnosis_summary": "Enfermedad periodontal grado 1. ASA I.",
+      "procedures": [
+        {
+          "code": "PRC-DENT-01",
+          "name": "Profilaxis dental ultrasonidos + pulido",
+          "anesthesia": {
+            "premed": "Dexmedetomidina + metadona",
+            "induction": "Propofol",
+            "maintenance": "Isoflurano",
+            "duration_min": 55,
+            "asa": "I",
+            "complications": "Ninguna"
+          }
+        }
+      ],
+      "lab_results": [
+        {
+          "panel": "Hemograma",
+          "analyte": "HCT",
+          "value": 48.2,
+          "unit": "%",
+          "ref": "37-55",
+          "flag": "N"
+        },
+        {
+          "panel": "Hemograma",
+          "analyte": "WBC",
+          "value": 9.6,
+          "unit": "10^9/L",
+          "ref": "6-17",
+          "flag": "N"
+        },
+        {
+          "panel": "Hemograma",
+          "analyte": "PLT",
+          "value": 284,
+          "unit": "10^9/L",
+          "ref": "200-500",
+          "flag": "N"
+        },
+        {
+          "panel": "Bioquímica",
+          "analyte": "CREA",
+          "value": 0.9,
+          "unit": "mg/dL",
+          "ref": "0.5-1.8",
+          "flag": "N"
+        },
+        {
+          "panel": "Bioquímica",
+          "analyte": "BUN",
+          "value": 17,
+          "unit": "mg/dL",
+          "ref": "7-27",
+          "flag": "N"
+        },
+        {
+          "panel": "Bioquímica",
+          "analyte": "ALT",
+          "value": 52,
+          "unit": "U/L",
+          "ref": "10-125",
+          "flag": "N"
+        },
+        {
+          "panel": "Bioquímica",
+          "analyte": "GLU",
+          "value": 96,
+          "unit": "mg/dL",
+          "ref": "74-143",
+          "flag": "N"
+        }
+      ],
+      "next_visit_date": "2025-06-10",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Revisión anual",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/5/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2024-09-03_0702",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2024-09-03",
+      "time": "18:45",
+      "started_at": "2024-09-03T18:45:00+02:00",
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Hinchazón mamaria y comportamiento de anidamiento",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-031",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.4,
+        "heart_rate_bpm": 88,
+        "respiratory_rate_rpm": 20,
+        "weight_kg": 17.8,
+        "bcs": 5
+      },
+      "soap": {
+        "s": "Celo hace ~8 semanas. Lame mamas, junta peluches en la cama.",
+        "o": "Mamas inguinales aumentadas, secreción láctea leve. Sin dolor ni calor.",
+        "a": "Pseudogestación.",
+        "p": "Evitar estimulación mamaria. Collar isabelino si lame. Valorar esterilización en anestro."
+      },
+      "diagnosis_summary": "Pseudogestación.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2024-10-01",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Control",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/6/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2024-04-18_0355",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2024-04-18",
+      "time": "10:20",
+      "started_at": "2024-04-18T10:20:00+02:00",
+      "timezone": "Europe/Madrid",
+      "type": "ACUTE",
+      "reason": "Cojera anterior izquierda tras agility",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-031",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.6,
+        "heart_rate_bpm": 100,
+        "respiratory_rate_rpm": 24,
+        "weight_kg": 17.6,
+        "bcs": 5
+      },
+      "soap": {
+        "s": "Cojera desde ayer tras entrenamiento. Come bien.",
+        "o": "Dolor leve a la extensión de carpo izquierdo. Sin crepitación ni inestabilidad.",
+        "a": "Esguince leve de carpo izquierdo.",
+        "p": "Carprofeno 4 mg/kg/24 h 5 días. Reposo 10 días. ACTUALIZACIÓN 20/04: vómitos x3, se suspende carprofeno y se cambia a meloxicam."
+      },
+      "diagnosis_summary": "Esguince leve de carpo izquierdo.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": null,
+      "next_visit_precision": null,
+      "next_visit_text": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/7",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/7/start",
+          "confidence": 1.0
+        }
+      }
+    },
+    {
+      "_type": "Encounter",
+      "id": "enc_2023-05-09_0217",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "date": "2023-05-09",
+      "time": "17:10",
+      "started_at": "2023-05-09T17:10:00+02:00",
+      "timezone": "Europe/Madrid",
+      "type": "FIRST_VISIT",
+      "reason": "Alta en el centro (traslado de otra clínica)",
+      "clinic": {
+        "code": "HVB-TER",
+        "name": "Hospital Veterinari Besòs · Terrassa"
+      },
+      "clinician_ref": "STF-031",
+      "status": "SIGNED",
+      "vitals": {
+        "temperature_c": 38.5,
+        "heart_rate_bpm": 92,
+        "respiratory_rate_rpm": 22,
+        "weight_kg": 17.2,
+        "bcs": 4,
+        "mucous_membranes": "rosadas",
+        "crt_s": 2,
+        "crt_comparator": "<"
+      },
+      "soap": {
+        "s": "Tutor aporta cartilla de clínica anterior. Vacunada y desparasitada. Sin antecedentes relevantes.",
+        "o": "Buen estado general. Mucosas rosadas, TRC < 2 s. Auscultación cardiopulmonar normal.",
+        "a": "Paciente sano.",
+        "p": "Actualizar recordatorios. Revisión anual en 2024."
+      },
+      "diagnosis_summary": "Paciente sano.",
+      "procedures": [],
+      "lab_results": [],
+      "next_visit_date": "2024-04-18",
+      "next_visit_precision": "DAY",
+      "next_visit_text": "Revisión anual",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/8",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.97
+      },
+      "field_provenance": {
+        "date": {
+          "method": "derived_local",
+          "source_ref": "historial.json#/encounters/8/start",
+          "confidence": 1.0
+        }
+      }
+    }
+  ],
+  "problems": [
+    {
+      "_type": "Problem",
+      "id": "prb_kira_carprofeno",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "label": "Intolerancia a carprofeno",
+      "code": null,
+      "category": "ADVERSE_REACTION",
+      "status": "ACTIVE",
+      "certainty": "CONFIRMED",
+      "onset_date": "2024-04-18",
+      "resolved_date": null,
+      "severity": "MODERATE",
+      "first_encounter_ref": null,
+      "notes": "Vómitos x3 con carprofeno; suspendido y cambiado a meloxicam (20/04/2024).",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/problem_list/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_kira_pseudogestacion",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "label": "Pseudogestación",
+      "code": null,
+      "category": "REPRODUCTIVE",
+      "status": "RESOLVED",
+      "certainty": "CONFIRMED",
+      "onset_date": "2024-09-03",
+      "resolved_date": "2024-10-01",
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/problem_list/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_kira_periodontal",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "label": "Enfermedad periodontal grado 1",
+      "code": null,
+      "category": "DENTAL",
+      "status": "CONTROLLED",
+      "certainty": "CONFIRMED",
+      "onset_date": "2025-02-11",
+      "resolved_date": null,
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": "Profilaxis dental 11/02/2025; cepillado 3 veces/semana.",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/problem_list/2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_kira_almohadilla",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "label": "Laceración almohadilla plantar MAD",
+      "code": null,
+      "category": "TRAUMA",
+      "status": "RESOLVED",
+      "certainty": "CONFIRMED",
+      "onset_date": "2026-03-22",
+      "resolved_date": "2026-04-08",
+      "severity": "MODERATE",
+      "first_encounter_ref": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/problem_list/3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Problem",
+      "id": "prb_kira_conjuntivitis",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "label": "Conjuntivitis bacteriana OS",
+      "code": null,
+      "category": "OPHTHALMIC",
+      "status": "ACTIVE",
+      "certainty": "CONFIRMED",
+      "onset_date": "2026-11-07",
+      "resolved_date": null,
+      "severity": "MILD",
+      "first_encounter_ref": null,
+      "notes": "Tratamiento con tobramicina 7 días; control 14/11/2026.",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/problem_list/4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "immunizations": [
+    {
+      "_type": "Immunization",
+      "id": "imm_kira_01",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-06-02_0633",
+      "vaccine_code": "DHPPI_L4",
+      "vaccine_label": "DHPPi + L4",
+      "product_ref": "PRD-VAC-DHPPIL4",
+      "batch": "L4-25A118",
+      "given_on": "2026-06-02",
+      "due_on": "2027-06-02",
+      "due_precision": "DAY",
+      "route": "SC",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/immunizations/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_kira_02",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-06-02_0633",
+      "vaccine_code": "RABIES",
+      "vaccine_label": "Rabia",
+      "product_ref": "PRD-VAC-RAB",
+      "batch": "RB-26C044",
+      "given_on": "2026-06-02",
+      "due_on": "2027-06-02",
+      "due_precision": "DAY",
+      "route": "SC",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/immunizations/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_kira_03",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-06-02_0633",
+      "vaccine_code": "KENNEL_COUGH",
+      "vaccine_label": "Tos de las perreras (intranasal)",
+      "product_ref": "PRD-VAC-KC-IN",
+      "batch": "KC-25F310",
+      "given_on": "2026-06-02",
+      "due_on": "2027-06-02",
+      "due_precision": "DAY",
+      "route": "IN",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/immunizations/2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Immunization",
+      "id": "imm_kira_04",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-06-02_0633",
+      "vaccine_code": "LEISHMANIA",
+      "vaccine_label": "Leishmania",
+      "product_ref": "PRD-VAC-LEISH",
+      "batch": "LS-26B007",
+      "given_on": "2026-06-02",
+      "due_on": "2027-06-02",
+      "due_precision": "DAY",
+      "route": "SC",
+      "status": "GIVEN",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/immunizations/3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    }
+  ],
+  "parasite_control": [
+    {
+      "_type": "ParasiteControl",
+      "id": "par_kira_endo",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "type": "ENDO",
+      "product": "Milbemicina oxima + praziquantel",
+      "last_given": "2026-09-15",
+      "next_due": "2026-12-15",
+      "given_at": "HOME",
+      "status": "CURRENT",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/parasite_control/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "ParasiteControl",
+      "id": "par_kira_ecto",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "type": "ECTO",
+      "product": "Collar deltametrina",
+      "last_given": "2026-04-01",
+      "next_due": "2026-10-01",
+      "given_at": "CLINIC",
+      "status": "OVERDUE",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/parasite_control/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9,
+        "note": "origen marca overdue=true"
+      }
+    }
+  ],
+  "weights": [
+    {
+      "_type": "Weight",
+      "id": "w_kira_1",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "measured_on": "2023-05-09",
+      "kg": 17.2,
+      "bcs": 4,
+      "encounter_ref": "enc_2023-05-09_0217",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/weights/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_kira_2",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "measured_on": "2024-04-18",
+      "kg": 17.6,
+      "bcs": 5,
+      "encounter_ref": "enc_2024-04-18_0355",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/weights/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_kira_3",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "measured_on": "2025-02-11",
+      "kg": 18.1,
+      "bcs": 5,
+      "encounter_ref": "enc_2025-02-11_0091",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/weights/2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_kira_4",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "measured_on": "2025-06-10",
+      "kg": 18.4,
+      "bcs": 5,
+      "encounter_ref": "enc_2025-06-10_0588",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/weights/3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_kira_5",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "measured_on": "2026-03-22",
+      "kg": 17.9,
+      "bcs": 5,
+      "encounter_ref": "enc_2026-03-22_0412",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/weights/4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_kira_6",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "measured_on": "2026-06-02",
+      "kg": 18.0,
+      "bcs": 5,
+      "encounter_ref": "enc_2026-06-02_0633",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/weights/5",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Weight",
+      "id": "w_kira_7",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "measured_on": "2026-11-07",
+      "kg": 17.8,
+      "bcs": 5,
+      "encounter_ref": "enc_2026-11-07_1187",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/weights/6",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    }
+  ],
+  "reminders": [
+    {
+      "_type": "Reminder",
+      "id": "RMD-77120",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "type": "RECHECK",
+      "text": "Control ocular OS",
+      "due": "2026-11-14",
+      "due_precision": "DAY",
+      "status": "DUE",
+      "channel": "SMS",
+      "origin_encounter_ref": "enc_2026-11-07_1187",
+      "source_status": "SCHEDULED",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/reminders/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-77121",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "type": "PARASITE",
+      "text": "Renovar collar antiparasitario (vencido)",
+      "due": "2026-10-01",
+      "due_precision": "DAY",
+      "status": "OVERDUE",
+      "channel": "SMS",
+      "origin_encounter_ref": null,
+      "source_status": "OVERDUE",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/reminders/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-77122",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "type": "VACCINE",
+      "text": "Vacunación anual + test Leishmania",
+      "due": "2027-06-02",
+      "due_precision": "DAY",
+      "status": "PENDING",
+      "channel": "SMS",
+      "origin_encounter_ref": null,
+      "source_status": "PENDING",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/reminders/2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Reminder",
+      "id": "RMD-77123",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "type": "DENTAL",
+      "text": "Valorar profilaxis dental",
+      "due": "2027-02-01",
+      "due_precision": "DAY",
+      "status": "PENDING",
+      "channel": "SMS",
+      "origin_encounter_ref": null,
+      "source_status": "PENDING",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/reminders/3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    }
+  ],
+  "prescriptions": [
+    {
+      "_type": "Prescription",
+      "id": "PRES-2026-004415",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-11-07_1187",
+      "drug_name": "Tobramicina 3 mg/ml colirio",
+      "drug_name_raw": "Tobramicina 3 mg/ml colirio",
+      "dose_text": "1 gota OS/8 h",
+      "duration_days": 7,
+      "started_on": "2026-11-07",
+      "ends_on": "2026-11-14",
+      "status": "ACTIVE",
+      "stop_reason": null,
+      "notes": "Ojo izquierdo; 7 días desde 07/11/2026.",
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/0/prescriptions/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "PRES-2026-001017",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-03-22_0412",
+      "drug_name": "Amoxicilina/ác. clavulánico 250 mg comp.",
+      "drug_name_raw": "Amoxicilina/ác. clavulánico 250 mg comp.",
+      "dose_text": "12,5 mg/kg/12 h",
+      "duration_days": 7,
+      "started_on": "2026-03-22",
+      "ends_on": "2026-03-29",
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/3/prescriptions/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "PRES-2026-001018",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-03-22_0412",
+      "drug_name": "Meloxicam 1,5 mg/ml susp. oral",
+      "drug_name_raw": "Meloxicam 1,5 mg/ml susp. oral",
+      "dose_text": "0,1 mg/kg/24 h",
+      "duration_days": 4,
+      "started_on": "2026-03-22",
+      "ends_on": "2026-03-26",
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/3/prescriptions/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "PRES-2025-000402",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2025-02-11_0091",
+      "drug_name": "Meloxicam 1,5 mg/ml susp. oral",
+      "drug_name_raw": "Meloxicam 1,5 mg/ml susp. oral",
+      "dose_text": "0,1 mg/kg/24 h",
+      "duration_days": 3,
+      "started_on": "2025-02-11",
+      "ends_on": "2025-02-14",
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/5/prescriptions/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "PRES-2024-001290",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2024-04-18_0355",
+      "drug_name": "Carprofeno 50 mg comp.",
+      "drug_name_raw": "Carprofeno 50 mg comp.",
+      "dose_text": "1,5 comp/24 h",
+      "duration_days": 5,
+      "started_on": "2024-04-18",
+      "ends_on": "2024-04-20",
+      "status": "DISCONTINUED",
+      "stop_reason": "Reacción adversa GI (vómitos x3)",
+      "notes": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/7/prescriptions/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Prescription",
+      "id": "PRES-2024-001311",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2024-04-18_0355",
+      "drug_name": "Meloxicam 1,5 mg/ml susp. oral",
+      "drug_name_raw": "Meloxicam 1,5 mg/ml susp. oral",
+      "dose_text": "0,1 mg/kg/24 h",
+      "duration_days": 4,
+      "started_on": "2024-04-18",
+      "ends_on": "2024-04-22",
+      "status": "COMPLETED",
+      "stop_reason": null,
+      "notes": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/7/prescriptions/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "invoices": [
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_01",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-11-07_1187",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2026-010944",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-CONS",
+          "description": "Consulta",
+          "qty": 1,
+          "unit_price": 40.0,
+          "vat_rate": 0.21,
+          "line_total": 40.0
+        },
+        {
+          "sku": "SRV-OFT",
+          "description": "Pruebas oftalmológicas básicas",
+          "qty": 1,
+          "unit_price": 28.0,
+          "vat_rate": 0.21,
+          "line_total": 28.0
+        },
+        {
+          "sku": "MED-TOBRA",
+          "description": "Tobramicina colirio 5 ml",
+          "qty": 1,
+          "unit_price": 7.9,
+          "vat_rate": 0.21,
+          "line_total": 7.9
+        }
+      ],
+      "net": 75.9,
+      "vat": 15.94,
+      "total": 91.84,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/0/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_02",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-06-02_0633",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2026-005802",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-CONS-W",
+          "description": "Revisión anual",
+          "qty": 1,
+          "unit_price": 33.0,
+          "vat_rate": 0.21,
+          "line_total": 33.0
+        },
+        {
+          "sku": "VAC-DHPPIL4",
+          "description": "Vacuna DHPPi+L4",
+          "qty": 1,
+          "unit_price": 35.0,
+          "vat_rate": 0.21,
+          "line_total": 35.0
+        },
+        {
+          "sku": "VAC-RAB",
+          "description": "Vacuna rabia",
+          "qty": 1,
+          "unit_price": 29.0,
+          "vat_rate": 0.21,
+          "line_total": 29.0
+        },
+        {
+          "sku": "VAC-KC",
+          "description": "Vacuna tos perreras IN",
+          "qty": 1,
+          "unit_price": 31.0,
+          "vat_rate": 0.21,
+          "line_total": 31.0
+        },
+        {
+          "sku": "LAB-LEISH",
+          "description": "Test rápido Leishmania",
+          "qty": 1,
+          "unit_price": 39.0,
+          "vat_rate": 0.21,
+          "line_total": 39.0
+        },
+        {
+          "sku": "VAC-LEISH",
+          "description": "Vacuna Leishmania",
+          "qty": 1,
+          "unit_price": 56.0,
+          "vat_rate": 0.21,
+          "line_total": 56.0
+        }
+      ],
+      "net": 223.0,
+      "vat": 46.83,
+      "total": 269.83,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/1/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_03",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-04-08_0466",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2026-003790",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-PTOS",
+          "description": "Retirada de puntos",
+          "qty": 1,
+          "unit_price": 15.0,
+          "vat_rate": 0.21,
+          "line_total": 15.0
+        }
+      ],
+      "net": 15.0,
+      "vat": 3.15,
+      "total": 18.15,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/2/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_04",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-03-22_0412",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2026-003118",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-URG",
+          "description": "Consulta urgencia festivo",
+          "qty": 1,
+          "unit_price": 65.0,
+          "vat_rate": 0.21,
+          "line_total": 65.0
+        },
+        {
+          "sku": "SRV-SED",
+          "description": "Sedación",
+          "qty": 1,
+          "unit_price": 45.0,
+          "vat_rate": 0.21,
+          "line_total": 45.0
+        },
+        {
+          "sku": "SRV-SUT",
+          "description": "Sutura y vendaje",
+          "qty": 1,
+          "unit_price": 70.0,
+          "vat_rate": 0.21,
+          "line_total": 70.0
+        },
+        {
+          "sku": "MED-AMXCL250",
+          "description": "Amoxicilina/clav. 250 mg (14 comp.)",
+          "qty": 1,
+          "unit_price": 16.4,
+          "vat_rate": 0.21,
+          "line_total": 16.4
+        },
+        {
+          "sku": "MED-MELOX",
+          "description": "Meloxicam susp. oral 10 ml",
+          "qty": 1,
+          "unit_price": 11.5,
+          "vat_rate": 0.21,
+          "line_total": 11.5
+        }
+      ],
+      "net": 207.9,
+      "vat": 43.66,
+      "total": 251.56,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/3/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_05",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2025-06-10_0588",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2025-006630",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-CONS-W",
+          "description": "Revisión anual",
+          "qty": 1,
+          "unit_price": 32.0,
+          "vat_rate": 0.21,
+          "line_total": 32.0
+        },
+        {
+          "sku": "VAC-DHPPIL4",
+          "description": "Vacuna DHPPi+L4",
+          "qty": 1,
+          "unit_price": 34.0,
+          "vat_rate": 0.21,
+          "line_total": 34.0
+        },
+        {
+          "sku": "VAC-RAB",
+          "description": "Vacuna rabia",
+          "qty": 1,
+          "unit_price": 28.0,
+          "vat_rate": 0.21,
+          "line_total": 28.0
+        },
+        {
+          "sku": "LAB-LEISH",
+          "description": "Test rápido Leishmania",
+          "qty": 1,
+          "unit_price": 38.0,
+          "vat_rate": 0.21,
+          "line_total": 38.0
+        },
+        {
+          "sku": "VAC-LEISH",
+          "description": "Vacuna Leishmania",
+          "qty": 1,
+          "unit_price": 55.0,
+          "vat_rate": 0.21,
+          "line_total": 55.0
+        }
+      ],
+      "net": 187.0,
+      "vat": 39.27,
+      "total": 226.27,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/4/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_06",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2025-02-11_0091",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2025-001207",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "LAB-PREANES",
+          "description": "Analítica preanestésica",
+          "qty": 1,
+          "unit_price": 62.0,
+          "vat_rate": 0.21,
+          "line_total": 62.0
+        },
+        {
+          "sku": "SRV-ANES",
+          "description": "Anestesia inhalatoria",
+          "qty": 1,
+          "unit_price": 95.0,
+          "vat_rate": 0.21,
+          "line_total": 95.0
+        },
+        {
+          "sku": "SRV-DENT",
+          "description": "Profilaxis dental",
+          "qty": 1,
+          "unit_price": 120.0,
+          "vat_rate": 0.21,
+          "line_total": 120.0
+        },
+        {
+          "sku": "MED-MELOX",
+          "description": "Meloxicam susp. oral 10 ml",
+          "qty": 1,
+          "unit_price": 11.5,
+          "vat_rate": 0.21,
+          "line_total": 11.5
+        }
+      ],
+      "net": 288.5,
+      "vat": 60.59,
+      "total": 349.08,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/5/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_07",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2024-09-03_0702",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2024-009965",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-CONS",
+          "description": "Consulta",
+          "qty": 1,
+          "unit_price": 38.0,
+          "vat_rate": 0.21,
+          "line_total": 38.0
+        }
+      ],
+      "net": 38.0,
+      "vat": 7.98,
+      "total": 45.98,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/6/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_08",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2024-04-18_0355",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2024-004471",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-CONS",
+          "description": "Consulta",
+          "qty": 1,
+          "unit_price": 38.0,
+          "vat_rate": 0.21,
+          "line_total": 38.0
+        },
+        {
+          "sku": "MED-CARP50",
+          "description": "Carprofeno 50 mg (blíster)",
+          "qty": 1,
+          "unit_price": 9.8,
+          "vat_rate": 0.21,
+          "line_total": 9.8
+        },
+        {
+          "sku": "MED-MELOX",
+          "description": "Meloxicam susp. oral 10 ml",
+          "qty": 1,
+          "unit_price": 11.5,
+          "vat_rate": 0.21,
+          "line_total": 11.5
+        }
+      ],
+      "net": 59.3,
+      "vat": 12.45,
+      "total": 71.75,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/7/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    },
+    {
+      "_type": "Invoice",
+      "id": "inv_kira_09",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2023-05-09_0217",
+      "document_type": "FACTURA",
+      "invoice_no": "FAC-2023-011802",
+      "issued_on": null,
+      "lines": [
+        {
+          "sku": "SRV-CONS",
+          "description": "Consulta primera visita",
+          "qty": 1,
+          "unit_price": 35.0,
+          "vat_rate": 0.21,
+          "line_total": 35.0
+        }
+      ],
+      "net": 35.0,
+      "vat": 7.35,
+      "total": 42.35,
+      "currency": "EUR",
+      "paid": true,
+      "balance": null,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/encounters/8/invoice",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.95
+      }
+    }
+  ],
+  "documents": [
+    {
+      "_type": "Document",
+      "id": "fil_01",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2025-02-11_0091",
+      "kind": "LAB_REPORT",
+      "filename": "hemograma_bioquimica_20250211.pdf",
+      "mime": "application/pdf",
+      "size_bytes": 248113,
+      "size_text": null,
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/attachments/0",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Document",
+      "id": "fil_02",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2025-02-11_0091",
+      "kind": "DENTAL_CHART",
+      "filename": "odontograma_20250211.png",
+      "mime": "image/png",
+      "size_bytes": 812004,
+      "size_text": null,
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/attachments/1",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Document",
+      "id": "fil_03",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-03-22_0412",
+      "kind": "PHOTO",
+      "filename": "almohadilla_MAD_20260322.jpg",
+      "mime": "image/jpeg",
+      "size_bytes": 1530221,
+      "size_text": null,
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/attachments/2",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Document",
+      "id": "fil_04",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-06-02_0633",
+      "kind": "LAB_REPORT",
+      "filename": "snap_leish_20260602.pdf",
+      "mime": "application/pdf",
+      "size_bytes": 96340,
+      "size_text": null,
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/attachments/3",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    },
+    {
+      "_type": "Document",
+      "id": "fil_05",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "encounter_ref": "enc_2026-11-07_1187",
+      "kind": "PRESCRIPTION",
+      "filename": "receta_PRES-2026-004415.pdf",
+      "mime": "application/pdf",
+      "size_bytes": 131772,
+      "size_text": null,
+      "sha256": null,
+      "contains_pii": false,
+      "_meta": {
+        "source_system": "VetNexo Cloud v3.2.1",
+        "source_format": "JSON_API",
+        "source_ref": "historial.json#/attachments/4",
+        "extracted_at": "2026-11-14T01:20:00+01:00",
+        "extracted_by": "vetlink-ingest/0.1",
+        "reviewed_by": null,
+        "method": "direct",
+        "confidence": 0.9
+      }
+    }
+  ],
+  "alerts": [
+    {
+      "_type": "Alert",
+      "id": "alr_kira_01",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "code": "ALLERGY_ACTIVE",
+      "rule_id": "R01",
+      "severity": "CRITICAL",
+      "category": "ALLERGY",
+      "title": "No administrar carprofeno",
+      "message": "Reacción adversa activa: vómitos x3 con carprofeno (18/04/2024). Se suspendió y se cambió a meloxicam, tolerado. Evitar AINE carprofeno.",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_kira_carprofeno",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/problem_list/0"
+        },
+        {
+          "entity": "Patient",
+          "id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/patient/flags/0"
+        }
+      ],
+      "action": "Marcar el paciente como alérgico a carprofeno y verificar AINE antes de prescribir.",
+      "due_date": null,
+      "confidence": 0.98,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R01",
+        "method": "derived",
+        "confidence": 0.98,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_kira_02",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "code": "ACTIVE_MEDICATION_ENDING",
+      "rule_id": "R03",
+      "severity": "HIGH",
+      "category": "MEDICATION",
+      "title": "Tobramicina: última dosis hoy",
+      "message": "Pauta activa de tobramicina colirio 1 gota OS/8 h durante 7 días (07/11-14/11/2026). Hoy es el último día; revisión ocular el mismo día.",
+      "evidence": [
+        {
+          "entity": "Prescription",
+          "id": "PRES-2026-004415",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/encounters/0/prescriptions/0"
+        }
+      ],
+      "action": "Confirmar cumplimiento y no prorrogar sin valorar la conjuntivitis.",
+      "due_date": "2026-11-14",
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R03",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_kira_03",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "code": "APPOINTMENT_DUE",
+      "rule_id": "R05",
+      "severity": "HIGH",
+      "category": "APPOINTMENT",
+      "title": "Control ocular hoy 14/11/2026",
+      "message": "Recordatorio RMD-77120 vence hoy: control de conjuntivitis bacteriana OS. El encounter del 07/11 fijó next_visit 14/11/2026.",
+      "evidence": [
+        {
+          "entity": "Reminder",
+          "id": "RMD-77120",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/reminders/0"
+        },
+        {
+          "entity": "Encounter",
+          "id": "enc_2026-11-07_1187",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/encounters/0"
+        }
+      ],
+      "action": "Reservar hueco hoy o reprogramar; revisar ojo izquierdo antes de cerrar el episodio.",
+      "due_date": "2026-11-14",
+      "confidence": 0.98,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R05",
+        "method": "derived",
+        "confidence": 0.98,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_kira_04",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "code": "PARASITE_OVERDUE",
+      "rule_id": "R07",
+      "severity": "HIGH",
+      "category": "PREVENTIVE",
+      "title": "Collar antiparasitario vencido (44 días)",
+      "message": "Collar de deltametrina colocado el 01/04/2026; renovación prevista 01/10/2026. Vencido 44 días a fecha 14/11/2026.",
+      "evidence": [
+        {
+          "entity": "ParasiteControl",
+          "id": "par_kira_ecto",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/parasite_control/1"
+        },
+        {
+          "entity": "Reminder",
+          "id": "RMD-77121",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/reminders/1"
+        }
+      ],
+      "action": "Indicar renovación del antiparasitario externo en la visita.",
+      "due_date": "2026-10-01",
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R07",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_kira_05",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "code": "ACTIVE_PROBLEM",
+      "rule_id": "R02",
+      "severity": "MEDIUM",
+      "category": "PROBLEM",
+      "title": "Conjuntivitis bacteriana OS activa",
+      "message": "Episodio iniciado 07/11/2026, en tratamiento; sin úlcera corneal (fluoresceína negativa).",
+      "evidence": [
+        {
+          "entity": "Problem",
+          "id": "prb_kira_conjuntivitis",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/problem_list/4"
+        }
+      ],
+      "action": "Explorar el ojo izquierdo y decidir alta o prórroga.",
+      "due_date": null,
+      "confidence": 0.95,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R02",
+        "method": "derived",
+        "confidence": 0.95,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_kira_06",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "code": "RISK_FLAG",
+      "rule_id": "R10",
+      "severity": "INFO",
+      "category": "RISK",
+      "title": "Hembra entera con antecedente de pseudogestación",
+      "message": "Paciente no esterilizada; pseudogestación resuelta en octubre 2024. Valorar esterilización si se planifica anestesia o hay recidivas.",
+      "evidence": [
+        {
+          "entity": "Patient",
+          "id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/patient/flags/1"
+        },
+        {
+          "entity": "Problem",
+          "id": "prb_kira_pseudogestacion",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/problem_list/1"
+        }
+      ],
+      "action": "Comentar con la tutora si se plantea cirugía.",
+      "due_date": null,
+      "confidence": 0.9,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R10",
+        "method": "derived",
+        "confidence": 0.9,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    },
+    {
+      "_type": "Alert",
+      "id": "alr_kira_07",
+      "patient_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+      "code": "DATA_QUALITY",
+      "rule_id": "R09",
+      "severity": "LOW",
+      "category": "DATA_QUALITY",
+      "title": "Identidad y contacto no verificables",
+      "message": "Export seudonimizado: microchip enmascarado (9410000XXXXX207), pasaporte enmascarado y sin teléfono/email del tutor. Match automático limitado a nombre+especie+fecha de nacimiento.",
+      "evidence": [
+        {
+          "entity": "Patient",
+          "id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/patient"
+        },
+        {
+          "entity": "Owner",
+          "id": "own_a81c4f0e-77d2-4c65-91e0-3b5f2d9e1a60",
+          "source_system": "VetNexo Cloud v3.2.1",
+          "source_ref": "historial.json#/owner"
+        }
+      ],
+      "action": "Solicitar verificación de microchip y contacto al contratar el servicio.",
+      "due_date": null,
+      "confidence": 0.9,
+      "generated_at": "2026-11-14T01:20:00+01:00",
+      "_meta": {
+        "source_system": "VetLink rules engine",
+        "source_format": "DERIVED",
+        "source_ref": "rules/R09",
+        "method": "derived",
+        "confidence": 0.9,
+        "extracted_at": "2026-11-14T01:20:00+01:00"
+      }
+    }
+  ],
+  "briefing": {
+    "generated_at": "2026-11-14T01:20:00+01:00",
+    "patient_label": "Kira · Border Collie · 5a 5m · hembra entera",
+    "headline": "Kira · Border Collie · 5a 5m · hembra entera - 7 alertas (1 crítica, 3 altas, 1 media, 1 baja, 1 informativa)",
+    "alert_counts": {
+      "CRITICAL": 1,
+      "HIGH": 3,
+      "MEDIUM": 1,
+      "LOW": 1,
+      "INFO": 1
+    },
+    "next_appointment": {
+      "date": "2026-11-14",
+      "text": "Control ocular OS",
+      "reminder_id": "RMD-77120",
+      "status": "DUE"
+    },
+    "priority_actions": [
+      {
+        "alert_id": "alr_kira_01",
+        "severity": "CRITICAL",
+        "action": "Marcar el paciente como alérgico a carprofeno y verificar AINE antes de prescribir."
+      },
+      {
+        "alert_id": "alr_kira_02",
+        "severity": "HIGH",
+        "action": "Confirmar cumplimiento y no prorrogar sin valorar la conjuntivitis."
+      },
+      {
+        "alert_id": "alr_kira_03",
+        "severity": "HIGH",
+        "action": "Reservar hueco hoy o reprogramar; revisar ojo izquierdo antes de cerrar el episodio."
+      }
+    ]
+  },
+  "provenance_summary": {
+    "entities": 53,
+    "fields_populated": 922,
+    "provenance": {
+      "entity_coverage_pct": 100.0,
+      "source_systems": [
+        "VetNexo Cloud v3.2.1"
+      ],
+      "source_refs": 53,
+      "field_level_entries": 17,
+      "assumed_fields": 0
+    },
+    "alerts": {
+      "total": 7,
+      "by_severity": {
+        "CRITICAL": 1,
+        "HIGH": 3,
+        "MEDIUM": 1,
+        "LOW": 1,
+        "INFO": 1
+      }
+    },
+    "rules_applied": [
+      "R01",
+      "R02",
+      "R03",
+      "R05",
+      "R07",
+      "R09",
+      "R10"
+    ]
+  },
+  "fhir_profile": {
+    "Patient": "Patient",
+    "Owner": "RelatedPerson",
+    "Encounter": "Encounter",
+    "Problem": "Condition",
+    "Prescription": "MedicationStatement",
+    "AllergyIntolerance": "Condition.category=ALLERGY|ADVERSE_REACTION",
+    "Immunization": "Immunization",
+    "Weight": "Observation (body weight / BCS)",
+    "ParasiteControl": "MedicationStatement (preventive)",
+    "Reminder": "Task",
+    "Document": "DocumentReference",
+    "Invoice": "Invoice",
+    "Alert": "Flag (VetLink extension)",
+    "Provenance": "meta.provenance (embedded in _meta)"
+  },
+  "review": {
+    "policy": "Campos críticos (alergias, dosis, medicación, microchip) exigen revision humana si confidence < umbral. El briefing no se publica con critical_fields pendientes; el LLM solo extrae texto libre, nunca calcula alertas.",
+    "critical_fields": [
+      {
+        "field": "patient.microchip",
+        "entity_id": "pat_5d2e8b90-1c47-4a3f-b8e2-9f61a0c4d315",
+        "type": "Patient",
+        "confidence": 0.6,
+        "threshold": 1.0,
+        "review_required": true,
+        "reason": "identificador enmascarado o incompleto"
+      },
+      {
+        "field": "problem.label",
+        "entity_id": "prb_kira_carprofeno",
+        "type": "Problem",
+        "confidence": 0.9,
+        "threshold": 0.95,
+        "review_required": true,
+        "reason": "alergia / efecto adverso"
+      }
+    ],
+    "pending_review": 2,
+    "reviewed_by": null
+  }
+}
