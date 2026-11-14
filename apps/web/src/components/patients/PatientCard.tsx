@@ -24,7 +24,7 @@ function AlertsBadge({ count }: { count: number }) {
 function PatientIdentity({ patient }: { patient: PatientSummary }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[linear-gradient(135deg,#5C59F3_0%,#2F33A8_100%)] text-[15px] font-medium tracking-tight text-white shadow-lift">
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[linear-gradient(135deg,#4E8C6A_0%,#2E6B52_100%)] text-[15px] font-medium tracking-tight text-white shadow-lift">
         {initials(patient.name)}
       </span>
       <div className="min-w-0 flex-1">
@@ -96,7 +96,7 @@ function PatientFooter({ patient }: { patient: PatientSummary }) {
       </div>
       <Link
         to={`/patients/${patient.id}`}
-        className="group/cta inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700"
+        className="group/cta inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
       >
         Ver ficha
         <ArrowRight className="h-3.5 w-3.5 transition duration-200 ease-smooth group-hover/cta:translate-x-0.5" />

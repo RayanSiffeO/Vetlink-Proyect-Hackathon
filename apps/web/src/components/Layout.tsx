@@ -18,7 +18,7 @@ function Splash() {
   return (
     <div className="grid min-h-screen place-items-center px-6">
       <div className="glass-strong rise flex flex-col items-center gap-3 rounded-panel px-10 py-9 text-center">
-        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-indigo text-sm font-medium tracking-tight text-white shadow-lift">
+        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-indigo text-sm font-medium tracking-tight text-ink shadow-lift">
           VL
         </span>
         <Spinner size="md" className="text-indigo" />
@@ -43,7 +43,7 @@ function ApiUnavailable({ error }: { error: unknown }) {
         </p>
         <button
           type="button"
-          className="mt-5 inline-flex items-center justify-center rounded-btn bg-indigo px-5 py-2.5 text-[13px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700"
+          className="mt-5 inline-flex items-center justify-center rounded-btn bg-indigo px-5 py-2.5 text-[13px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
           onClick={() => window.location.reload()}
         >
           Reintentar

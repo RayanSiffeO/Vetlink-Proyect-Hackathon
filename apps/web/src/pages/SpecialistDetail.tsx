@@ -114,7 +114,7 @@ function SpecialistProfileHeader({
           <SpecialistPriceBox priceFrom={specialist.price_from} />
           <Link
             to={requestHref}
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700"
+            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
           >
             <Send className="h-3.5 w-3.5" />
             Solicitar derivación
@@ -178,7 +178,7 @@ function SlotsCard({
         <SelectedSlotHint selectedSlot={selection.selectedSlot} />
         <Link
           to={requestHref}
-          className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700"
+          className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
         >
           <Send className="h-3.5 w-3.5" />
           Solicitar derivación

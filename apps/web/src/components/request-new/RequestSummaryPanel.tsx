@@ -33,7 +33,7 @@ function SubmitButton({ pending, disabled }: { pending: boolean; disabled: boole
   return (
     <button
       type="submit"
-      className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2.5 text-[12.5px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700 disabled:pointer-events-none disabled:opacity-50"
+      className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2.5 text-[12.5px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300 disabled:pointer-events-none disabled:opacity-50"
       disabled={pending || disabled}
     >
       {pending ? <Spinner size="sm" /> : <Send className="h-4 w-4" />}

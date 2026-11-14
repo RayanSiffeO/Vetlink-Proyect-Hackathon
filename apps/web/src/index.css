@@ -14,7 +14,7 @@
   :root {
     color-scheme: light;
     --vl-cream: #fffcf5;
-    --vl-indigo: #5c59f3;
+    --vl-indigo: #2e6b52;
     --vl-line-strong: #dbe2f4;
   }
 
@@ -38,8 +38,8 @@
   }
 
   ::selection {
-    background-color: #d6dbff;
-    color: #0c0a66;
+    background-color: #ddf0e3;
+    color: #123b2e;
   }
 
   :focus-visible {
@@ -114,7 +114,7 @@
     min-height: 380px;
     background: radial-gradient(
       circle at 50% 50%,
-      rgba(214, 219, 255, 0.85) 0%,
+      rgba(200, 235, 212, 0.85) 0%,
       rgba(255, 252, 245, 0) 70%
     );
     animation-delay: -7s;
@@ -129,7 +129,7 @@
     min-height: 320px;
     background: radial-gradient(
       circle at 50% 50%,
-      rgba(255, 196, 140, 0.55) 0%,
+      rgba(255, 226, 186, 0.55) 0%,
       rgba(255, 252, 245, 0) 70%
     );
     animation-delay: -13s;
@@ -155,9 +155,9 @@
 
   .glass-dark {
     color: #ffffff;
-    background: linear-gradient(150deg, rgba(28, 27, 110, 0.72) 0%, rgba(12, 10, 102, 0.56) 100%);
+    background: linear-gradient(150deg, rgba(18, 59, 46, 0.72) 0%, rgba(10, 35, 27, 0.56) 100%);
     border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 26px 60px -38px rgba(12, 10, 102, 0.9);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 26px 60px -38px rgba(10, 35, 27, 0.9);
     -webkit-backdrop-filter: blur(18px) saturate(160%);
     backdrop-filter: blur(18px) saturate(160%);
   }
@@ -217,8 +217,8 @@
     height: 480px;
     background: radial-gradient(
       circle at 50% 50%,
-      rgba(140, 153, 250, 0.4) 0%,
-      rgba(12, 10, 102, 0) 70%
+      rgba(143, 199, 168, 0.4) 0%,
+      rgba(10, 35, 27, 0) 70%
     );
     animation-delay: -6s;
   }
@@ -376,7 +376,7 @@
   }
 
   .glass-dark {
-    background: linear-gradient(150deg, #1b1a8f 0%, #0c0a66 100%);
+    background: linear-gradient(150deg, #1f4d3a 0%, #123b2e 100%);
   }
 }
 

@@ -79,7 +79,7 @@ function RequestCard({ request }: { request: RequestRecord }) {
     >
       <div className="flex items-start justify-between gap-2">
         <RequestTitle request={request} />
-        <span className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-indigo-700 transition duration-200 ease-smooth group-hover:bg-indigo group-hover:text-white">
+        <span className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-indigo-700 transition duration-200 ease-smooth group-hover:bg-indigo group-hover:text-ink">
           <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
         </span>
       </div>
@@ -158,7 +158,7 @@ function RequestsHeader({ specialistRole }: { specialistRole: boolean }) {
           </Link>
           <Link
             to="/requests/new"
-            className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700"
+            className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
           >
             <Plus className="h-3.5 w-3.5" />
             Nueva solicitud

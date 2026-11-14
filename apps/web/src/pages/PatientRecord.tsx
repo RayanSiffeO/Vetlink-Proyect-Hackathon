@@ -89,7 +89,7 @@ function RecordActions() {
       </Link>
       <Link
         to={`/requests/new?patient_id=${id ?? ''}`}
-        className="inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700"
+        className="inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
       >
         <Send className="h-3.5 w-3.5" />
         Nueva solicitud
@@ -150,7 +150,7 @@ function RecordHeaderCard({ data }: { data: PatientRecordResponse }) {
     <header className="glass-strong overflow-hidden rounded-panel">
       <div className="px-5 py-5 sm:px-6 sm:py-6">
         <div className="flex flex-wrap items-start gap-4 sm:gap-5">
-          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-[linear-gradient(135deg,#5C59F3_0%,#2F33A8_100%)] text-xl font-medium tracking-tight text-white shadow-lift">
+          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-[linear-gradient(135deg,#4E8C6A_0%,#2E6B52_100%)] text-xl font-medium tracking-tight text-white shadow-lift">
             {facts.initial}
           </span>
           <div className="min-w-0 flex-1">
@@ -476,7 +476,7 @@ function BriefingRailCard({
   return (
     <Link
       to={`/requests/new?patient_id=${patientId}`}
-      className="group block rounded-panel border border-indigo-100 bg-[linear-gradient(135deg,rgba(92,89,243,0.12)_0%,rgba(214,219,255,0.44)_100%)] p-5 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-card"
+      className="group block rounded-panel border border-indigo-100 bg-[linear-gradient(135deg,rgba(46,107,82,0.12)_0%,rgba(221,240,227,0.44)_100%)] p-5 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-card"
     >
       <div className="flex items-center gap-2.5">
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-white/85 text-indigo-700 ring-1 ring-inset ring-indigo-100">

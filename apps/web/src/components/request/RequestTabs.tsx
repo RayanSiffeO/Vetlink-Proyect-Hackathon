@@ -34,7 +34,7 @@ export function RequestTabs({
             aria-selected={active}
             className={`inline-flex h-10 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[12.5px] font-medium transition duration-200 ease-smooth ${
               active
-                ? 'bg-indigo text-white shadow-lift'
+                ? 'bg-indigo text-ink shadow-lift'
                 : 'text-para hover:bg-white/70 hover:text-indigo-700'
             }`}
             onClick={() => onSelect(item.id)}

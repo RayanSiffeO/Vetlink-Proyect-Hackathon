@@ -111,7 +111,7 @@ function SearchButtons({
     <div className="flex gap-2">
       <button
         type="submit"
-        className="inline-flex h-10 items-center gap-1.5 rounded-full bg-indigo px-4 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-700 disabled:opacity-60"
+        className="inline-flex h-10 items-center gap-1.5 rounded-full bg-indigo px-4 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300 disabled:opacity-60"
         disabled={isFetching}
       >
         {isFetching ? <Spinner size="xs" /> : <Search className="h-3.5 w-3.5" />}
@@ -177,7 +177,7 @@ function SpecialistSuggestions({
             type="button"
             className={`rounded-full border px-3 py-1.5 text-[11px] font-medium leading-4 transition duration-200 ease-smooth hover:-translate-y-px ${
               active
-                ? 'border-indigo bg-indigo text-white shadow-lift'
+                ? 'border-indigo bg-indigo text-ink shadow-lift'
                 : 'border-line bg-white/70 text-para hover:border-indigo-300 hover:text-indigo-700'
             }`}
             onClick={() => onSelect(suggestion)}
@@ -281,7 +281,7 @@ function SpecialistCard({ specialist }: { specialist: Specialist }) {
       <SpecialistMetrics specialist={specialist} />
       <Link
         to={specialistProfileHref(specialist.id, patientId)}
-        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:bg-indigo-700"
+        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:bg-indigo-300"
       >
         Ver perfil y disponibilidad
         <ArrowRight className="h-3.5 w-3.5 transition duration-200 ease-smooth group-hover:translate-x-0.5" />

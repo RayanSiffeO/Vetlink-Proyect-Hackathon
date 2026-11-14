@@ -28,7 +28,7 @@ interface RoleTone {
 
 const ROLE_TONES: Record<'primary' | 'secondary', RoleTone> = {
   primary: {
-    card: 'border-white/10 bg-[linear-gradient(135deg,#5C59F3_0%,#2F33A8_72%)] text-white shadow-lift hover:shadow-card',
+    card: 'border-white/10 bg-[linear-gradient(135deg,#4E8C6A_0%,#2E6B52_72%)] text-white shadow-lift hover:shadow-card',
     icon: 'border border-white/20 bg-white/15 text-white',
     title: 'text-white',
     badge: 'border-white/20 bg-indigo-900/35 text-white/90',
@@ -133,7 +133,7 @@ function ActiveSessionCard({ user }: { user: User }) {
       </p>
       <button
         type="button"
-        className="mt-2 inline-flex items-center gap-1.5 rounded-btn bg-indigo px-3 py-1.5 text-[12px] font-medium text-white shadow-lift transition duration-200 ease-smooth hover:-translate-y-px hover:bg-indigo-700"
+        className="mt-2 inline-flex items-center gap-1.5 rounded-btn bg-indigo px-3 py-1.5 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-px hover:bg-indigo-300"
         onClick={() => navigate(homeFor(user), { replace: true })}
       >
         Continuar <ArrowRight className="h-3.5 w-3.5" />
@@ -221,7 +221,7 @@ function SsoLink() {
 function PanelGlow() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <span className="absolute -right-40 -top-56 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(214,219,255,0.55),rgba(245,248,254,0)_70%)]" />
+      <span className="absolute -right-40 -top-56 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(221,240,227,0.55),rgba(245,248,254,0)_70%)]" />
       <span className="absolute -bottom-56 -left-32 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(255,243,229,0.9),rgba(245,248,254,0)_70%)]" />
     </div>
   );
@@ -239,7 +239,7 @@ function LoginFootNote() {
 function MobileBrand() {
   return (
     <div className="mb-5 flex items-center gap-2.5 lg:hidden">
-      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[11.5px] font-medium tracking-tight text-white shadow-lift">
+      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[11.5px] font-medium tracking-tight text-ink shadow-lift">
         VL
       </span>
       <span>

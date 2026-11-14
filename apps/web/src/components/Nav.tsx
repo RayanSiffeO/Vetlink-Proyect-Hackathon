@@ -26,7 +26,7 @@ const SPECIALIST_ITEMS: NavItem[] = ALL_ITEMS.filter((item) => item.to !== '/pat
 const PRIMARY_LINKS_CLASS = 'ml-2 hidden items-center gap-1 md:flex';
 const MOBILE_LINKS_CLASS =
   'mt-2 flex items-center gap-1 overflow-x-auto border-t border-line/80 px-0.5 pt-2 pb-0.5 md:hidden scrollbar-none';
-const NAV_ACTIVE_CLASS = 'bg-indigo text-white shadow-lift';
+const NAV_ACTIVE_CLASS = 'bg-indigo text-ink shadow-lift';
 const NAV_IDLE_CLASS = 'text-para hover:bg-white/70 hover:text-indigo-700';
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {
@@ -46,7 +46,7 @@ function NavBrand({ home }: { home: string }) {
       className="group flex shrink-0 items-center gap-2.5 rounded-xl pr-1"
       aria-label="VetLink, inicio"
     >
-      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[12px] font-medium tracking-tight text-white shadow-lift transition duration-200 ease-smooth group-hover:-translate-y-0.5">
+      <span className="grid h-9 w-9 place-items-center rounded-[12px] bg-indigo text-[12px] font-medium tracking-tight text-ink shadow-lift transition duration-200 ease-smooth group-hover:-translate-y-0.5">
         VL
       </span>
       <span className="hidden leading-tight sm:block">
