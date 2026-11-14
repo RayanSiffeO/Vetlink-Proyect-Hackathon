@@ -67,23 +67,21 @@ function PillarCard({ pillar }: { pillar: Pillar }) {
 
 function HeroContent() {
   return (
-    <div className="mt-8 max-w-[520px] lg:mt-[clamp(20px,5vh,56px)]">
+    <div className="max-w-[640px]">
       <p className="flex items-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.16em] text-indigo-700">
         <span className="h-px w-6 bg-indigo-700/40" aria-hidden="true" />
         Historia clínica · antes de la visita
       </p>
-      <div className="mt-3">
-        <CatMascot />
+      <div className="mt-6 grid items-center gap-6 md:grid-cols-[280px_minmax(0,1fr)]">
+        <div className="flex justify-center md:justify-start">
+          <CatMascot />
+        </div>
+        <ul className="stagger grid gap-2.5">
+          {PILLARS.map((pillar) => (
+            <PillarCard key={pillar.title} pillar={pillar} />
+          ))}
+        </ul>
       </div>
-      <p className="mt-3 max-w-[440px] text-[13px] leading-6 text-para">
-        Word, Excel, JSON y CSV se convierten en una ficha canónica: cada alerta con su fuente y un
-        briefing listo antes de que el especialista entre en la consulta.
-      </p>
-      <ul className="stagger mt-5 grid gap-2.5">
-        {PILLARS.map((pillar) => (
-          <PillarCard key={pillar.title} pillar={pillar} />
-        ))}
-      </ul>
     </div>
   );
 }
@@ -110,8 +108,10 @@ export function LoginBrand() {
       <div className="relative z-10 hidden lg:block">
         <BrandLockup />
       </div>
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-1 items-center py-8">
         <HeroContent />
+      </div>
+      <div className="relative z-10">
         <HeroFootnote />
       </div>
     </section>

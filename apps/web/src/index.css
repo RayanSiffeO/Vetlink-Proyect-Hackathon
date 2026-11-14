@@ -341,11 +341,11 @@
   }
 
   .login-panel-glass {
-    background: rgba(255, 252, 246, 0.18);
-    border-left: 1px solid rgba(255, 255, 255, 0.55);
-    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.55);
-    -webkit-backdrop-filter: blur(28px) saturate(155%);
-    backdrop-filter: blur(28px) saturate(155%);
+    background:
+      radial-gradient(640px 480px at 100% 0%, rgba(233, 180, 138, 0.16), transparent 62%),
+      linear-gradient(180deg, #fcf8f1 0%, #f9f1e6 100%);
+    border-left: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.8);
   }
 
   .glass-login {
@@ -1021,11 +1021,11 @@
   }
 
   .login-panel-glass {
-    background: rgba(255, 252, 246, 0.18);
-    border-left: 1px solid rgba(255, 255, 255, 0.55);
-    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.55);
-    -webkit-backdrop-filter: blur(28px) saturate(155%);
-    backdrop-filter: blur(28px) saturate(155%);
+    background:
+      radial-gradient(640px 480px at 100% 0%, rgba(233, 180, 138, 0.16), transparent 62%),
+      linear-gradient(180deg, #fcf8f1 0%, #f9f1e6 100%);
+    border-left: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.8);
   }
 
   .glass-login {
