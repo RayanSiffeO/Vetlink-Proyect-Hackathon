@@ -548,11 +548,11 @@ export function PatientRecord() {
       <RecordHeaderCard data={data} />
       <PatientReviewBanner patientId={patientId} review={data.record?.review ?? null} />
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]">
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           <RecordAlertsSection alerts={alerts} />
           <RecordEncountersSection encounters={encounters} />
         </div>
-        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+        <aside className="min-w-0 space-y-4 lg:sticky lg:top-24 lg:self-start">
           <ProvenanceRailCard summary={provenance} />
           <PreventivePlanCard reminders={reminders} />
           <BriefingRailCard briefing={data.briefing} patientId={patientId} />

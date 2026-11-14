@@ -13,6 +13,7 @@ from ..schemas import ReviewRequest, alert_dict, canonical_of, patient_dict, rec
 router = APIRouter(prefix="/patients", tags=["patients"])
 
 REVIEW_ROLE_DETAIL = "Solo la clínica puede confirmar la revisión humana de la ficha"
+PATIENT_SCOPE_DETAIL = "Solo la clínica puede acceder a la bandeja de pacientes"
 PATIENT_NOT_FOUND = "Paciente no encontrado"
 RECORD_NOT_FOUND = "El paciente no tiene registro canónico importado"
 
@@ -57,6 +58,7 @@ def _provenance_summary(record: Record, provenance: dict) -> dict:
 
 @router.get("", summary="Listado de pacientes con número de alertas")
 def list_patients(ctx: ApiCtx) -> dict:
+    ensure(role_value(ctx.user) == Role.CLINIC.value, PATIENT_SCOPE_DETAIL)
     patients = list(ctx.session.exec(select(Patient).order_by(Patient.name)).all())
     counts = alert_counts_by_patient(ctx.session)
     return {
@@ -68,6 +70,7 @@ def list_patients(ctx: ApiCtx) -> dict:
 
 @router.get("/{patient_id}/record", summary="Registro canónico completo + alertas")
 def get_record(patient_id: str, ctx: ApiCtx) -> dict:
+    ensure(role_value(ctx.user) == Role.CLINIC.value, PATIENT_SCOPE_DETAIL)
     patient = require_found(ctx.session.get(Patient, patient_id), "Paciente no encontrado")
     record = require_found(
         record_for_patient(ctx.session, patient_id),

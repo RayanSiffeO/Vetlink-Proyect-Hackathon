@@ -21,7 +21,10 @@ const ALL_ITEMS: NavItem[] = [
   { to: '/requests', label: 'Solicitudes', icon: Send },
 ];
 
-const SPECIALIST_ITEMS: NavItem[] = ALL_ITEMS.filter((item) => item.to !== '/patients');
+const SPECIALIST_ITEMS: NavItem[] = [
+  { to: '/requests', label: 'Solicitudes', icon: Send },
+  { to: '/calendar', label: 'Calendario', icon: CalendarDays },
+];
 
 const PRIMARY_LINKS_CLASS = 'ml-2 hidden items-center gap-1 md:flex';
 const MOBILE_LINKS_CLASS =

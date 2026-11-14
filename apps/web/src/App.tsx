@@ -1,7 +1,9 @@
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
+import type { ReactNode } from 'react';
 import Layout, { AppBackdrop } from './components/Layout';
 import { Spinner } from './components/Spinner';
 import { useMe } from './api/hooks';
+import { isSpecialist } from './lib/format';
 import { homeFor } from './lib/routes';
 import Calendar from './pages/Calendar';
 import Login from './pages/Login';
@@ -32,6 +34,13 @@ function HomeRedirect() {
   return <Navigate to={user ? homeFor(user) : '/login'} replace />;
 }
 
+function ClinicOnly({ children }: { children: ReactNode }) {
+  const { data: user, isLoading } = useMe();
+  if (isLoading) return <Splash />;
+  if (user && isSpecialist(user)) return <Navigate to="/requests" replace />;
+  return <>{children}</>;
+}
+
 function NotFound() {
   return (
     <div className="grid min-h-screen place-items-center px-4 py-10">
@@ -60,12 +69,12 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route element={<Layout />}>
-            <Route path="/patients" element={<Patients />} />
-            <Route path="/patients/:id" element={<PatientRecord />} />
-            <Route path="/specialists" element={<Specialists />} />
-            <Route path="/specialists/:id" element={<SpecialistDetail />} />
+            <Route path="/patients" element={<ClinicOnly><Patients /></ClinicOnly>} />
+            <Route path="/patients/:id" element={<ClinicOnly><PatientRecord /></ClinicOnly>} />
+            <Route path="/specialists" element={<ClinicOnly><Specialists /></ClinicOnly>} />
+            <Route path="/specialists/:id" element={<ClinicOnly><SpecialistDetail /></ClinicOnly>} />
             <Route path="/requests" element={<Requests />} />
-            <Route path="/requests/new" element={<RequestNew />} />
+            <Route path="/requests/new" element={<ClinicOnly><RequestNew /></ClinicOnly>} />
             <Route path="/requests/:id" element={<RequestDetail />} />
             <Route path="/calendar" element={<Calendar />} />
           </Route>

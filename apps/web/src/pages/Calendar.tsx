@@ -173,7 +173,7 @@ function CalendarHeader({ specialistRole }: { specialistRole: boolean }) {
           Solicitudes
         </Link>
         <Link
-          to={specialistRole ? '/specialists' : '/patients'}
+          to={specialistRole ? '/requests' : '/patients'}
           className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium text-caption transition duration-200 ease-smooth hover:-translate-y-px hover:bg-white/70 hover:text-indigo-700"
         >
           <ArrowLeft className="h-3.5 w-3.5" />

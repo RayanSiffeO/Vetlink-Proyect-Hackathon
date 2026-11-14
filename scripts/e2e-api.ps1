@@ -49,6 +49,8 @@ try {
 
     $loginCode = curl.exe -s -c $jarLa -o (Join-Path $tmp "login.json") -w "%{http_code}" -X POST -H "Content-Type: application/json" --data-binary "@$(Join-Path $tmp 'laura.json')" "$base/api/auth/demo"
     Add-Check "login Laura" "200" "$loginCode"
+    $initialReset = curl.exe -s -b $jarLa -X POST "$base/api/demo/reset"
+    Add-Check "reset inicial" "0" "$((($initialReset | ConvertFrom-Json).counts.requests))"
     $me = curl.exe -s -b $jarLa "$base/api/me" | ConvertFrom-Json
     Add-Check "rol Laura" "CLINIC" "$($me.user.role)"
 

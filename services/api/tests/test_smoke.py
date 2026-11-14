@@ -130,3 +130,8 @@ def test_request_summary_locked_then_briefing(client: TestClient) -> None:
 
     appointments = client.get("/api/appointments").json()["appointments"]
     assert any(appointment["request_id"] == request_id for appointment in appointments)
+
+def test_specialist_cannot_access_clinic_patients(client: TestClient) -> None:
+    login(client, "marc")
+    assert client.get("/api/patients").status_code == 403
+    assert client.get("/api/patients/pat_kira/record").status_code == 403
