@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import re
 import uuid
 from pathlib import Path
@@ -11,11 +10,18 @@ from sqlmodel import select
 from ..config import settings
 from ..context import ApiContext, ApiCtx
 from ..errors import BAD_REQUEST, ensure, require_found
+from ..extractors import get_extractor
+from ..extractors.base import ExtractResult, UnsupportedFormat
+from ..ingestion import ingest_canonical
 from ..models import ImportJob, ImportStatus, utcnow
 from ..schemas import import_job_dict
-from ..seed import NEEDS_REVIEW_MESSAGE, READY_MESSAGE, build_import_cache
+from ..seed import NEEDS_REVIEW_MESSAGE, READY_MESSAGE, build_import_cache, sha256_of
 
 router = APIRouter(prefix="/imports", tags=["imports"])
+
+EXTRACTION_REVIEW_MESSAGE = "Extracción marcada para revisión manual"
+UNSUPPORTED_FORMAT_MESSAGE = "Formato no soportado por los extractores; revisión manual"
+FAILED_MESSAGE = "No se pudo procesar el fichero"
 
 
 def _safe_name(filename: str) -> str:
@@ -30,30 +36,92 @@ def _write_upload(data: bytes, filename: str) -> Path:
     return dest
 
 
-def _import_job(filename: str, data: bytes, cache: dict[str, str]) -> ImportJob:
-    digest = hashlib.sha256(data).hexdigest()
-    record_id = cache.get(digest)
+def _new_job(filename: str, sha256: str) -> ImportJob:
     return ImportJob(
         id=f"imp_{uuid.uuid4().hex[:10]}",
         filename=filename,
-        status=ImportStatus.READY if record_id else ImportStatus.NEEDS_REVIEW,
-        sha256=digest,
-        record_id=record_id,
-        message=READY_MESSAGE if record_id else NEEDS_REVIEW_MESSAGE,
+        status=ImportStatus.NEEDS_REVIEW,
+        sha256=sha256,
         created_at=utcnow(),
     )
 
 
-def _register_upload(ctx: ApiContext, upload: UploadFile, cache: dict[str, str]) -> ImportJob:
-    data = upload.file.read()
-    filename = upload.filename or "upload.bin"
-    _write_upload(data, filename)
-    job = _import_job(filename, data, cache)
+def _cached_job(filename: str, digest: str, record_id: str) -> ImportJob:
+    job = _new_job(filename, digest)
+    job.status = ImportStatus.READY
+    job.record_id = record_id
+    job.message = READY_MESSAGE
+    return job
+
+
+def _review_job(filename: str, digest: str, message: str) -> ImportJob:
+    job = _new_job(filename, digest)
+    job.message = message
+    return job
+
+
+def _failed_job(filename: str, digest: str, message: str) -> ImportJob:
+    job = _review_job(filename, digest, message)
+    job.status = ImportStatus.FAILED
+    return job
+
+
+def _store(ctx: ApiContext, job: ImportJob) -> ImportJob:
     ctx.session.add(job)
     ctx.session.commit()
     ctx.session.refresh(job)
     ctx.audit("ImportJob", job.id, "IMPORT_FILE")
     return job
+
+
+def _unsupported_message(exc: UnsupportedFormat) -> str:
+    detail = str(exc).strip()
+    return f"{UNSUPPORTED_FORMAT_MESSAGE} ({detail})" if detail else UNSUPPORTED_FORMAT_MESSAGE
+
+
+def _review_message(base: str | None, warnings: list[str]) -> str:
+    detail = "; ".join(warning.strip() for warning in warnings if warning and warning.strip())
+    return " · ".join(part for part in (EXTRACTION_REVIEW_MESSAGE, base or "", detail) if part)
+
+
+def _apply_extraction_flags(ctx: ApiContext, job: ImportJob, result: ExtractResult) -> ImportJob:
+    if not (result.needs_review or result.warnings):
+        return job
+    job.status = ImportStatus.NEEDS_REVIEW
+    job.message = _review_message(job.message, result.warnings)
+    ctx.session.add(job)
+    ctx.session.commit()
+    ctx.session.refresh(job)
+    return job
+
+
+def _process_upload(ctx: ApiContext, upload: UploadFile, cache: dict[str, str]) -> ImportJob:
+    data = upload.file.read()
+    filename = upload.filename or "upload.bin"
+    path = _write_upload(data, filename)
+    digest = sha256_of(path)
+    record_id = cache.get(digest)
+    if record_id is not None:
+        return _store(ctx, _cached_job(filename, digest, record_id))
+    extractor = get_extractor(path.suffix)
+    if extractor is None:
+        return _store(ctx, _review_job(filename, digest, NEEDS_REVIEW_MESSAGE))
+    try:
+        result = extractor(path)
+        job = ingest_canonical(ctx, result.record, filename, digest)
+    except UnsupportedFormat as exc:
+        ctx.session.rollback()
+        return _store(ctx, _review_job(filename, digest, _unsupported_message(exc)))
+    except Exception as exc:
+        ctx.session.rollback()
+        return _store(ctx, _failed_job(filename, digest, f"{FAILED_MESSAGE}: {exc}"))
+    return _apply_extraction_flags(ctx, job, result)
+
+
+def _summary(jobs: list[ImportJob]) -> dict[str, int]:
+    ready = sum(1 for job in jobs if job.status == ImportStatus.READY)
+    review = sum(1 for job in jobs if job.status == ImportStatus.NEEDS_REVIEW)
+    return {"total": len(jobs), "ready": ready, "needs_review": review, "failed": len(jobs) - ready - review}
 
 
 @router.post("", summary="Subir 1..N ficheros del PMS")
@@ -63,12 +131,11 @@ def upload_files(
 ) -> dict:
     ensure(bool(files), "Envía al menos un fichero", BAD_REQUEST)
     cache = build_import_cache()
-    jobs = [_register_upload(ctx, upload, cache) for upload in files]
-    ready = sum(1 for job in jobs if job.status == ImportStatus.READY)
+    jobs = [_process_upload(ctx, upload, cache) for upload in files]
     return {
         "job_id": jobs[0].id,
         "files": [import_job_dict(job) for job in jobs],
-        "summary": {"total": len(jobs), "ready": ready, "needs_review": len(jobs) - ready},
+        "summary": _summary(jobs),
     }
 
 
