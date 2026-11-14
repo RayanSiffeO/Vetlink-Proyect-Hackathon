@@ -115,6 +115,24 @@ try {
     Add-CheckAtLeast "briefing alertas renderizadas" 1 @($briefing.briefing.alerts_rendered).Count
     Add-CheckAtLeast "auditoria de accesos" 3 @($briefing.audit).Count
 
+    $reviewBody = @{ reviewed_fields = @(); note = "Revision de smoke E2E" } | ConvertTo-Json
+    Set-Content (Join-Path $tmp "review.json") $reviewBody -Encoding utf8
+    $reviewCode = curl.exe -s -b $jarLa -o (Join-Path $tmp "review-resp.json") -w "%{http_code}" -X PATCH -H "Content-Type: application/json" --data-binary "@$(Join-Path $tmp 'review.json')" "$base/api/patients/pat_kira/record/review"
+    Add-Check "revision humana" "200" "$reviewCode"
+    $review = Get-Content (Join-Path $tmp "review-resp.json") -Raw | ConvertFrom-Json
+    Add-Check "campos pendientes a cero" "0" "$($review.review.pending_review)"
+    Add-Check "revisado por la clinica" "True" "$([bool]$review.review.reviewed_by)"
+
+    $closeBody = @{ note = "Cierre E2E: evolucion favorable, se mantiene tratamiento"; diagnosis = "Control resuelto"; recommendations = "Revision en 30 dias" } | ConvertTo-Json
+    Set-Content (Join-Path $tmp "close.json") $closeBody -Encoding utf8
+    $closeCode = curl.exe -s -b $jarMa -o (Join-Path $tmp "close-resp.json") -w "%{http_code}" -X POST -H "Content-Type: application/json" --data-binary "@$(Join-Path $tmp 'close.json')" "$base/api/requests/$requestId/close"
+    Add-Check "cierre de visita" "200" "$closeCode"
+    $closed = Get-Content (Join-Path $tmp "close-resp.json") -Raw | ConvertFrom-Json
+    Add-Check "solicitud completada" "COMPLETED" "$($closed.request.status)"
+    $recordAfter = curl.exe -s -b $jarLa "$base/api/patients/pat_kira/record" | ConvertFrom-Json
+    $specialistNotes = @($recordAfter.record.encounters | Where-Object { $_.'_meta'.source_ref -eq "request:$requestId" }).Count
+    Add-Check "nota del especialista en la ficha" "1" "$specialistNotes"
+
     $appointments = curl.exe -s -b $jarLa "$base/api/appointments" | ConvertFrom-Json
     Add-CheckAtLeast "cita en calendario" 1 @($appointments.appointments).Count
 
