@@ -476,7 +476,7 @@ function BriefingRailCard({
   return (
     <Link
       to={`/requests/new?patient_id=${patientId}`}
-      className="group block rounded-panel border border-indigo-100 bg-[linear-gradient(135deg,rgba(46,107,82,0.12)_0%,rgba(221,240,227,0.44)_100%)] p-5 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-card"
+      className="group block rounded-panel border border-indigo-200 bg-white/85 p-5 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-card"
     >
       <div className="flex items-center gap-2.5">
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-white/85 text-indigo-700 ring-1 ring-inset ring-indigo-100">

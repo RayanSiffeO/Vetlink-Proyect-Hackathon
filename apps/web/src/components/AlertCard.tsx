@@ -15,19 +15,19 @@ const SEVERITY_ICONS: Record<string, typeof Info> = {
 };
 
 const ALERT_SURFACES: Record<string, string> = {
-  CRITICAL: 'border-crit/20 border-l-crit bg-crit-soft/70',
-  HIGH: 'border-warn/20 border-l-warn bg-warn-soft/75',
-  MEDIUM: 'border-infoblue/20 border-l-infoblue bg-infoblue-soft/80',
+  CRITICAL: 'border-line-strong/80 border-l-crit bg-white',
+  HIGH: 'border-line-strong/80 border-l-warn bg-white',
+  MEDIUM: 'border-line-strong/80 border-l-infoblue bg-white',
 };
 
 const ALERT_ICON_TONES: Record<string, string> = {
-  CRITICAL: 'bg-white/80 text-crit ring-crit/15',
-  HIGH: 'bg-white/80 text-warn ring-warn/15',
-  MEDIUM: 'bg-white/80 text-infoblue ring-infoblue/15',
+  CRITICAL: 'bg-crit-soft text-crit ring-crit/10',
+  HIGH: 'bg-warn-soft text-warn ring-warn/10',
+  MEDIUM: 'bg-infoblue-soft text-infoblue ring-infoblue/10',
 };
 
-const FALLBACK_SURFACE = 'border-line border-l-line-strong bg-white/70';
-const FALLBACK_ICON_TONE = 'bg-white/80 text-caption ring-line-strong';
+const FALLBACK_SURFACE = 'border-line border-l-line-strong bg-white';
+const FALLBACK_ICON_TONE = 'bg-mist text-caption ring-line';
 
 function SeverityIcon({ severity }: { severity: string }) {
   const Icon = lookupValue(SEVERITY_ICONS, String(severity ?? '').toUpperCase(), Info);
@@ -67,7 +67,7 @@ function AlertMessage({ message }: { message?: string | null }) {
 function AlertActionNote({ action }: { action?: string | null }) {
   if (!action) return null;
   return (
-    <p className="mt-2 break-words rounded-xl bg-white/65 px-3 py-2 text-[12px] leading-[18px] text-para ring-1 ring-inset ring-white/80">
+    <p className="mt-2 break-words rounded-xl bg-mist/80 px-3 py-2 text-[12px] leading-[18px] text-para ring-1 ring-inset ring-line/80">
       <span className="font-semibold text-ink">Acción: </span>
       {action}
     </p>
@@ -88,7 +88,7 @@ function AlertEvidenceList({ evidence }: { evidence: Array<AlertEvidence | strin
         <FileText className="h-3.5 w-3.5" />
         Evidencia ({evidence.length})
       </summary>
-      <ul className="mt-2 space-y-1 rounded-xl bg-white/55 p-2.5">
+      <ul className="mt-2 space-y-1 rounded-xl bg-mist/70 p-2.5">
         {evidence.slice(0, 4).map((item, index) => (
           <li
             key={index}
@@ -110,7 +110,7 @@ export function AlertCard({ alert, compact = false }: AlertCardProps) {
 
   return (
     <article
-      className={`rounded-2xl border border-l-[3px] px-4 py-3.5 shadow-[0_18px_34px_-30px_rgba(40,40,48,0.5)] ${surface}`}
+      className={`rounded-2xl border border-l-[3px] px-4 py-3.5 shadow-[0_10px_22px_-24px_rgba(30,42,35,0.45)] ${surface}`}
       data-severity={String(alert.severity ?? '').toUpperCase()}
     >
       <header className="flex items-start gap-3">

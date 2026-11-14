@@ -5,8 +5,10 @@ import Nav from './Nav';
 import { Spinner } from './Spinner';
 
 export function AppBackdrop() {
+  const { pathname } = useLocation();
+  const workspace = pathname !== '/login';
   return (
-    <div className="app-backdrop" aria-hidden="true">
+    <div className={`app-backdrop${workspace ? ' app-backdrop-work' : ''}`} aria-hidden="true">
       <span className="app-blob app-blob-cream" />
       <span className="app-blob app-blob-indigo" />
       <span className="app-blob app-blob-warm" />
