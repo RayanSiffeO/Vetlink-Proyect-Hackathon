@@ -1,6 +1,7 @@
 # Checkpoint 2 · Propuesta de solución
 
 > **Criterio evaluado:** idea clara, alineada con el reto y lista para desarrollar.  
+> **Cuándo:** sábado 14/11 **18:00** (15 min, sala virtual del jurado, cámara encendida).  
 > **Propuesta:** **VetLink — la historia clínica llega completa al especialista antes de la visita.**  
 > **Estado:** lista para desarrollar (modelo, contrato, datos y flujos ya construidos).
 

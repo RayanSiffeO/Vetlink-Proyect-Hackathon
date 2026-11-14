@@ -1,7 +1,8 @@
 # Checkpoint 3 · Solución y demo
 
 > **Criterio evaluado:** resuelve el problema, aporta valor y **demo funcional con buen nivel técnico**.  
-> **Estado:** guion, dossier técnico y checklist listos; la demo se implementa con el plan de 6–8 h de [`PLAYBOOK.md` §8.5](../../PLAYBOOK.md) (2 personas + agentes). Este documento es lo que se muestra y se dice en el checkpoint.
+> **Cuándo:** domingo 15/11 **14:45** (15 min, sala virtual del jurado, cámara encendida; demo final congelada a las 14:15).  
+> **Estado:** guion, dossier técnico y checklist listos; la demo se implementa con el plan de [`PLAYBOOK.md` §8.5](../../PLAYBOOK.md) (2 personas + agentes). Este documento es lo que se muestra y se dice en el checkpoint.
 
 ## 1. Qué se va a demostrar (y qué no)
 
@@ -60,7 +61,7 @@
 **Narrativa:**
 - [ ] Guion de 3 min ensayado y cronometrado (2 pasadas).
 - [ ] Respuestas a las 10 preguntas del jurado (ver [`PLAYBOOK.md` §9.3](../../PLAYBOOK.md)).
-- [ ] Roles claros: quién narra y quién pulsa.
+- [ ] Roles claros: **Jose Miguel narra** (producto/frontend) y **[NOMBRE COMPAÑERO] pulsa** (backend); acordado antes del ensayo.
 - [ ] Cierre con métricas: 3+1 formatos → 1 registro <30 s; 1.785 campos; 22 alertas; 10–15 min → 90 s; 0 datos reales.
 
 ## 5. Valor que se demuestra

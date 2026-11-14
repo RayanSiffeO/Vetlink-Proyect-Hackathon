@@ -2,7 +2,9 @@
 
 > **Documento maestro de trabajo y ritmo del equipo.**  
 > Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
-> Versión 1.4 · 14/11/2026 02:05 · Lead (agente) para el equipo Joniha.  
+> Versión 1.6 · 14/11/2026 02:25 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.6: **calendario oficial re-anclado** (CP1 sáb 12:00 · CP2 sáb 18:00 · CP3 dom 14:45, 15 min cada uno, cámara on, sala del jurado) y plan hora a hora reescrito (§8). H+0 ejecutado en local con agentes. **GitHub congelado por indicación del equipo: nada de push.**  
+> Cambios v1.5: **organización real confirmada** — 2 personas en **pair programming** por Discord, decisiones conjuntas con IA como apoyo; Jose Miguel = frontend/producto/demo; compañero = backend/datos. Roles (§7) y modo de trabajo actualizados, nuevo [`docs/decisiones.md`](docs/decisiones.md) como registro de decisiones.  
 > Cambios v1.4: **equipo real = 2 personas**; roles y liderazgos reescritos (§7), ritmo ajustado (§8.5) y paquete de **los 3 checkpoints oficiales** en `docs/checkpoints/` (§13).  
 > Cambios v1.3: **stack rápido aprobado** — React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico y sin LLM en la demo; Postgres-ready. Elimina ~4–6 h de infra.  
 > Cambios v1.2: cierra las decisiones abiertas con Data (`docs/02-modelo-datos.md`): congelar nombres v1 + `fhir_profile`, gate de revisión con banner, alcance del resumen pre-aceptación y fixture CSV de robustez.  
@@ -234,22 +236,22 @@ Joniha/
 
 ## 7. Estructura de trabajo: equipo, roles y reglas
 
-### Roles para un equipo de 2 personas (situación real)
+### Roles y modo de trabajo (equipo real: 2 personas en pair programming)
 
-| Persona | Rol y liderazgo | Dueña de | Entregable del día |
+| Persona | Fortaleza | Referente de | Entregable del día |
 |---|---|---|---|
-| **A · Jose Miguel** | **Líder de proyecto + Backend/Data** | Alcance, tiempos, GitHub/entrega, pitch; API FastAPI, SQLite, extractores, modelo canónico, seed | API viva + seed reproducible + 3 fichas normalizadas |
-| **B · [nombre real pendiente]** | **Líder técnica de producto + Frontend/Demo/QA** | UI/UX, las 5 pantallas, marca VetLink, guion de demo, vídeo, QA cruzada | 5 pantallas demoables + vídeo + README |
+| **Jose Miguel** | Frontend / producto / UX | Coordinación general, pitch y demo; UI, 5 pantallas, marca VetLink, vídeo | 5 pantallas demoables + guion + vídeo |
+| **[NOMBRE COMPAÑERO]** | Backend / datos | Arquitectura técnica y datos: API FastAPI, SQLite, extractores, modelo canónico, seed, integración | API viva + seed reproducible + 3 fichas normalizadas |
 
-**Reglas de decisión:**
-- **A cierra** alcance, prioridades, entrega y relación con la organización.
-- **B cierra** UX, pantallas, narrativa y guion de demo.
-- **Cambio de contrato API o de modelo canónico:** consenso de A y B y se anota en el canal.
-- **Nadie mergea su propia feature sin revisión del otro** (5 minutos de ojo ajeno).
-- **Los agentes IA no deciden:** generan; el humano revisa, prueba y firma.
-- **Bus factor:** todo lo que no esté en el repo no existe → documentación, seed y vídeo siempre actualizados.
+**Modo de trabajo (acordado 14/11 02:09):**
+- **Pair programming** con **llamada de Discord en directo** toda la sesión; **driver/navigator** con rotación cada 45–60 min.
+- **Decisiones por consenso**: cada área tiene referente (producto/frontend = Jose; backend/datos = compañero); si hay empate, decide el referente del área y se registra.
+- **IA como tercer participante**: se usa para debatir alternativas técnicas y acelerar tareas; el humano verifica y firma.
+- **Registro de decisiones** en [`docs/decisiones.md`](docs/decisiones.md): toda decisión de alcance, contrato, modelo o stack se anota el mismo día.
+- **Revisión cruzada:** nadie acepta su cambio sin que el otro lo pruebe (5 min).
+- **Bus factor:** todo lo que no esté en el repo no existe → playbook, decisiones, seed y vídeo siempre actualizados.
 
-*Si en algún momento sois 3:* A = proyecto+backend, B = frontend, C = demo/QA/pitch. *Si queda 1 persona:* versión comprimida de §8.3 con seed + vídeo.
+*Si en algún momento sois 3:* se añade un tercero a demo/QA. *Si queda 1 persona:* versión comprimida §8.3 con seed + vídeo.
 
 ### Reglas del repo (se votan y no se cambian el domingo)
 
@@ -261,6 +263,7 @@ Joniha/
 6. **Contrato API** de `docs/05` es la frontera front/back: si cambia, avisar en el canal.
 7. No se toca el modelo canónico sin avisar a Data + Frontend.
 8. `README.md` se actualiza **hoy**, no el domingo.
+9. Toda decisión relevante se registra en [`docs/decisiones.md`](docs/decisiones.md): es la prueba de plan vivo y coordinado en los checkpoints.
 
 ### Gestión de tareas
 
@@ -273,31 +276,40 @@ Joniha/
 
 ## 8. Ritmo: plan hora a hora
 
-> Ancla: **ahora** = sábado 14/11 01:15. Si el equipo arranca más tarde, comprimir según §8.3. El plan del red-team manda: vertical slice primero y recorte en el mismo día si el burn-down falla.
+> **Calendario oficial (recibido por correo, equipo nº 23 “Joñiha”):** **CP1 sábado 12:00 · CP2 sábado 18:00 · CP3 domingo 14:45**. Cada checkpoint: **15 minutos**, en la sala virtual del jurado, **cámara encendida** y conectarse **solo** a la hora del equipo. El plan de abajo está re-anclado a esos tres hitos.
+>
+> Ancla de trabajo: **ahora** = sábado 14/11 02:20; H+0 (scaffold + contrato + seed) se ejecuta con agentes en paralelo 02:20–03:00. El plan del red-team manda: vertical slice primero y recorte en el mismo día si el burn-down falla.
 
 ### 8.1 Sábado 14
 
 | Franja | Bloque | Objetivo | Entregable/Hito | Checkpoint |
 |---|---|---|---|---|
-| 01:15–02:30 | **H0 · Alineación** | Leer playbook + `01` + `04`; cerrar D1–D15; tablero y scaffold | Playbook v1.2, docs, tablero | — |
-| 08:00–09:00 | Kickoff | Verificar push a `main` y deadline oficial; reparto; entorno local (`uvicorn` + SQLite + `pnpm`) | Entorno listo | Standup 10' |
-| 09:00–14:00 | **B1 · Esqueleto vertical** | Esquema canónico, auth/roles, seed, XLSX+JSON end-to-end, pantalla paciente/subida/revisión | **H1 (14:00): esquema + auth + seed + XLSX/JSON E2E** | Demo interna 1 |
-| 14:00–15:00 | Comida | — | — | — |
-| 15:00–18:00 | **B2 · DOCX + marketplace + reserva** | Adaptador DOCX, LLM solo texto libre, búsqueda/ficha especialista, solicitud/aceptación/agenda | **H2 (18:00): flujo completo con DOCX y reserva** | Congelar **esquema 18:00** |
-| 18:00–20:00 | **B3 · Briefing + mapeador** | Briefing determinista, resumen no identificativo, mapeador CSV, alertas | **H3 (20:00): briefing + CSV desconocido** | Congelar **dependencias 20:00** |
-| 20:00–21:00 | Cena + demo interna 2 | — | — | Demo interna 2 |
-| 21:00–24:00 | **B4 · Auditoría + pulido demo** | Auditoría de accesos, estados error, responsive briefing, seed reset, vídeo de respaldo | **H4 (24:00): producto demoable + vídeo grabado** | Demo interna 3 |
+| 02:20–03:00 | **H+0 · Base** | Scaffold `apps/web` + `services/api`, contrato congelado, SQLite con seed de los 3 pacientes (agentes en paralelo) | Base levantando en local | — |
+| 03:00–08:00 | **Descanso** | Dormir; los humanos no rinden a las 4 a.m. | — | — |
+| 08:00–08:30 | Kickoff | Revisar H+0 en pareja, arrancar backend+frontend y validar `/api/health` y seed | Entorno verificado | Standup 10' |
+| 08:30–11:15 | **B1 · Demo CP1** | Login+seed+import cache+ficha de paciente; repasar CP1 y plan | **H1 (11:15): demo mínima + CP1 listo** | Demo interna 1 |
+| 11:15–11:45 | **Preparación CP1** | Cámara, audio, pantalla compartida, sala virtual, 3 mensajes clave | **11:45: demo congelada (solo hotfix)** | Ensayo 15' |
+| **12:00–12:15** | **CP1 con el jurado** | Revisión de avance | **CP1 entregado** | — |
+| 12:15–13:30 | **B2 · Normalizador real** | Extractores DOCX/XLSX/JSON/CSV + panel de revisión con procedencia | Import real de los 3 ficheros | — |
+| 13:30–14:15 | Comida | — | — | — |
+| 14:15–17:15 | **B3 · Marketplace + briefing** | Búsqueda/ficha, solicitud, aceptación, agenda y briefing con niveles de acceso | **H2 (17:15): flujo Laura→Marc end-to-end** | Demo interna 2 |
+| 17:15–17:45 | **Preparación CP2** | Propuesta de solución + demo corta; repasar CP2 | **17:45: demo CP2 congelada** | Ensayo 15' |
+| **18:00–18:15** | **CP2 con el jurado** | Propuesta de solución y avance | **CP2 entregado** | — |
+| 18:15–20:00 | Cena + pulido | CSV desconocido, auditoría, estados de error | — | Demo interna 3 |
+| 20:00–24:00 | **B4 · Demo completa + vídeo** | Reset/seed, responsive, vídeo de 3 min, README | **H4 (24:00): demo completa + vídeo grabado** | — |
 | 00:00–08:00 | **Descanso obligatorio** | Dormir. El domingo se gana con cabeza fresca | — | — |
 
 ### 8.2 Domingo 15
 
 | Franja | Bloque | Objetivo | Entregable/Hito | Checkpoint |
 |---|---|---|---|---|
-| 08:00–09:00 | Standup | Revisar bugs P0 y burn-down | Lista P0 | 10' |
-| 09:00–10:00 | **B5 · QA** | Repasar los 3 casos + CSV, ensayo del guion | **H5 (10:00): feature freeze** | Solo bugs |
-| 10:00–12:00 | **B6 · Ensayo + README** | Ensayo cronometrado, README final, matriz de soporte, verificar repo | **H6 (12:00): code freeze** | Ensayo |
-| 12:00–13:30 | **B7 · Entrega** | Push final, verificar `main` en GitHub, vídeo, checklist §11 | **H7 (13:30): entregado** | Checklist §11 |
-| 13:30–15:00 | Colchón | Solo P0 real; nada de features | — | — |
+| 08:00–08:30 | Standup | Revisar bugs P0 y burn-down | Lista P0 | 10' |
+| 08:30–10:00 | **B5 · QA final** | Repasar los 3 casos + CSV, ensayo del guion | **10:00: feature freeze** | Solo bugs |
+| 10:00–12:00 | **B6 · Ensayo + README** | Ensayo cronometrado, README final, matriz de soporte, repo local verificado | **12:00: code freeze** | Ensayo |
+| 12:00–13:30 | **B7 · Cierre y entrega** | Verificar repo/vídeo/checklist §11; decidir push a GitHub (hoy congelado) | **13:30: listo para entregar** | Checklist §11 |
+| 13:30–14:15 | **Preparación CP3** | Cámara, sala, demo de respaldo, guion de 15 min | **14:15: demo final congelada** | Ensayo final |
+| **14:45–15:00** | **CP3 con el jurado** | Solución y demo final | **CP3 entregado** | — |
+| 15:00+ | Entrega final | Según instrucciones de la organización | — | — |
 
 ### 8.3 Si el equipo empieza más tarde (versión comprimida)
 
@@ -316,7 +328,7 @@ Joniha/
 - **Demo interna de 10 min** al final de cada bloque: solo lo que funciona, en el orden del guion.
 - **Regla de los 20 min:** bloqueado >20 min → pide ayuda.
 - **Regla del corte:** si una feature no entra en la demo, se corta sin drama y se apunta como fase 2.
-- **Congelaciones duras:** esquema sáb 18:00 · dependencias sáb 20:00 · features dom 10:00 · código dom 12:00 · repo verificado dom 13:30.
+- **Congelaciones duras (re-ancladas a los checkpoints):** contrato API desde H+0 · modelo/esquema sáb 14:00 · demo CP1 sáb 11:45 · demo CP2 sáb 17:45 · funcionalidad dom 10:00 · código dom 12:00 · repo local verificado dom 13:30 · demo final dom 14:15.
 - **Canal único** de coordinación + hilo con la organización. Decisiones y enlaces se pegan ahí.
 - **Métrica de ritmo:** cada bloque acaba con algo enseñable a alguien ajeno al equipo.
 
@@ -326,11 +338,11 @@ Joniha/
 
 **Condiciones no negociables:** contrato API congelado a los 30 min · 3 workstreams con ficheros disjuntos (backend / frontend / seed-demo) · 1 humano integrando y aceptando gates cada 60–90 min. Si dos agentes tocan el mismo fichero, los 6 h no se cumplen.
 
-**Con 2 personas (situación real):** A = backend/integración, B = frontend/demo+QA; el paralelismo humano es menor → presupuestad **8 h** (6 h solo si ambas están a tiempo completo y sin bloqueos) y aplicad la tabla de recorte sin dudar. El material de los 3 checkpoints oficiales ya está en `docs/checkpoints/`.
+**Con 2 personas (situación real, pair programming + Discord):** Jose = frontend/producto/demo; compañero = backend/datos/integración. Los agentes trabajan en paralelo sobre ficheros disjuntos mientras el par humano revisa. Presupuestad **8 h** (6 h solo si ambos están a tiempo completo y sin bloqueos) y aplicad la tabla de recorte sin dudar. El material de los 3 checkpoints oficiales ya está en `docs/checkpoints/`.
 
 | Reloj | Bloque | Entregable / gate |
 |---|---|---|
-| H+0:00–0:30 | Scaffold + contrato + seed | `uvicorn` + `pnpm dev` + `/api/health` + SQLite con los 3 pacientes |
+| H+0:00–0:30 | Scaffold + contrato + seed (**ejecutado 02:20–03:00 con agentes**) | `uvicorn` + `pnpm dev` + `/api/health` + SQLite con los 3 pacientes |
 | H+0:30–2:00 (paralelo) | A: API+DB+extractores+alertas · B: SPA shell + pantallas 1–3 con mock | `curl` importa los 3 ficheros; el frontend navega con mocks |
 | H+2:00–3:30 | Integración E2E | importar → ficha → solicitar → aceptar → briefing |
 | H+3:30–4:30 | Robustez: CSV + mapeador, reset/caché, 3 repeticiones | demo repetible y determinista (<2 s) |
@@ -435,9 +447,9 @@ Joniha/
 
 | # | Criterio evaluado | Qué preparamos | Documento |
 |---|---|---|---|
-| 1 | **Organización del equipo:** roles claros, líderes identificados y plan de trabajo coordinado | Equipo de 2 con liderazgo A/B, reglas de decisión, cadencia de 90 min, reparto por bloques y plan de bus factor | [`docs/checkpoints/CP1-organizacion-equipo.md`](docs/checkpoints/CP1-organizacion-equipo.md) |
-| 2 | **Propuesta de solución:** idea clara, alineada con el reto y lista para desarrollar | Pitch de 1 página + matriz requisito→cumplimiento→demo + alcance 5 pantallas + evidencias ya construidas | [`docs/checkpoints/CP2-propuesta-solucion.md`](docs/checkpoints/CP2-propuesta-solucion.md) |
-| 3 | **Solución y demo:** resuelve, aporta valor y demo funcional con buen nivel técnico | Guion de 3/6 min + dossier técnico + checklist pre-demo + preguntas del jurado + valor y métricas | [`docs/checkpoints/CP3-solucion-demo.md`](docs/checkpoints/CP3-solucion-demo.md) |
+| 1 | **Organización del equipo:** roles claros, líderes identificados y plan de trabajo coordinado — **sáb 12:00** | Equipo de 2 con liderazgo A/B, reglas de decisión, cadencia de 90 min, reparto por bloques y plan de bus factor | [`docs/checkpoints/CP1-organizacion-equipo.md`](docs/checkpoints/CP1-organizacion-equipo.md) |
+| 2 | **Propuesta de solución:** idea clara, alineada con el reto y lista para desarrollar — **sáb 18:00** | Pitch de 1 página + matriz requisito→cumplimiento→demo + alcance 5 pantallas + evidencias ya construidas | [`docs/checkpoints/CP2-propuesta-solucion.md`](docs/checkpoints/CP2-propuesta-solucion.md) |
+| 3 | **Solución y demo:** resuelve, aporta valor y demo funcional con buen nivel técnico — **dom 14:45** | Guion de 3/6 min + dossier técnico + checklist pre-demo + preguntas del jurado + valor y métricas | [`docs/checkpoints/CP3-solucion-demo.md`](docs/checkpoints/CP3-solucion-demo.md) |
 
 **Regla:** cada checkpoint se defiende en 2 minutos con su documento y el repo abierto; si es llamada, se usa la sección "Guion de 90 segundos"; si es formulario, se copia el bloque "Para copiar/pegar". **No se improvisa nada en la llamada.**
 

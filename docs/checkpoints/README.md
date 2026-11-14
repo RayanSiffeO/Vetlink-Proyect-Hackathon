@@ -2,11 +2,22 @@
 
 Los tres criterios que evalúa la organización (foto compartida por el equipo):
 
-| # | Checkpoint | Qué pide | Documento | Estado |
-|---|---|---|---|---|
-| 1 | **Organización del equipo** | Roles claros, líderes identificados y plan de trabajo coordinado | [`CP1-organizacion-equipo.md`](CP1-organizacion-equipo.md) | ✅ listo para presentar |
-| 2 | **Propuesta de solución** | Idea clara, alineada con el reto y lista para desarrollar | [`CP2-propuesta-solucion.md`](CP2-propuesta-solucion.md) | ✅ listo para presentar |
-| 3 | **Solución y demo** | Resuelve el problema, aporta valor y demo funcional con buen nivel técnico | [`CP3-solucion-demo.md`](CP3-solucion-demo.md) | 🚧 guion y dossier listos; demo en construcción |
+| # | Checkpoint | Qué pide | Cuándo | Documento | Estado |
+|---|---|---|---|---|---|
+| 1 | **Organización del equipo** | Roles claros, líderes identificados y plan de trabajo coordinado | **Sáb 14/11 · 12:00** | [`CP1-organizacion-equipo.md`](CP1-organizacion-equipo.md) | ✅ listo para presentar |
+| 2 | **Propuesta de solución** | Idea clara, alineada con el reto y lista para desarrollar | **Sáb 14/11 · 18:00** | [`CP2-propuesta-solucion.md`](CP2-propuesta-solucion.md) | ✅ listo para presentar |
+| 3 | **Solución y demo** | Resuelve el problema, aporta valor y demo funcional con buen nivel técnico | **Dom 15/11 · 14:45** | [`CP3-solucion-demo.md`](CP3-solucion-demo.md) | 🚧 guion y dossier listos; demo en construcción |
+
+> Equipo nº 23 **“Joñiha”**. Horario recibido por correo de la organización.
+
+## Cómo funciona un checkpoint (según la organización)
+
+- Es una **reunión con el jurado para revisar vuestro avance**, no una entrega formal de documentos.
+- Dura **15 minutos**: puntualidad absoluta.
+- Te conectas **solo a la hora de tu equipo** (no antes).
+- Se hace en la **sala virtual del jurado** dentro del Mundo Virtual: dirígete allí.
+- **Cámara encendida en todos los checkpoints.**
+- Formato de la llamada: 2–3 mensajes clave por checkpoint + repo/diagrama/demo a mano para enseñar; el resto, preguntas del jurado.
 
 ## Cómo usar este paquete (2 minutos por checkpoint)
 
@@ -19,6 +30,7 @@ Los tres criterios que evalúa la organización (foto compartida por el equipo):
 
 - Repo: <https://github.com/HackathonBoehringerIT/Joniha>
 - [PLAYBOOK.md](../../PLAYBOOK.md) — plan maestro y ritmo
+- [docs/decisiones.md](../decisiones.md) — registro de decisiones (prueba de plan vivo y coordinado)
 - [docs/01-reto-analisis.md](../01-reto-analisis.md) — reto entendido y personas
 - [docs/02-modelo-datos.md](../02-modelo-datos.md) — modelo canónico + 3 registros JSON validados
 - [docs/03-debate-diseno.md](../03-debate-diseno.md) — debate C' y objeciones del jurado
