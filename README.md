@@ -45,6 +45,7 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 | [`docs/06-investigacion-mercado.md`](docs/06-investigacion-mercado.md) | Mercado, estándares, competencia y encaje con Boehringer |
 | [`docs/checkpoints/`](docs/checkpoints/README.md) | Paquete de los 3 checkpoints oficiales: organización, propuesta de solución y demo |
 | [`docs/decisiones.md`](docs/decisiones.md) | Registro de decisiones del equipo (plan vivo y coordinado) |
+| [`docs/extractores-integracion.md`](docs/extractores-integracion.md) | Encargo R1: interfaz de extractores, mapeo por formato, tests y gate para backend/data |
 | `docs/diagramas/` | Flujos y arquitectura en HTML navegable |
 
 ## Diagramas navegables
