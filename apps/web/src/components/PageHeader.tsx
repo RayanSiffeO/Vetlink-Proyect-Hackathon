@@ -26,7 +26,7 @@ export function PageTitle({ heading }: { heading: PageHeading }) {
 
 export function PageHeader({ heading, children }: { heading: PageHeading; children?: ReactNode }) {
   return (
-    <header className="glass-strong flex flex-wrap items-end justify-between gap-3 rounded-panel px-5 py-4 sm:px-6 sm:py-5">
+    <header className="glass flex flex-wrap items-end justify-between gap-3 rounded-panel px-5 py-4 sm:px-6 sm:py-5">
       <PageTitle heading={heading} />
       {children}
     </header>

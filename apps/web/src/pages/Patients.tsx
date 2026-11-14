@@ -44,7 +44,7 @@ function PatientStat({
   tone?: string;
 }) {
   return (
-    <div className="min-w-[76px] rounded-2xl border border-line bg-mist/75 px-3 py-1.5 text-center">
+    <div className="glass-soft min-w-[76px] rounded-2xl px-3 py-1.5 text-center">
       <p className={`text-[20px] font-medium leading-6 tracking-[-0.02em] ${tone}`}>{value}</p>
       <p className="vl-label mt-0.5">{label}</p>
     </div>
