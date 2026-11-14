@@ -226,15 +226,6 @@ function LoginFootNote() {
   );
 }
 
-function MobileBrand() {
-  return (
-    <div className="mb-5 flex items-center gap-2.5 lg:hidden">
-      <span className="vl-wordmark text-[16px] font-medium leading-5 tracking-[-0.02em]">VetLink</span>
-      <span className="text-[10.5px] leading-4 text-caption">Salud animal, a un clic</span>
-    </div>
-  );
-}
-
 export function LoginRolePanel({ user }: { user: User | null | undefined }) {
   const { login, pending, start } = useDemoLogin();
   const reset = useResetDemo();
@@ -243,7 +234,6 @@ export function LoginRolePanel({ user }: { user: User | null | undefined }) {
     <section className="login-panel login-panel-glass relative order-1 flex flex-col items-center justify-center overflow-hidden px-4 py-8 sm:px-8 sm:py-10 lg:order-2 lg:min-h-screen lg:px-10">
       <PanelGlow />
       <div className="relative z-10 w-full max-w-[432px]">
-        <MobileBrand />
         <div className="glass-login rounded-[30px] px-5 py-6 sm:px-7 sm:py-7">
           <div className="flex items-center justify-between gap-3">
             <p className="flex items-center gap-1.5 text-[9.5px] font-medium uppercase tracking-[0.14em] text-indigo-700">

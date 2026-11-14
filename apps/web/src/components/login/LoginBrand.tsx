@@ -28,10 +28,11 @@ const PILLARS: Pillar[] = [
 
 function BrandLockup() {
   return (
-    <div className="flex items-center gap-3">
-      <span className="vl-wordmark text-[17px] font-medium tracking-[-0.02em]">VetLink</span>
-      <span className="hidden h-4 border-l border-ink/15 sm:block" aria-hidden="true" />
-      <span className="hidden text-[10.5px] leading-4 text-caption sm:block">
+    <div className="flex flex-col items-center gap-2 text-center">
+      <span className="vl-wordmark text-[clamp(28px,3vw,34px)] font-medium leading-none tracking-[-0.03em]">
+        VetLink
+      </span>
+      <span className="text-[10.5px] leading-4 tracking-[0.02em] text-caption">
         Salud animal, a un clic
       </span>
     </div>
@@ -67,28 +68,20 @@ function PillarCard({ pillar }: { pillar: Pillar }) {
 
 function HeroContent() {
   return (
-    <div className="max-w-[640px]">
-      <p className="flex items-center gap-2.5 text-[10px] font-medium uppercase tracking-[0.16em] text-indigo-700">
-        <span className="h-px w-6 bg-indigo-700/40" aria-hidden="true" />
-        Historia clínica · antes de la visita
-      </p>
-      <div className="mt-6 grid items-center gap-6 md:grid-cols-[280px_minmax(0,1fr)]">
-        <div className="flex justify-center md:justify-start">
-          <CatMascot />
-        </div>
-        <ul className="stagger grid gap-2.5">
-          {PILLARS.map((pillar) => (
-            <PillarCard key={pillar.title} pillar={pillar} />
-          ))}
-        </ul>
-      </div>
+    <div className="flex w-full flex-col items-center gap-12">
+      <CatMascot />
+      <ul className="stagger grid w-full max-w-[540px] gap-2.5">
+        {PILLARS.map((pillar) => (
+          <PillarCard key={pillar.title} pillar={pillar} />
+        ))}
+      </ul>
     </div>
   );
 }
 
 function HeroFootnote() {
   return (
-    <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10.5px] text-caption">
+    <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[10.5px] text-caption">
       <span>Clínica Vall del Sol · Sant Cugat del Vallès</span>
       <span aria-hidden="true">·</span>
       <span>Caso guía Kira</span>
@@ -105,7 +98,7 @@ export function LoginBrand() {
   return (
     <section className="login-brand relative isolate order-2 flex flex-col overflow-hidden bg-transparent px-6 py-9 text-ink sm:px-10 lg:order-1 lg:min-h-screen lg:px-12 lg:py-12 xl:px-16">
       <HeroGlow />
-      <div className="relative z-10 hidden lg:block">
+      <div className="relative z-10 flex justify-center">
         <BrandLockup />
       </div>
       <div className="relative z-10 flex flex-1 items-center py-8">
