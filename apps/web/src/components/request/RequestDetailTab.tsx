@@ -107,29 +107,28 @@ function PatientSummaryCard({ summary }: { summary: RequestPatientSummary | null
   );
 }
 
-const SHARED_ALERT_CHIPS: Record<string, string> = {
-  CRITICAL: 'border-crit/20 bg-crit-soft text-crit',
-  HIGH: 'border-warn/20 bg-warn-soft text-warn',
-  MEDIUM: 'border-infoblue/20 bg-infoblue-soft text-infoblue',
+const SHARED_ALERT_TONES: Record<string, string> = {
+  CRITICAL: 'text-crit',
+  HIGH: 'text-warn',
+  MEDIUM: 'text-infoblue',
 };
 
-const FALLBACK_ALERT_CHIP = 'border-line-strong bg-white/70 text-caption';
+const FALLBACK_ALERT_TONE = 'text-caption';
 
 function SharedAlertRow({ alert }: { alert: PublicAlertRef }) {
   const style = severityStyle(alert.severity);
   const tone = lookupValue(
-    SHARED_ALERT_CHIPS,
+    SHARED_ALERT_TONES,
     String(alert.severity ?? '').toUpperCase(),
-    FALLBACK_ALERT_CHIP,
+    FALLBACK_ALERT_TONE,
   );
   return (
-    <li className="flex items-start gap-2 text-[12px] leading-[18px]">
-      <span
-        className={`shrink-0 rounded-full border px-2 py-0.5 text-[9.5px] font-medium uppercase tracking-[0.06em] leading-3 ${tone}`}
-      >
+    <li className="flex items-start gap-2.5 rounded-xl border border-line/60 bg-white/55 px-2.5 py-2 text-[12px] leading-[18px]">
+      <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-current ${tone}`} aria-hidden="true" />
+      <span className={`shrink-0 text-[9px] font-semibold uppercase tracking-[0.1em] ${tone}`}>
         {style.label}
       </span>
-      <span className="text-para">{alert.title}</span>
+      <span className="min-w-0 text-para">{alert.title}</span>
     </li>
   );
 }

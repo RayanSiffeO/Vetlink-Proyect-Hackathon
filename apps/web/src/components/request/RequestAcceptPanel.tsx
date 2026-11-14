@@ -115,7 +115,7 @@ function AcceptButton({
   return (
     <button
       type="button"
-      className="btn btn-primary btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
+      className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
       disabled={!slot || accept.isPending}
       onClick={() => accept.mutate({ slot_iso: slot })}
     >
@@ -201,7 +201,7 @@ export function AcceptPanel({
   };
 
   return (
-    <section className="glass rounded-panel border-l-4 border-l-indigo p-5">
+    <section className="glass rounded-panel p-5">
       <AcceptHeading shareLevel={request.share_level} />
       <AvailabilityBlock query={slotsQuery} selection={{ selectedSlot, onPick: pickSlot }} />
       <AcceptControls

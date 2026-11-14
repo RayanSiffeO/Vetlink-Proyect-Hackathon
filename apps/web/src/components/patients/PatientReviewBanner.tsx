@@ -24,7 +24,7 @@ function ReviewedBanner({ review }: { review: ReviewSummary }) {
   const stamp = review.reviewed_at ? ` · ${formatDateTime(review.reviewed_at)}` : '';
   return (
     <div
-      className="glass flex items-start gap-3 rounded-panel border-l-4 border-l-ok/60 px-4 py-3.5 text-left sm:px-5"
+      className="glass flex items-start gap-3 rounded-panel px-4 py-3.5 text-left sm:px-5"
       role="status"
     >
       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-ok-soft text-ok ring-1 ring-inset ring-ok/15">
@@ -80,7 +80,7 @@ function ConfirmButton({ mutation, fields }: { mutation: ReturnType<typeof useRe
   return (
     <button
       type="button"
-      className="btn btn-primary btn-sm h-9 w-full gap-1.5 rounded-full px-4 text-[12px] shadow-lift sm:w-auto"
+      className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm h-9 w-full gap-1.5 rounded-full px-4 text-[12px] shadow-lift sm:w-auto"
       disabled={mutation.isPending}
       onClick={() => mutation.mutate({ reviewed_fields: fields })}
     >
@@ -121,7 +121,7 @@ export function PatientReviewBanner({
   const fields = fieldNames(review);
   return (
     <div
-      className="glass flex flex-wrap items-start gap-3 rounded-panel border-l-4 border-l-warn/60 px-4 py-3.5 text-left sm:px-5"
+      className="glass flex flex-wrap items-start gap-3 rounded-panel px-4 py-3.5 text-left sm:px-5"
       role="status"
     >
       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-warn-soft text-warn ring-1 ring-inset ring-warn/15">

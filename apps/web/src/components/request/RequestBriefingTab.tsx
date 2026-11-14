@@ -22,29 +22,29 @@ import { sortEncounters } from '../../lib/patients';
 const SEVERITIES = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'INFO'];
 
 const SEVERITY_TILES: Record<string, string> = {
-  CRITICAL: 'border-crit/20 bg-crit-soft text-crit',
-  HIGH: 'border-warn/20 bg-warn-soft text-warn',
-  MEDIUM: 'border-infoblue/20 bg-infoblue-soft text-infoblue',
-  LOW: 'border-line-strong bg-white/70 text-caption',
-  INFO: 'border-indigo-100 bg-indigo-50 text-indigo-700',
+  CRITICAL: 'border-white/60 bg-white/35 text-crit',
+  HIGH: 'border-white/60 bg-white/35 text-warn',
+  MEDIUM: 'border-white/60 bg-white/35 text-infoblue',
+  LOW: 'border-white/60 bg-white/35 text-caption',
+  INFO: 'border-white/60 bg-white/35 text-caption',
 };
 
-const FALLBACK_TILE = 'border-line-strong bg-white/70 text-caption';
+const FALLBACK_TILE = 'border-white/60 bg-white/35 text-caption';
 
 const ACTION_SURFACES: Record<string, string> = {
-  CRITICAL: 'border-crit/20 border-l-crit bg-crit-soft/60',
-  HIGH: 'border-warn/20 border-l-warn bg-warn-soft/70',
-  MEDIUM: 'border-infoblue/20 border-l-infoblue bg-infoblue-soft/70',
+  CRITICAL: 'border-line/70 bg-white/75',
+  HIGH: 'border-line/70 bg-white/75',
+  MEDIUM: 'border-line/70 bg-white/75',
 };
 
 const ACTION_CHIPS: Record<string, string> = {
-  CRITICAL: 'border-crit/15 bg-white/70 text-crit',
-  HIGH: 'border-warn/15 bg-white/70 text-warn',
-  MEDIUM: 'border-infoblue/15 bg-white/70 text-infoblue',
+  CRITICAL: 'border-crit/15 bg-white/60 text-crit',
+  HIGH: 'border-warn/15 bg-white/60 text-warn',
+  MEDIUM: 'border-infoblue/15 bg-white/60 text-infoblue',
 };
 
-const FALLBACK_ACTION_SURFACE = 'border-line border-l-line-strong bg-white/75';
-const FALLBACK_ACTION_CHIP = 'border-line-strong bg-white/70 text-caption';
+const FALLBACK_ACTION_SURFACE = 'border-line/70 bg-white/75';
+const FALLBACK_ACTION_CHIP = 'border-line-strong bg-white/60 text-caption';
 
 function briefingLocked(error: unknown): boolean {
   return error instanceof ApiError && error.isForbidden;
@@ -52,7 +52,7 @@ function briefingLocked(error: unknown): boolean {
 
 function BriefingLocked({ onShowDetail, hint }: { onShowDetail: () => void; hint: ReactNode }) {
   return (
-    <div className="glass-strong rounded-panel border-l-4 border-l-warn/60 p-6 text-center sm:p-8">
+    <div className="glass-strong rounded-panel p-6 text-center sm:p-8">
       <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-warn-soft text-warn ring-1 ring-inset ring-warn/15">
         <Lock className="h-7 w-7" aria-hidden="true" />
       </div>
@@ -213,7 +213,7 @@ function PriorityActionCard({ action, index }: { action: PriorityAction; index: 
   );
   return (
     <li
-      className={`relative flex flex-col rounded-card border border-l-[3px] p-4 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:shadow-card ${surface}`}
+      className={`relative flex flex-col rounded-card border p-4 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:shadow-card ${surface}`}
     >
       <div className="flex items-start justify-between gap-2">
         <span

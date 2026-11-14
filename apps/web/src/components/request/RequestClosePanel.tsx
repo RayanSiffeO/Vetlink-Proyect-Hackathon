@@ -87,7 +87,7 @@ function OpenCloseButton({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       type="button"
-      className="btn btn-primary btn-sm mt-3 h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
+      className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm mt-3 h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
       onClick={onOpen}
     >
       <Stethoscope className="h-4 w-4" />
@@ -142,7 +142,7 @@ function CloseActions({ values, mutation, onCancel }: CloseActionsProps) {
   const save = () => mutation.mutate(closePayload(values));
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2">
-      <button type="button" className="btn btn-primary btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift" onClick={save}
+      <button type="button" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift" onClick={save}
         disabled={noteTooShort || mutation.isPending}>
         {mutation.isPending ? <Spinner size="xs" /> : <CheckCircle2 className="h-4 w-4" />}
         Guardar nota y cerrar
@@ -176,7 +176,7 @@ export function RequestClosePanel({ request }: { request: RequestRecord }) {
   if (mutation.isSuccess) return <CloseSuccess />;
   if (!isCloseableStatus(request.status)) return null;
   return (
-    <section className="glass rounded-panel border-l-4 border-l-indigo p-5">
+    <section className="glass rounded-panel p-5">
       <CloseHeading />
       <CloseForm mutation={mutation} />
     </section>

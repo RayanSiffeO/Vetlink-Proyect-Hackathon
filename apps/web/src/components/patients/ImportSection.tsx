@@ -137,7 +137,7 @@ function ImportControls({ pending, onOpen }: { pending: boolean; onOpen: () => v
       </div>
       <button
         type="button"
-        className="btn btn-primary btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
+        className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
         onClick={onOpen}
         disabled={pending}
       >

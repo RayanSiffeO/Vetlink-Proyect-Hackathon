@@ -43,7 +43,7 @@ function NotFound() {
         </p>
         <Link
           to="/"
-          className="mt-5 inline-flex items-center justify-center rounded-btn bg-indigo px-5 py-2.5 text-[13px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+          className="mt-5 inline-flex items-center justify-center rounded-btn bg-ink px-5 py-2.5 text-[13px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
         >
           Ir al inicio
         </Link>

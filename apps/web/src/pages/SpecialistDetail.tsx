@@ -114,7 +114,7 @@ function SpecialistProfileHeader({
           <SpecialistPriceBox priceFrom={specialist.price_from} />
           <Link
             to={requestHref}
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
           >
             <Send className="h-3.5 w-3.5" />
             Solicitar derivación
@@ -141,7 +141,7 @@ function SlotsEmpty({ requestHref }: { requestHref: string }) {
       title="Sin franjas publicadas"
       description="Puedes enviar la solicitud igualmente indicando tus franjas preferidas."
       action={
-        <Link to={requestHref} className="btn btn-primary btn-sm">
+        <Link to={requestHref} className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm">
           Enviar solicitud
         </Link>
       }
@@ -178,7 +178,7 @@ function SlotsCard({
         <SelectedSlotHint selectedSlot={selection.selectedSlot} />
         <Link
           to={requestHref}
-          className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+          className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
         >
           <Send className="h-3.5 w-3.5" />
           Solicitar derivación
@@ -225,7 +225,7 @@ function SpecialistNotFound() {
       title="Especialista no encontrado"
       description="El perfil solicitado no existe o la demo se ha reiniciado."
       action={
-        <Link to="/specialists" className="btn btn-primary btn-sm">
+        <Link to="/specialists" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm">
           Volver al marketplace
         </Link>
       }

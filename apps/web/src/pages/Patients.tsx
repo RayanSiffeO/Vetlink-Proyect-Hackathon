@@ -81,7 +81,7 @@ function PatientsHeader({
             <DemoLoadButton demo={demo} />
             <Link
               to="/specialists"
-              className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+              className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
             >
               <Stethoscope className="h-3.5 w-3.5" />
               Buscar especialista
@@ -108,7 +108,7 @@ function PatientsEmpty({ onLoadDemo }: { onLoadDemo: () => void }) {
       description="Sube una historia clínica (.docx, .xlsx o .json) para crear el primer registro canónico."
       icon={<Search className="h-6 w-6" />}
       action={
-        <button type="button" className="btn btn-primary btn-sm gap-1.5" onClick={onLoadDemo}>
+        <button type="button" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm gap-1.5" onClick={onLoadDemo}>
           <RotateCcw className="h-4 w-4" /> Cargar datos de demo
         </button>
       }

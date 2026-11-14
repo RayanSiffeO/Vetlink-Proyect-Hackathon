@@ -89,7 +89,7 @@ function RecordActions() {
       </Link>
       <Link
         to={`/requests/new?patient_id=${id ?? ''}`}
-        className="inline-flex items-center justify-center gap-1.5 rounded-full bg-indigo px-4 py-2 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+        className="inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
       >
         <Send className="h-3.5 w-3.5" />
         Nueva solicitud
@@ -511,7 +511,7 @@ function PatientNotFound() {
       title="Paciente no encontrado"
       description="La ficha solicitada no existe o se ha reiniciado la demo."
       action={
-        <Link to="/patients" className="btn btn-primary btn-sm">
+        <Link to="/patients" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm">
           Volver a pacientes
         </Link>
       }

@@ -104,7 +104,7 @@ function RequestsEmpty() {
       }
       action={
         !specialistRole ? (
-          <Link to="/specialists" className="btn btn-primary btn-sm">
+          <Link to="/specialists" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm">
             Buscar especialista
           </Link>
         ) : undefined
@@ -158,7 +158,7 @@ function RequestsHeader({ specialistRole }: { specialistRole: boolean }) {
           </Link>
           <Link
             to="/requests/new"
-            className="inline-flex items-center gap-1.5 rounded-full bg-indigo px-3.5 py-1.5 text-[12px] font-medium text-ink shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-indigo-300"
+            className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-1.5 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
           >
             <Plus className="h-3.5 w-3.5" />
             Nueva solicitud

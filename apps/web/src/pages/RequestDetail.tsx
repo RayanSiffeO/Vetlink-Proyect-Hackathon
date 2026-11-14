@@ -26,7 +26,7 @@ function RequestNotFound() {
       title="Solicitud no encontrada"
       description="Comprueba el enlace o vuelve al listado de solicitudes."
       action={
-        <Link to="/requests" className="btn btn-primary btn-sm">
+        <Link to="/requests" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm">
           Ver solicitudes
         </Link>
       }

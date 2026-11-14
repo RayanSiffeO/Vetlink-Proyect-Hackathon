@@ -26,7 +26,7 @@ function NoPatientsState() {
       title="Necesitas un paciente para derivar"
       description="Importa una historia clínica o carga los datos de demo desde la pantalla de pacientes."
       action={
-        <Link to="/patients" className="btn btn-primary btn-sm">
+        <Link to="/patients" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm">
           Ir a pacientes
         </Link>
       }

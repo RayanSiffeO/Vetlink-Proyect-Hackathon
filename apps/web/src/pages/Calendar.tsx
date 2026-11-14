@@ -114,7 +114,7 @@ function CalendarEmpty() {
       description="Cuando una solicitud se acepte con una franja concreta, la cita aparecerá aquí."
       icon={<CalendarClock className="h-6 w-6" />}
       action={
-        <Link to="/requests" className="btn btn-primary btn-sm">
+        <Link to="/requests" className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm">
           Ver solicitudes
         </Link>
       }
