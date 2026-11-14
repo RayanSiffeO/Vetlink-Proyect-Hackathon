@@ -60,7 +60,7 @@
 **Narrativa:**
 - [ ] Guion de 3 min ensayado y cronometrado (2 pasadas).
 - [ ] Respuestas a las 10 preguntas del jurado (ver [`PLAYBOOK.md` §9.3](../../PLAYBOOK.md)).
-- [ ] Roles claros: quién narra y quién pulsa.
+- [ ] Roles claros: **Jose Miguel narra** (producto/frontend) y **[NOMBRE COMPAÑERO] pulsa** (backend); acordado antes del ensayo.
 - [ ] Cierre con métricas: 3+1 formatos → 1 registro <30 s; 1.785 campos; 22 alertas; 10–15 min → 90 s; 0 datos reales.
 
 ## 5. Valor que se demuestra

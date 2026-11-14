@@ -19,6 +19,7 @@ Los tres criterios que evalúa la organización (foto compartida por el equipo):
 
 - Repo: <https://github.com/HackathonBoehringerIT/Joniha>
 - [PLAYBOOK.md](../../PLAYBOOK.md) — plan maestro y ritmo
+- [docs/decisiones.md](../decisiones.md) — registro de decisiones (prueba de plan vivo y coordinado)
 - [docs/01-reto-analisis.md](../01-reto-analisis.md) — reto entendido y personas
 - [docs/02-modelo-datos.md](../02-modelo-datos.md) — modelo canónico + 3 registros JSON validados
 - [docs/03-debate-diseno.md](../03-debate-diseno.md) — debate C' y objeciones del jurado

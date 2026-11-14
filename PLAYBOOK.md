@@ -2,7 +2,8 @@
 
 > **Documento maestro de trabajo y ritmo del equipo.**  
 > Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
-> Versión 1.4 · 14/11/2026 02:05 · Lead (agente) para el equipo Joniha.  
+> Versión 1.5 · 14/11/2026 02:12 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.5: **organización real confirmada** — 2 personas en **pair programming** por Discord, decisiones conjuntas con IA como apoyo; Jose Miguel = frontend/producto/demo; compañero = backend/datos. Roles (§7) y modo de trabajo actualizados, nuevo [`docs/decisiones.md`](docs/decisiones.md) como registro de decisiones.  
 > Cambios v1.4: **equipo real = 2 personas**; roles y liderazgos reescritos (§7), ritmo ajustado (§8.5) y paquete de **los 3 checkpoints oficiales** en `docs/checkpoints/` (§13).  
 > Cambios v1.3: **stack rápido aprobado** — React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico y sin LLM en la demo; Postgres-ready. Elimina ~4–6 h de infra.  
 > Cambios v1.2: cierra las decisiones abiertas con Data (`docs/02-modelo-datos.md`): congelar nombres v1 + `fhir_profile`, gate de revisión con banner, alcance del resumen pre-aceptación y fixture CSV de robustez.  
@@ -234,22 +235,22 @@ Joniha/
 
 ## 7. Estructura de trabajo: equipo, roles y reglas
 
-### Roles para un equipo de 2 personas (situación real)
+### Roles y modo de trabajo (equipo real: 2 personas en pair programming)
 
-| Persona | Rol y liderazgo | Dueña de | Entregable del día |
+| Persona | Fortaleza | Referente de | Entregable del día |
 |---|---|---|---|
-| **A · Jose Miguel** | **Líder de proyecto + Backend/Data** | Alcance, tiempos, GitHub/entrega, pitch; API FastAPI, SQLite, extractores, modelo canónico, seed | API viva + seed reproducible + 3 fichas normalizadas |
-| **B · [nombre real pendiente]** | **Líder técnica de producto + Frontend/Demo/QA** | UI/UX, las 5 pantallas, marca VetLink, guion de demo, vídeo, QA cruzada | 5 pantallas demoables + vídeo + README |
+| **Jose Miguel** | Frontend / producto / UX | Coordinación general, pitch y demo; UI, 5 pantallas, marca VetLink, vídeo | 5 pantallas demoables + guion + vídeo |
+| **[NOMBRE COMPAÑERO]** | Backend / datos | Arquitectura técnica y datos: API FastAPI, SQLite, extractores, modelo canónico, seed, integración | API viva + seed reproducible + 3 fichas normalizadas |
 
-**Reglas de decisión:**
-- **A cierra** alcance, prioridades, entrega y relación con la organización.
-- **B cierra** UX, pantallas, narrativa y guion de demo.
-- **Cambio de contrato API o de modelo canónico:** consenso de A y B y se anota en el canal.
-- **Nadie mergea su propia feature sin revisión del otro** (5 minutos de ojo ajeno).
-- **Los agentes IA no deciden:** generan; el humano revisa, prueba y firma.
-- **Bus factor:** todo lo que no esté en el repo no existe → documentación, seed y vídeo siempre actualizados.
+**Modo de trabajo (acordado 14/11 02:09):**
+- **Pair programming** con **llamada de Discord en directo** toda la sesión; **driver/navigator** con rotación cada 45–60 min.
+- **Decisiones por consenso**: cada área tiene referente (producto/frontend = Jose; backend/datos = compañero); si hay empate, decide el referente del área y se registra.
+- **IA como tercer participante**: se usa para debatir alternativas técnicas y acelerar tareas; el humano verifica y firma.
+- **Registro de decisiones** en [`docs/decisiones.md`](docs/decisiones.md): toda decisión de alcance, contrato, modelo o stack se anota el mismo día.
+- **Revisión cruzada:** nadie acepta su cambio sin que el otro lo pruebe (5 min).
+- **Bus factor:** todo lo que no esté en el repo no existe → playbook, decisiones, seed y vídeo siempre actualizados.
 
-*Si en algún momento sois 3:* A = proyecto+backend, B = frontend, C = demo/QA/pitch. *Si queda 1 persona:* versión comprimida de §8.3 con seed + vídeo.
+*Si en algún momento sois 3:* se añade un tercero a demo/QA. *Si queda 1 persona:* versión comprimida §8.3 con seed + vídeo.
 
 ### Reglas del repo (se votan y no se cambian el domingo)
 
@@ -261,6 +262,7 @@ Joniha/
 6. **Contrato API** de `docs/05` es la frontera front/back: si cambia, avisar en el canal.
 7. No se toca el modelo canónico sin avisar a Data + Frontend.
 8. `README.md` se actualiza **hoy**, no el domingo.
+9. Toda decisión relevante se registra en [`docs/decisiones.md`](docs/decisiones.md): es la prueba de plan vivo y coordinado en los checkpoints.
 
 ### Gestión de tareas
 
@@ -326,7 +328,7 @@ Joniha/
 
 **Condiciones no negociables:** contrato API congelado a los 30 min · 3 workstreams con ficheros disjuntos (backend / frontend / seed-demo) · 1 humano integrando y aceptando gates cada 60–90 min. Si dos agentes tocan el mismo fichero, los 6 h no se cumplen.
 
-**Con 2 personas (situación real):** A = backend/integración, B = frontend/demo+QA; el paralelismo humano es menor → presupuestad **8 h** (6 h solo si ambas están a tiempo completo y sin bloqueos) y aplicad la tabla de recorte sin dudar. El material de los 3 checkpoints oficiales ya está en `docs/checkpoints/`.
+**Con 2 personas (situación real, pair programming + Discord):** Jose = frontend/producto/demo; compañero = backend/datos/integración. Los agentes trabajan en paralelo sobre ficheros disjuntos mientras el par humano revisa. Presupuestad **8 h** (6 h solo si ambos están a tiempo completo y sin bloqueos) y aplicad la tabla de recorte sin dudar. El material de los 3 checkpoints oficiales ya está en `docs/checkpoints/`.
 
 | Reloj | Bloque | Entregable / gate |
 |---|---|---|
