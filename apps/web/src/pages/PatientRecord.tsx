@@ -12,6 +12,7 @@ import {
   UserRound,
 } from 'lucide-react';
 import AlertCard, { sortAlerts } from '../components/AlertCard';
+import { AlertCountChips } from '../components/AlertCountChips';
 import { BackLink } from '../components/BackLink';
 import { EmptyState, ErrorState } from '../components/EmptyState';
 import { Loading } from '../components/Loading';
@@ -41,16 +42,16 @@ function RecordNameRow({
     criticalCount === 1 ? 'alerta prioritaria' : 'alertas prioritarias';
   return (
     <div className="flex flex-wrap items-center gap-2.5">
-      <h1 className="text-[38px] font-medium leading-[42px] tracking-[-0.03em] text-ink sm:text-[50px] sm:leading-[54px]">
+      <h1 className="text-[40px] font-medium leading-[44px] tracking-[-0.035em] text-ink sm:text-[54px] sm:leading-[58px]">
         {name}
       </h1>
       {status ? (
-        <span className="rounded-full border border-indigo-100 bg-indigo-50 px-2.5 py-1 text-[10.5px] font-medium uppercase tracking-[0.08em] leading-4 text-indigo-700">
+        <span className="rounded-full border border-indigo-100 bg-white/55 px-2.5 py-1 text-[10.5px] font-medium uppercase tracking-[0.08em] leading-4 text-indigo-700">
           {status}
         </span>
       ) : null}
       {criticalCount > 0 ? (
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-crit/20 bg-crit-soft px-2.5 py-1 text-[11px] font-medium leading-4 text-crit">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-crit/15 bg-white/55 px-2.5 py-1 text-[11px] font-medium leading-4 text-crit">
           <span className="h-1.5 w-1.5 rounded-full bg-crit" aria-hidden="true" />
           {criticalCount} {criticalLabel}
         </span>
@@ -118,12 +119,12 @@ function vitalItems(facts: PatientFacts): VitalItem[] {
 function VitalCell({ item }: { item: VitalItem }) {
   const Icon = item.icon;
   return (
-    <div className="min-w-0 bg-white/55 px-4 py-3">
+    <div className="min-w-0 rounded-2xl border border-white/55 bg-white/35 px-3 py-2.5">
       <dt className="vl-label flex items-center gap-1.5">
         <Icon className="h-3 w-3 text-indigo-300" aria-hidden="true" />
         {item.label}
       </dt>
-      <dd className="mt-0.5 truncate text-[13.5px] font-medium text-ink" title={item.value}>
+      <dd className="mt-0.5 truncate text-[13px] font-medium text-ink" title={item.value}>
         {item.value}
       </dd>
     </div>
@@ -132,7 +133,7 @@ function VitalCell({ item }: { item: VitalItem }) {
 
 function RecordVitals({ facts }: { facts: PatientFacts }) {
   return (
-    <dl className="grid grid-cols-2 gap-px border-t border-white/80 bg-line/70 sm:grid-cols-3 lg:grid-cols-6">
+    <dl className="grid grid-cols-2 gap-2 border-t border-white/60 p-4 sm:grid-cols-3 sm:p-5 lg:grid-cols-6">
       {vitalItems(facts).map((item) => (
         <VitalCell key={item.label} item={item} />
       ))}
@@ -147,23 +148,25 @@ function RecordHeaderCard({ data }: { data: PatientRecordResponse }) {
   const criticalCount = countCriticalAlerts(alerts);
   const provenance = data.provenance_summary ?? data.record?.provenance_summary ?? null;
   return (
-    <header className="glass-strong overflow-hidden rounded-panel">
+    <header className="glass overflow-hidden rounded-panel">
       <div className="px-5 py-5 sm:px-6 sm:py-6">
-        <div className="flex flex-wrap items-start gap-4 sm:gap-5">
-          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-[linear-gradient(135deg,#C46B4D_0%,#9E4C36_100%)] text-xl font-medium tracking-tight text-white shadow-lift">
-            {facts.initial}
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="vl-section-title text-indigo-700">Ficha canónica</p>
-            <div className="mt-1">
-              <RecordNameRow name={facts.name} status={facts.status} criticalCount={criticalCount} />
-            </div>
-            <RecordSpeciesLine facts={facts} />
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <ProvenanceBadge summary={provenance} alerts={alerts.length} />
-              <span className="rounded-full border border-line-strong bg-white/60 px-2.5 py-1 text-[11px] leading-4 text-caption">
-                {alerts.length} alertas · {encounters.length} encuentros
-              </span>
+        <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+          <div className="flex min-w-0 items-start gap-4">
+            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-[22px] border border-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(246,221,196,0.72))] text-xl font-medium tracking-tight text-indigo-700 shadow-soft">
+              {facts.initial}
+            </span>
+            <div className="min-w-0">
+              <p className="vl-section-title text-indigo-700">Ficha canónica</p>
+              <div className="mt-1">
+                <RecordNameRow name={facts.name} status={facts.status} criticalCount={criticalCount} />
+              </div>
+              <RecordSpeciesLine facts={facts} />
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <ProvenanceBadge summary={provenance} alerts={alerts.length} />
+                <span className="rounded-full border border-white/60 bg-white/40 px-2.5 py-1 text-[11px] leading-4 text-caption">
+                  {alerts.length} alertas · {encounters.length} encuentros
+                </span>
+              </div>
             </div>
           </div>
           <RecordActions />
@@ -174,36 +177,25 @@ function RecordHeaderCard({ data }: { data: PatientRecordResponse }) {
   );
 }
 
-function SectionHeading({
-  title,
-  hint,
-  tone = 'text-ink',
-  dot,
-}: {
-  title: string;
-  hint?: string;
-  tone?: string;
-  dot?: string;
-}) {
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-2">
-      <h2 className={`flex items-center gap-2 text-[15px] font-medium leading-6 ${tone}`}>
-        {dot ? <span className={`h-1.5 w-1.5 rounded-full ${dot}`} aria-hidden="true" /> : null}
-        {title}
-      </h2>
-      {hint ? <span className="text-[11px] leading-4 text-caption">{hint}</span> : null}
-    </div>
-  );
+function alertCounts(alerts: ReturnType<typeof sortAlerts>): Record<string, number> {
+  return alerts.reduce<Record<string, number>>((counts, alert) => {
+    const key = String(alert.severity ?? '').toUpperCase();
+    counts[key] = (counts[key] ?? 0) + 1;
+    return counts;
+  }, {});
 }
 
 function RecordAlertsSection({ alerts }: { alerts: ReturnType<typeof sortAlerts> }) {
+  const counts = alertCounts(alerts);
   return (
     <section aria-label="Alertas clínicas" className="space-y-3">
-      <SectionHeading
-        title={`Alertas (${alerts.length})`}
-        hint="ordenadas por severidad"
-        dot="bg-crit"
-      />
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <p className="vl-section-title">Seguridad clínica</p>
+          <h2 className="mt-1 text-h2 text-ink">Alertas</h2>
+        </div>
+        <AlertCountChips counts={counts} />
+      </div>
       {alerts.length === 0 ? (
         <EmptyState
           title="Sin alertas"
@@ -276,14 +268,15 @@ function EncounterNotes({ encounter }: { encounter: Encounter }) {
 
 function EncounterRow({ encounter }: { encounter: Encounter }) {
   return (
-    <li className="flex gap-3 px-4 py-4 transition-colors duration-200 ease-smooth hover:bg-white/55">
-      <div className="flex flex-col items-center pt-1">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-indigo ring-4 ring-indigo-50" />
-        <span className="mt-1 w-px flex-1 bg-line" aria-hidden="true" />
-      </div>
-      <div className="min-w-0 flex-1">
-        <EncounterHeadline encounter={encounter} />
-        <EncounterNotes encounter={encounter} />
+    <li className="glass-soft rounded-2xl p-4 transition duration-300 ease-smooth hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-soft">
+      <div className="flex items-start gap-3">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[13px] border border-white/60 bg-white/45 text-indigo-700">
+          <CalendarClock className="h-4 w-4" aria-hidden="true" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <EncounterHeadline encounter={encounter} />
+          <EncounterNotes encounter={encounter} />
+        </div>
       </div>
     </li>
   );
@@ -292,18 +285,22 @@ function EncounterRow({ encounter }: { encounter: Encounter }) {
 function RecordEncountersSection({ encounters }: { encounters: Encounter[] }) {
   return (
     <section aria-label="Encuentros" className="space-y-3">
-      <SectionHeading
-        title={`Encuentros (${encounters.length})`}
-        hint="más reciente primero"
-        dot="bg-indigo"
-      />
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <p className="vl-section-title">Historia clínica</p>
+          <h2 className="mt-1 text-h2 text-ink">Encuentros</h2>
+        </div>
+        <span className="rounded-full border border-line bg-white/50 px-3 py-1 text-[11px] text-caption">
+          {encounters.length} visitas · más reciente primero
+        </span>
+      </div>
       {encounters.length === 0 ? (
         <EmptyState
           title="Sin encuentros registrados"
           description="La historia importada no contiene visitas con fecha."
         />
       ) : (
-        <ol className="overflow-hidden rounded-card border border-line bg-white/70 shadow-soft">
+        <ol className="space-y-2.5">
           {encounters.map((encounter, index) => (
             <EncounterRow key={encounter.id ?? `${encounter.date}-${index}`} encounter={encounter} />
           ))}
@@ -476,31 +473,33 @@ function BriefingRailCard({
   return (
     <Link
       to={`/requests/new?patient_id=${patientId}`}
-      className="group block rounded-panel border border-indigo-200 bg-white/85 p-5 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-card"
+      className="group relative block overflow-hidden rounded-panel bg-ink p-5 text-cream shadow-lift transition duration-300 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26] hover:shadow-card"
     >
       <div className="flex items-center gap-2.5">
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-white/85 text-indigo-700 ring-1 ring-inset ring-indigo-100">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-white/10 text-cream">
           <FileText className="h-4 w-4" aria-hidden="true" />
         </span>
-        <h2 className="vl-section-title text-indigo-700">Briefing pre-visita</h2>
-        <ArrowRight className="ml-auto h-4 w-4 text-indigo-700 transition duration-200 ease-smooth group-hover:translate-x-0.5" />
+        <h2 className="text-[10px] font-medium uppercase tracking-[0.14em] text-cream/60">
+          Briefing pre-visita
+        </h2>
+        <ArrowRight className="ml-auto h-4 w-4 text-cream/70 transition duration-200 ease-smooth group-hover:translate-x-0.5" />
       </div>
       {headline ? (
-        <p className="mt-2 line-clamp-2 text-[12.5px] leading-[18px] text-para">{headline}</p>
+        <p className="mt-2.5 line-clamp-2 text-[13px] leading-[19px] text-cream">{headline}</p>
       ) : null}
-      <div className="mt-2.5 flex flex-wrap gap-1.5">
-        <span className="rounded-full border border-white/80 bg-white/70 px-2 py-0.5 text-[10px] font-medium leading-4 text-indigo-700">
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        <span className="rounded-full border border-white/15 bg-white/10 px-2 py-0.5 text-[10px] font-medium leading-4 text-cream/75">
           {actions} acciones prioritarias
         </span>
         {gaps > 0 ? (
-          <span className="rounded-full border border-white/80 bg-white/70 px-2 py-0.5 text-[10px] font-medium leading-4 text-caption">
+          <span className="rounded-full border border-white/15 bg-white/10 px-2 py-0.5 text-[10px] font-medium leading-4 text-cream/75">
             {gaps} datos que faltan
           </span>
         ) : null}
       </div>
-      <p className="mt-3 inline-flex items-center gap-1 text-[12px] font-medium text-indigo-700">
-        Nueva solicitud
-      </p>
+      <span className="mt-3 inline-flex items-center gap-1 text-[11.5px] font-medium text-cream">
+        Preparar solicitud
+      </span>
     </Link>
   );
 }
@@ -516,20 +515,6 @@ function PatientNotFound() {
         </Link>
       }
     />
-  );
-}
-
-function RecordFooterLink({ patientId }: { patientId: string }) {
-  return (
-    <div className="flex justify-end">
-      <Link
-        to={`/specialists?patient_id=${patientId}`}
-        className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-white/70 px-4 py-2 text-[12px] font-medium text-para transition duration-200 ease-smooth hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-700 hover:shadow-soft"
-      >
-        Buscar especialista para este paciente
-        <ArrowRight className="h-3.5 w-3.5" />
-      </Link>
-    </div>
   );
 }
 
@@ -558,11 +543,11 @@ export function PatientRecord() {
   const patientId = id ?? '';
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <BackLink to="/patients">Pacientes</BackLink>
       <RecordHeaderCard data={data} />
       <PatientReviewBanner patientId={patientId} review={data.record?.review ?? null} />
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)]">
         <div className="space-y-6">
           <RecordAlertsSection alerts={alerts} />
           <RecordEncountersSection encounters={encounters} />
@@ -573,7 +558,6 @@ export function PatientRecord() {
           <BriefingRailCard briefing={data.briefing} patientId={patientId} />
         </aside>
       </div>
-      <RecordFooterLink patientId={patientId} />
     </div>
   );
 }
