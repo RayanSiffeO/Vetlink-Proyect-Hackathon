@@ -212,37 +212,6 @@ VetLink/
 └── README.md
 ```
 
-## Despliegue
-
-La app está preparada para desplegarse como **un solo servicio** (FastAPI sirve la SPA y la API).
-
-### Render
-
-1. Crea una cuenta en <https://render.com> y conecta tu GitHub.
-2. **New → Blueprint** y selecciona este repositorio: Render detecta `render.yaml`.
-3. Espera al build: Docker multi-stage compila la SPA y Python sirve todo.
-4. La URL pública queda en `https://<servicio>.onrender.com`.
-
-En el plan gratuito el servicio se duerme por inactividad y SQLite es efímera: se vuelve a sembrar en cada arranque. Es un entorno de demostración con datos ficticios.
-
-### Docker
-
-```bash
-docker build -t vetlink .
-docker run --rm -p 8000:8000 -e VETLINK_SECRET_KEY=cambia-esta-clave vetlink
-```
-
-### Túnel temporal
-
-Con la demo arrancada en `:8000`:
-
-```bash
-# Windows
-powershell -File scripts/tunnel.ps1
-```
-
-Abre un túnel `https://*.trycloudflare.com` válido mientras el proceso siga vivo.
-
 ## Privacidad
 
 Todos los datos son **ficticios y anonimizados**. El prototipo aplica mínimo privilegio: roles, niveles de compartición (`CLINICAL` / `FULL`), resumen no identificativo antes de aceptar, auditoría de accesos y aviso visible de entorno de demostración. En producción: clínica como responsable del tratamiento, VetLink como encargado (DPA), alojamiento en la UE y consentimiento informado del tutor (RGPD / LOPDGDD).
