@@ -6,19 +6,21 @@ SPA de la demo de **VetLink** (equipo **Joniha**, Reto 3 · VIII Hackathon Boehr
 
 ## Arranque real
 
-Requisitos: Node 20+ y pnpm. La API FastAPI se sirve en `http://localhost:8000` bajo `/api`.
+Requisitos: **Node 20+ y npm** (en este equipo `pnpm` no está en el PATH; los scripts funcionan igual con `npm`). La API FastAPI se sirve en `http://localhost:8000` bajo `/api`.
 
 ```powershell
 cd apps/web
-pnpm install
-pnpm dev          # Vite en http://127.0.0.1:5173 con proxy /api → :8000
+npm install       # ya instalado en este equipo; si usas pnpm, pnpm install
+npm run dev       # Vite en http://127.0.0.1:5173 con proxy /api → :8000
+# o, desde la raíz del repo:  powershell -File scripts\dev.ps1
 ```
 
 En otra terminal, la API:
 
 ```powershell
 cd services/api
-uv run uvicorn app.main:app --reload --port 8000   # API + SQLite + seed
+.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+# o, desde la raíz:  powershell -File scripts\api.ps1
 ```
 
 Reset de datos de demo (también hay botón en el login y en la cabecera):
@@ -31,17 +33,18 @@ curl -X POST http://localhost:8000/api/demo/reset
 
 ```powershell
 cd apps/web
-pnpm build        # tsc --noEmit + vite build → apps/web/dist
+npm run build     # tsc --noEmit + vite build → apps/web/dist
+# o, desde la raíz:  powershell -File scripts\build.ps1
 ```
 
 FastAPI sirve `apps/web/dist` y la API bajo `/api` en `http://localhost:8000` (sin CORS, cookie de sesión en el mismo origen).
 
 | Script | Qué hace |
 |---|---|
-| `pnpm dev` | Servidor de desarrollo (puerto 5173, proxy `/api` → `localhost:8000`) |
-| `pnpm build` | Typecheck estricto + build de producción en `dist/` |
-| `pnpm preview` | Sirve `dist/` en el puerto 5173 |
-| `pnpm typecheck` | Solo `tsc --noEmit` |
+| `npm run dev` (o `pnpm dev`) | Servidor de desarrollo (puerto 5173, proxy `/api` → `localhost:8000`) |
+| `npm run build` (o `pnpm build`) | Typecheck estricto + build de producción en `dist/` |
+| `npm run preview` | Sirve `dist/` en el puerto 5173 |
+| `npm run typecheck` | Solo `tsc --noEmit` |
 
 ## Variable de entorno
 

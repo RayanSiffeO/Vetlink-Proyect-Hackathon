@@ -80,6 +80,19 @@ Joniha/
 
 ## Cómo arrancar (H+0)
 
+> En este equipo **`pnpm` no está en el PATH** (está dentro del runtime de DSH) pero **`npm` sí funciona** con las dependencias ya instaladas. Los wrappers de `scripts/` eligen pnpm si existe y, si no, npm.
+
+```powershell
+# Opción rápida con wrappers (desde la raíz del repo)
+powershell -ExecutionPolicy Bypass -File scripts\api.ps1     # API + SQLite + seed → :8000
+powershell -ExecutionPolicy Bypass -File scripts\dev.ps1     # Vite dev → :5173 (otra terminal)
+
+# Modo demo: compila la SPA y la sirve FastAPI en un solo proceso
+powershell -ExecutionPolicy Bypass -File scripts\demo.ps1    # → http://127.0.0.1:8000
+```
+
+**Manual (equivalente):**
+
 ```powershell
 # 1) Backend, una sola vez (crear venv e instalar dependencias)
 C:\Users\Usuario\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe -m venv services/api/.venv
@@ -89,12 +102,12 @@ services/api/.venv\Scripts\python.exe -m pip install -r services/api/requirement
 cd services/api; .venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
 #    → http://127.0.0.1:8000/api/health  ·  Swagger: http://127.0.0.1:8000/docs
 
-# 3) Frontend en desarrollo (terminal 2)
-cd apps/web; pnpm install; pnpm dev
+# 3) Frontend en desarrollo (terminal 2) — usa npm si pnpm no está en PATH
+cd apps/web; npm run dev
 #    → http://127.0.0.1:5173  (proxy /api → :8000)
 
 # 4) Demo "un proceso" (la que se enseña el sábado)
-cd apps/web; pnpm build
+cd apps/web; npm run build
 cd services/api; .venv\Scripts\python.exe -m uvicorn app.main:app --port 8000
 #    → http://127.0.0.1:8000 sirve la SPA y /api, sin CORS
 
