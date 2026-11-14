@@ -33,3 +33,8 @@ coverage/
 .DS_Store
 Thumbs.db
 dsh-session.jsonl
+
+# Artefactos de demo/build locales
+releases/
+artifacts/
+

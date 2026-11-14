@@ -13,4 +13,4 @@ Los tres ficheros originales del Reto 3 (datos **ficticios** y anonimizados por 
 
 - No modificar los originales.
 - Cualquier dato añadido para la demo debe marcarse como `assumed` en el registro canónico.
-- Para el guion de demo, ver `docs/04-flujos-usuarios.md` (flujo E).
+- El botón **Cargar demo** de la aplicación reinicia los datos de ejemplo.
