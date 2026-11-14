@@ -136,6 +136,16 @@ def test_import_cache_and_csv_review(client: TestClient) -> None:
     )
     assert confirmed.status_code == 200, confirmed.text
     assert confirmed.json()["job"]["status"] == "READY"
+    blocked = client.post(
+        f"/api/imports/{entry['job_id']}/mapping",
+        json={
+            "mapping": [
+                {"index": item["index"], "target": None if item["source"] == "microchip" else item["target"]}
+                for item in mapping["columns"]
+            ]
+        },
+    )
+    assert blocked.status_code == 422
 
 
 def test_specialist_can_update_own_availability(client: TestClient) -> None:

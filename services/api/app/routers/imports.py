@@ -27,6 +27,7 @@ UNSUPPORTED_FORMAT_MESSAGE = "Formato no soportado por los extractores; revisió
 FAILED_MESSAGE = "No se pudo procesar el fichero"
 MAPPING_CONFIRMED_MESSAGE = "Mapeo confirmado por la clínica"
 MAPPING_READY_DETAIL = "Mapeo disponible para revisión"
+CRITICAL_TARGETS = {"patient.name", "patient.microchip"}
 
 
 def _safe_name(filename: str) -> str:
@@ -203,6 +204,17 @@ def confirm_mapping(job_id: str, payload: MappingConfirmIn, ctx: ApiCtx) -> dict
     headers = loads_json(draft.headers_json, [])
     rows = loads_json(draft.rows_json, [])
     mapping = {item.index: item.target for item in payload.mapping}
+    initial = plan(headers)
+    ignored_identity = [
+        item["source"]
+        for item in initial
+        if item["target"] in CRITICAL_TARGETS and mapping.get(int(item["index"])) is None
+    ]
+    ensure(
+        not ignored_identity,
+        f"No puedes ignorar columnas de identidad: {', '.join(ignored_identity)}",
+        UNPROCESSABLE,
+    )
     mapped_headers = apply_mapping(headers, mapping)
     try:
         record, _ = build_record(mapped_headers, rows, job.filename)

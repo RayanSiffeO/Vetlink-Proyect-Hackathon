@@ -99,7 +99,12 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
               }
               className="select select-bordered select-xs h-8 w-full rounded-lg border-line bg-white/80 text-[11px]"
             >
-              <option value="">Ignorar columna</option>
+              <option
+                value=""
+                disabled={column.target === 'patient.name' || column.target === 'patient.microchip'}
+              >
+                Ignorar columna
+              </option>
               {data.targets.map((target) => (
                 <option key={target.id} value={target.id}>
                   {target.label}
