@@ -107,7 +107,7 @@ function SpecialistProfileHeader({
           {initials(specialist.name)}
         </span>
         <SpecialistProfileFacts specialist={specialist} />
-        <div className="flex flex-col items-stretch gap-2 sm:items-end">
+        <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:items-end">
           <SpecialistPriceBox priceFrom={specialist.price_from} />
           <Link to={requestHref} className="btn btn-primary btn-sm gap-1.5">
             <Send className="h-4 w-4" />

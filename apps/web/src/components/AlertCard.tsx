@@ -23,7 +23,7 @@ function AlertTitleRow({ alert }: { alert: AlertItem }) {
   const style = severityStyle(alert.severity);
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <h4 className="text-sm font-semibold text-base-content">{alert.title}</h4>
+      <h4 className="min-w-0 break-words text-sm font-semibold text-base-content">{alert.title}</h4>
       <span className={`badge badge-sm ${style.badge} font-medium`}>{style.label}</span>
       {alert.category ? (
         <span className="badge badge-sm badge-ghost uppercase tracking-wide">{alert.category}</span>
@@ -34,13 +34,13 @@ function AlertTitleRow({ alert }: { alert: AlertItem }) {
 
 function AlertMessage({ message }: { message?: string | null }) {
   if (!message) return null;
-  return <p className="mt-1 text-sm leading-relaxed text-base-content/70">{message}</p>;
+  return <p className="mt-1 break-words text-sm leading-relaxed text-base-content/70">{message}</p>;
 }
 
 function AlertActionNote({ action }: { action?: string | null }) {
   if (!action) return null;
   return (
-    <p className="mt-2 rounded-lg bg-base-100/70 px-3 py-2 text-xs text-base-content/70">
+    <p className="mt-2 break-words rounded-lg bg-base-100/70 px-3 py-2 text-xs text-base-content/70">
       <span className="font-semibold text-base-content/80">Acción: </span>
       {action}
     </p>
@@ -63,7 +63,7 @@ function AlertEvidenceList({ evidence }: { evidence: Array<AlertEvidence | strin
       </summary>
       <ul className="mt-2 space-y-1">
         {evidence.slice(0, 4).map((item, index) => (
-          <li key={index} className="font-mono text-[11px] leading-snug text-base-content/50">
+          <li key={index} className="break-words font-mono text-[11px] leading-snug text-base-content/50">
             {evidenceLabel(item)}
           </li>
         ))}

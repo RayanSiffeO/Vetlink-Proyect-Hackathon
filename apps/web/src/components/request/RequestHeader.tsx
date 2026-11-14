@@ -134,7 +134,7 @@ export function RequestHeaderCard({
 export function ActionErrorBanner({ error }: { error: Error | null }) {
   if (!error) return null;
   return (
-    <div className="alert alert-error items-start text-sm" role="alert">
+    <div className="alert alert-error flex items-start gap-3 text-left text-sm" role="alert">
       <AlertTriangle className="h-4 w-4 shrink-0" />
       <span>{error.message}</span>
     </div>

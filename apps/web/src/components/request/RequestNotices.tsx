@@ -9,7 +9,7 @@ export function UnlockedNotice({ status }: { status: string }) {
   const specialistRole = useIsSpecialist();
   if (!specialistRole || !isUnlockedStatus(status)) return null;
   return (
-    <div className="alert alert-success items-start text-sm">
+    <div className="alert alert-success flex items-start gap-3 text-left text-sm">
       <CheckCircle2 className="h-4 w-4 shrink-0" />
       <span>
         Historia desbloqueada. El briefing pre-visita ya está disponible en la pestaña «Briefing».
@@ -22,7 +22,7 @@ export function ClosedNotice({ status }: { status: string }) {
   const specialistRole = useIsSpecialist();
   if (status !== 'DECLINED' && status !== 'CANCELLED') return null;
   return (
-    <div className="alert alert-warning items-start text-sm">
+    <div className="alert alert-warning flex flex-wrap items-start gap-3 text-left text-sm">
       <XCircle className="h-4 w-4 shrink-0" />
       <span>
         {status === 'DECLINED'

@@ -71,7 +71,7 @@ function CloseHeading() {
 
 function CloseSuccess() {
   return (
-    <div className="alert alert-success items-start text-sm" role="status">
+    <div className="alert alert-success flex items-start gap-3 text-left text-sm" role="status">
       <CheckCircle2 className="h-4 w-4 shrink-0" />
       <span>Visita cerrada · la nota ya está en la ficha de la clínica</span>
     </div>

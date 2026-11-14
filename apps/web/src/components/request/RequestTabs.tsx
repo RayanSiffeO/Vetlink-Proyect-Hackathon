@@ -22,7 +22,7 @@ export function RequestTabs({
   onSelect: (tab: RequestTab) => void;
 }) {
   return (
-    <div role="tablist" className="tabs tabs-boxed w-full max-w-md bg-base-100 p-1">
+    <div role="tablist" className="tabs tabs-boxed w-full max-w-md overflow-x-auto bg-base-100 p-1">
       {TABS.map((item) => {
         const Icon = item.icon;
         return (
@@ -31,7 +31,7 @@ export function RequestTabs({
             type="button"
             role="tab"
             aria-selected={tab === item.id}
-            className={`tab flex-1 gap-1.5 text-[13px] ${tab === item.id ? 'tab-active' : ''}`}
+            className={`tab h-11 flex-1 gap-1.5 whitespace-nowrap text-[13px] ${tab === item.id ? 'tab-active' : ''}`}
             onClick={() => onSelect(item.id)}
           >
             <Icon className="h-4 w-4" />

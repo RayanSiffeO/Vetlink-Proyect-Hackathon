@@ -103,9 +103,9 @@ function ActiveSessionCard({ user }: { user: User }) {
 function LoginErrorAlert({ error }: { error: Error }) {
   const isOffline = error instanceof ApiError && error.status === 0;
   return (
-    <div className="alert alert-error mt-4 items-start text-sm" role="alert">
+    <div className="alert alert-error mt-4 flex items-start gap-3 text-left text-sm" role="alert">
       <ShieldCheck className="h-4 w-4 shrink-0" />
-      <div>
+      <div className="min-w-0 flex-1">
         <p className="font-semibold">No se pudo iniciar la demo</p>
         <p className="mt-0.5 text-[13px] leading-snug">{error.message}</p>
         {isOffline ? (

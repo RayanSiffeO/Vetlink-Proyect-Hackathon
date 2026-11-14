@@ -52,7 +52,7 @@ export function RequestSummaryPanel({
       <h2 className="text-sm font-semibold">Resumen</h2>
       <SummaryList form={form} />
       {mutation.isError ? (
-        <div className="alert alert-error mt-2 items-start p-2 text-[12px]" role="alert">
+        <div className="alert alert-error mt-2 flex items-start gap-2 p-2 text-left text-[12px]" role="alert">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{mutation.error.message}</span>
         </div>

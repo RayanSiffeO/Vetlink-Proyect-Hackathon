@@ -70,7 +70,7 @@ function RecordSpeciesLine({ facts }: { facts: PatientFacts }) {
 function RecordActions() {
   const { id } = useParams<{ id: string }>();
   return (
-    <div className="flex flex-col gap-2 sm:flex-row">
+    <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
       <Link to={`/specialists?patient_id=${id ?? ''}`} className="btn btn-outline btn-sm gap-1.5">
         <Stethoscope className="h-4 w-4" />
         Buscar especialista

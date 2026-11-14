@@ -73,11 +73,11 @@ function BriefingTitle({
   return (
     <div className="min-w-0">
       <p className="vl-section-title">VetBriefing · pre-visita</p>
-      <h2 className="mt-1 text-xl font-bold tracking-tight">
+      <h2 className="mt-1 break-words text-xl font-bold tracking-tight">
         {briefing.patient_label ?? patientName ?? 'Briefing'}
       </h2>
       {briefing.headline ? (
-        <p className="mt-1 max-w-2xl text-sm leading-relaxed text-base-content/65">
+        <p className="mt-1 max-w-2xl break-words text-sm leading-relaxed text-base-content/65">
           {briefing.headline}
         </p>
       ) : null}
@@ -139,7 +139,7 @@ function BriefingActionItem({ action }: { action: PriorityAction }) {
   return (
     <li className="flex items-start gap-2">
       <span className={`badge badge-sm mt-0.5 shrink-0 ${style.badge}`}>{style.label}</span>
-      <span className="text-sm leading-snug text-base-content/75">
+      <span className="min-w-0 break-words text-sm leading-snug text-base-content/75">
         <span className="font-semibold">{action.title}</span>
         {action.action ? (
           <span className="block text-[12px] text-base-content/55">{action.action}</span>
@@ -202,7 +202,7 @@ function BriefingJson({ briefing }: { briefing: BriefingBody }) {
       <summary className="cursor-pointer text-[12px] font-medium text-base-content/55">
         Ver briefing completo (JSON)
       </summary>
-      <pre className="mt-2 max-h-72 overflow-auto rounded-xl bg-base-200/70 p-3 font-mono text-[11px] leading-relaxed text-base-content/70">
+      <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap break-words rounded-xl bg-base-200/70 p-3 font-mono text-[11px] leading-relaxed text-base-content/70">
         {JSON.stringify(briefing, null, 2)}
       </pre>
     </details>

@@ -25,14 +25,18 @@ const SPECIALIST_ITEMS: NavItem[] = ALL_ITEMS.filter((item) => item.to !== '/pat
 
 const PRIMARY_LINKS_CLASS = 'ml-4 hidden items-center gap-1 md:flex';
 const MOBILE_LINKS_CLASS =
-  'flex items-center gap-1 overflow-x-auto border-t border-base-300/60 px-3 py-1.5 md:hidden';
+  'flex items-center justify-between gap-0.5 overflow-x-auto border-t border-base-300/60 px-2 py-1 md:hidden';
+const NAV_ACTIVE_CLASS = 'bg-primary text-primary-content shadow-soft';
+const NAV_IDLE_CLASS = 'text-base-content/65 hover:bg-base-200 hover:text-base-content';
 
 function navLinkClass({ isActive }: { isActive: boolean }): string {
-  return `inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
-    isActive
-      ? 'bg-primary text-primary-content shadow-soft'
-      : 'text-base-content/65 hover:bg-base-200 hover:text-base-content'
-  }`;
+  const tone = isActive ? NAV_ACTIVE_CLASS : NAV_IDLE_CLASS;
+  return `inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${tone}`;
+}
+
+function mobileNavLinkClass({ isActive }: { isActive: boolean }): string {
+  const tone = isActive ? NAV_ACTIVE_CLASS : NAV_IDLE_CLASS;
+  return `inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-xl px-1.5 py-2.5 text-[12px] font-medium transition-colors ${tone}`;
 }
 
 function NavBrand({ home }: { home: string }) {
@@ -71,7 +75,7 @@ function MobileNavigation({ items }: { items: NavItem[] }) {
       {items.map((item) => {
         const Icon = item.icon;
         return (
-          <NavLink key={item.to} to={item.to} className={navLinkClass}>
+          <NavLink key={item.to} to={item.to} className={mobileNavLinkClass}>
             <Icon className="h-4 w-4" aria-hidden="true" />
             <span className="whitespace-nowrap">{item.label}</span>
           </NavLink>

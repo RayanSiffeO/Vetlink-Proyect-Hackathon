@@ -23,9 +23,9 @@ function pendingLabel(count: number): string {
 function ReviewedBanner({ review }: { review: ReviewSummary }) {
   const stamp = review.reviewed_at ? ` · ${formatDateTime(review.reviewed_at)}` : '';
   return (
-    <div className="alert alert-success items-start gap-3" role="status">
+    <div className="alert alert-success flex items-start gap-3 text-left" role="status">
       <CheckCircle2 className="h-5 w-5 shrink-0" />
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <p className="text-sm font-semibold">Revisado por {review.reviewed_by}</p>
         <p className="text-[12px] opacity-80">
           Campos críticos confirmados{stamp}. La revisión queda registrada en la auditoría.
@@ -73,7 +73,7 @@ function ConfirmButton({ mutation, fields }: { mutation: ReturnType<typeof useRe
   return (
     <button
       type="button"
-      className="btn btn-warning btn-sm gap-1.5"
+      className="btn btn-warning btn-sm w-full gap-1.5 sm:w-auto"
       disabled={mutation.isPending}
       onClick={() => mutation.mutate({ reviewed_fields: fields })}
     >
@@ -85,7 +85,7 @@ function ConfirmButton({ mutation, fields }: { mutation: ReturnType<typeof useRe
 
 function ClinicAction({ mutation, fields }: { mutation: ReturnType<typeof useReviewRecord>; fields: string[] }) {
   return (
-    <div className="shrink-0">
+    <div className="w-full shrink-0 sm:w-auto">
       <ConfirmButton mutation={mutation} fields={fields} />
     </div>
   );
@@ -93,7 +93,7 @@ function ClinicAction({ mutation, fields }: { mutation: ReturnType<typeof useRev
 
 function SpecialistNote() {
   return (
-    <p className="mt-1 text-[11px] text-base-content/55">
+    <p className="mt-1 w-full text-[11px] text-base-content/55 sm:w-auto">
       Solo la clínica puede confirmar la revisión de esta ficha.
     </p>
   );
@@ -113,7 +113,7 @@ export function PatientReviewBanner({
   if (pendingCount(review) <= 0) return null;
   const fields = fieldNames(review);
   return (
-    <div className="alert alert-warning items-start gap-3" role="status">
+    <div className="alert alert-warning flex flex-wrap items-start gap-3 text-left" role="status">
       <AlertTriangle className="h-5 w-5 shrink-0" />
       <div className="min-w-0 flex-1">
         <PendingMessage review={review} />
