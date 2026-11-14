@@ -1,5 +1,7 @@
 # scripts\demo.ps1 — modo demo: compila la SPA y la sirve FastAPI en un solo proceso
-# Uso:  powershell -ExecutionPolicy Bypass -File scripts\demo.ps1  →  http://127.0.0.1:8000
+# Uso:  powershell -ExecutionPolicy Bypass -File scripts\demo.ps1 [-Port 8000]
+# Si el puerto está ocupado, usa el siguiente libre (8001, 8002...).
+param([int]$Port = 8000)
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 
 Write-Host "1/2 Compilando frontend..." -ForegroundColor Cyan
@@ -7,8 +9,9 @@ Set-Location (Join-Path $root "apps\web")
 if (Get-Command pnpm -ErrorAction SilentlyContinue) { pnpm build } else { npm run build }
 if ($LASTEXITCODE -ne 0) { Write-Error "Falló el build del frontend"; exit 1 }
 
-Write-Host "2/2 Arrancando API + SPA en http://127.0.0.1:8000 ..." -ForegroundColor Cyan
+while (Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue) { $Port++ }
+Write-Host "2/2 Arrancando API + SPA en http://127.0.0.1:$Port ..." -ForegroundColor Cyan
 $api = Join-Path $root "services\api"
 $py = Join-Path $api ".venv\Scripts\python.exe"
 Set-Location $api
-& $py -m uvicorn app.main:app --port 8000
+& $py -m uvicorn app.main:app --port $Port

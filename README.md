@@ -89,6 +89,8 @@ powershell -ExecutionPolicy Bypass -File scripts\dev.ps1     # Vite dev → :517
 
 # Modo demo: compila la SPA y la sirve FastAPI en un solo proceso
 powershell -ExecutionPolicy Bypass -File scripts\demo.ps1    # → http://127.0.0.1:8000
+# si el 8000 está ocupado, usa el siguiente libre y lo imprime en pantalla
+powershell -ExecutionPolicy Bypass -File scripts\stop.ps1    # libera 8000/8001/5173
 ```
 
 **Manual (equivalente):**
