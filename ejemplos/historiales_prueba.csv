@@ -1,0 +1,11 @@
+Fecha;Propietario;Telefono;Email;Paciente;Especie;Raza;Sexo;Edad;Microchip;Motivo;Exploracion;Diagnostico;Tratamiento;Pruebas;Peso;Observaciones
+10/01/2024;Ana Martín López;612345678;ana.martin@example.com;Toby;Perro;Labrador;Macho;6 años;985112003456789;Cojera pata trasera derecha;Dolor a la palpación de rodilla;Sospecha de rotura de ligamento cruzado;Meloxicam 0,1 mg/kg cada 24 h durante 7 días;;32,5 kg;Reposo relativo
+15/01/2024;Carlos Ruiz Gómez;698111222;c.ruiz@example.com;Mia;Gato;Europeo común;Hembra;3 años;941000012345678;Vómitos desde hace dos días;Deshidratación leve;Gastroenteritis;Fluidoterapia y dieta blanda 3 días;;4,2 kg;
+18/01/2024;Laura Sánchez;655987654;laura.s@example.com;Rocky;Perro;Bulldog francés;Macho;2 años;;Estornudos y ruido respiratorio;Estenosis de ollares;Síndrome braquicefálico;;;;Valorar cirugía
+24/01/2024;Ana Martín López;612345678;ana.martin@example.com;Toby;Perro;Labrador;Macho;6 años;985112003456789;Revisión;;Mejoría clínica;Continuar meloxicam 5 días más;Radiografía de rodilla solicitada;32,1 kg;
+02/02/2024;Carlos Ruiz Gómez;698111222;c.ruiz@example.com;Mia;Gato;Europeo común;Hembra;3 años;941000012345678;Control tras gastroenteritis;Normal;Alta;;;4,3 kg;Vacuna trivalente felina lote A4521
+2024-02-03;Marta Vidal;644556677;marta.vidal@example.com;Luna;Conejo;Belier;Hembra;1 año;;Anorexia desde ayer;Abdomen distendido, heces escasas;Estasis gastrointestinal;Metoclopramida 0,5 mg/kg cada 12 h y fluidoterapia subcutánea;Ecografía abdominal;1,8 kg;Ingreso 24 horas
+10/02/2024;Laura Sánchez;655987654;laura.s@example.com;Rocky;Perro;Bulldog francés;Macho;2 años;;Cirugía de ollares;Anestesia sin complicaciones;Estenosis de ollares corregida;Meloxicam 0,2 mg/kg el primer día y 0,1 mg/kg después;Analítica preanestésica normal;12,4 kg;Alta el mismo día
+20/02/2024;Ana Martín López;612345678;ana.martin@example.com;Toby;Perro;Labrador;Macho;6 años;985112003456789;Control de ligamento;Cajón tibial positivo;Rotura de ligamento cruzado craneal confirmada;Cirugía programada;Radiografía: derrame articular;32,0 kg;
+05/03/2024;Marta Vidal;644556677;marta.vidal@example.com;Luna;Conejo;Belier;Hembra;1 año;;Revisión;Apetito recuperado;Resuelto;Retirar tratamiento;;1,9 kg;
+;Carlos Ruiz Gómez;698111222;c.ruiz@example.com;Mia;Gato;Europeo común;Hembra;3 años;941000012345678;;;;;;;Alergia a la penicilina

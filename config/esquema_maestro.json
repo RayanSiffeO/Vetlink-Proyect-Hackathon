@@ -1,0 +1,735 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "esquema_maestro_clinico_vet",
+  "title": "Expediente clínico veterinario (MVP)",
+  "description": "Modelo relacional plano. Los nombres de campo son los canónicos de alias_columna.json. Relaciones: mascota.id_origen <- *.mascota_ref ; visita.ref_origen <- *.visita_ref. Valores desconocidos = null (nunca inventar). Fechas ISO 8601 (AAAA-MM-DD). Sin datos del propietario.",
+  "type": "object",
+  "required": [
+    "esquema_version",
+    "mascotas"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "esquema_version": {
+      "const": 1,
+      "description": "Alineado con 'version' de alias_columna.json"
+    },
+    "documento": {
+      "type": "object",
+      "description": "Procedencia del archivo (se rellena desde el manifest actual).",
+      "properties": {
+        "sha256": {
+          "type": "string"
+        },
+        "formato": {
+          "type": "string"
+        },
+        "nombre": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fecha_procesamiento": {
+          "type": "string"
+        },
+        "calidad": {
+          "enum": [
+            "ok",
+            "con_advertencias",
+            "error"
+          ]
+        }
+      }
+    },
+    "mascotas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "description": "Paciente. Un registro por animal.",
+        "required": [
+          "id_origen"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id_origen": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nombre": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "especie": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Normalizar a: perro, gato, otro"
+          },
+          "raza": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sexo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "macho",
+              "hembra",
+              "desconocido",
+              null
+            ]
+          },
+          "esterilizado": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "fecha_nacimiento": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "fecha_nacimiento_aprox": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "true si la fecha es estimada"
+          },
+          "color": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "peso_actual_kg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "condicion_corporal": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 9,
+            "description": "Escala 1-9"
+          },
+          "alergias": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dieta": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "estilo_de_vida": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "temperamento": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "centro": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fecha_alta": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    },
+    "visitas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Consulta/episodio SOAP con constantes vitales.",
+        "required": [
+          "ref_origen",
+          "mascota_ref"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "ref_origen": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mascota_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fecha": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "hora": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{2}:\\d{2}"
+          },
+          "tipo": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "motivo": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "anamnesis": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "exploracion": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "diagnostico": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "plan": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "proxima_visita": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "estado": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "activo",
+              "completado",
+              "cancelado",
+              "pendiente",
+              null
+            ]
+          },
+          "centro": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "profesional_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "temperatura_c": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 25,
+            "maximum": 45
+          },
+          "frecuencia_cardiaca": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "frecuencia_respiratoria": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "peso_kg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "condicion_corporal": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 9
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    },
+    "pruebas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Un analito/resultado por registro. Si el origen viene pivotado (parametro/valor/unidad), se despivota a este formato.",
+        "required": [
+          "mascota_ref",
+          "nombre"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mascota_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "visita_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Analito o prueba"
+          },
+          "panel": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "resultado": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Valor tal cual (puede ser texto: 'positivo')"
+          },
+          "valor_num": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Valor numérico si resultado es parseable"
+          },
+          "unidad": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "referencia": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Rango de referencia tal cual"
+          },
+          "indicador": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "normal",
+              "alto",
+              "bajo",
+              "critico",
+              "positivo",
+              "negativo",
+              null
+            ]
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    },
+    "tratamientos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Fármaco o pauta prescrita.",
+        "required": [
+          "mascota_ref",
+          "descripcion"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mascota_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "visita_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "descripcion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "orden": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "dosis": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "duracion_dias": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "estado": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "activo",
+              "completado",
+              "cancelado",
+              "pendiente",
+              null
+            ]
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    },
+    "preventivos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Vacunas y desparasitaciones.",
+        "required": [
+          "mascota_ref",
+          "concepto"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mascota_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "concepto": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tipo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "vacuna",
+              "antiparasitario",
+              "otro",
+              null
+            ]
+          },
+          "fecha_ultima": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "fecha_proxima": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "lote": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    },
+    "pesos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Serie histórica de peso.",
+        "required": [
+          "mascota_ref",
+          "fecha",
+          "peso_kg"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mascota_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fecha": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "peso_kg": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "condicion_corporal": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 9
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    },
+    "problemas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Lista de problemas, alergias y alertas.",
+        "required": [
+          "mascota_ref",
+          "descripcion"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mascota_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "descripcion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "categoria": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "problema",
+              "antecedente",
+              "cronico",
+              "alergia",
+              "alerta",
+              null
+            ]
+          },
+          "estado": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "activo",
+              "resuelto",
+              null
+            ]
+          },
+          "fecha_inicio": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "fecha_fin": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    },
+    "recordatorios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Seguimientos y citas pendientes.",
+        "required": [
+          "mascota_ref",
+          "concepto"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "mascota_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "visita_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "concepto": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tipo": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fecha_prevista": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "estado": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "activo",
+              "completado",
+              "cancelado",
+              "pendiente",
+              null
+            ]
+          },
+          "_origen": {
+            "$ref": "#/$defs/origen"
+          },
+          "_sin_mapear": {
+            "type": "object",
+            "description": "Columnas del origen sin alias conocido; se conservan, nunca se descartan."
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "origen": {
+      "type": "object",
+      "description": "Trazabilidad: de qué tabla/fila del archivo sale el registro.",
+      "properties": {
+        "tabla": {
+          "type": "string"
+        },
+        "fila": {
+          "type": "integer"
+        },
+        "seccion": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

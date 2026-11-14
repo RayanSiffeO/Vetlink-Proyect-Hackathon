@@ -1,0 +1,26 @@
+{
+  "propietario": {
+    "nombre": "Carmen",
+    "apellidos": "Vidal Soto",
+    "telefono": "655 444 333",
+    "email": "carmen.vidal@mail.es",
+    "direccion": "Avenida de la Paz 12, 2º A, 41001 Sevilla"
+  },
+  "paciente": {
+    "nombre": "Nala",
+    "especie": "Gato",
+    "microchip": "985112345678901"
+  },
+  "consultas": [
+    {
+      "fecha": "2024-05-10",
+      "motivo": "Vacunación",
+      "peso_kg": 3.9
+    },
+    {
+      "fecha": "2024-06-02",
+      "motivo": "Revisión",
+      "notas": "Sin hallazgos"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+Nº Hist,Mascota,Sp,F. visita,Síntomas,Dx,Tto,Peso (kg),Dueño,Tlf contacto,Notas,,Notas,Vet,Zona,Sexo/Edad
+H-0412,Toby,Perro,03/04/2024,"Cojera, pata trasera",,"Meloxicam 0,1 mg/kg; reposo 5 días","32,5 kg",Ana Martín López,612 345 678,"Dice la dueña ""no apoya la pata""",,,Dr. Pérez,Norte,M / 6 años
+H-0412,TOBY ,dog,2024-04-10,Revisión,Mejoría,Continuar meloxicam,32.1kg,Ana Martín López,612 345 678,,,,Dr. Pérez,Norte,M / 6 años
+H-0413,Mia,Gato,7-4-24,"Vómitos
+y diarrea desde ayer",Gastroenteritis,Dieta blanda; fluidoterapia,"4,2 kg",Carlos Ruiz,698111222,Primera visita,,,Dra. Gil,Sur,H / 3 años
+H-0413,mia,cat,8 abr 2024,Control,Alta,,4300 g,Carlos Ruiz,698111222,Vacuna trivalente lote A4521,,,Dra. Gil,Sur,H / 3 años
+H-0414,Luna,Perro,31/02/2024,Otitis,Otitis externa,Limpieza ótica; gotas 5 días,"28,4 kg",Laura Sánchez,655987654,,,,Dr. Pérez,Norte,H / 4 años
+H-0415,Luna,Gato,,Estornudos,Rinitis,Amoxicilina 50 mg cada 12 h,"3,1 kg",Marta Vidal,644556677,"Mismo nombre que la perra, otro animal",,,Dra. Gil,Sur,H / 2 años
+,,,,,,,,,,,,,,,
+H-0416,Rocky,Perro,12/05/2024,Revisión anual,Sano,,n/d,Pedro Gómez,600111222,,,,Dr. Pérez,Norte,M / 2 años
+H-0416,,Perro,20/05/2024,Cojera,,,,Pedro Gómez,600111222,fila sin nombre de paciente,,,Dr. Pérez,Norte,
+H-0417,Kira,Hurón,01/06/2024,Pérdida de pelo,Sospecha de enfermedad adrenal,,"1,1 kg",Sara López,677889900,,,,Dra. Gil,Sur,H / 4 años
+H-0417,Kira,Hurón,15/06/2024,Control,Estable,,"1,1 kg",Sara López,677889900,,,,Dra. Gil,Sur,H / 4 años,dato de más,otro dato de más
+H-0418,Nico,Conejo,03/07/2024,Anorexia,Estasis,"Metoclopramida 0,5 mg/kg","1,9 kg",Elena Ruiz,611222333,Llamar a Elena Ruiz al 611 222 333 si empeora,,,Dr. Pérez,Norte,M / 1 año
+H-0418,Nico,Conejo,10/07/2024,Revisión,Resuelto,,"2,0 kg",Elena Ruiz,611222333,Paciente nervioso en consulta; se administra sedación suave para la exploración. Paciente nervioso en consulta; se administra sedación suave para la exploración. Paciente nervioso en consulta; se administra sedación suave para la exploración. Paciente nervioso en consulta; se administra sedación suave para la exploración. Paciente nervioso en consulta; se administra sedación suave para la exploración. Paciente nervioso en consulta; se administra sedación suave para la exploración. Paciente nervioso en consulta; se administra sedación suave para la exploración. Paciente nervioso en consulta; se administra sedación suave para la exploración.,dosis ajustada,Segunda nota,Dr. Pérez,Norte,M / 1 año
+H-0419,  Bimba	,Perro,05/08/2024,Vacunación,,Polivalente + rabia,"9,8 kg",Julia Torres,633444555,,,,Dra. Gil,Sur,H / 7 años
