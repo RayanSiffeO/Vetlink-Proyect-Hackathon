@@ -95,7 +95,7 @@ function PatientFooter({ patient }: { patient: PatientSummary }) {
 
 export function PatientCard({ patient }: { patient: PatientSummary }) {
   return (
-    <article className="group flex flex-col gap-4 rounded-[26px] border border-white/60 bg-white/55 p-5 shadow-soft backdrop-blur-xl transition duration-300 ease-smooth hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-card">
+    <article className="group flex min-w-0 flex-col gap-4 rounded-[26px] border border-white/60 bg-white/55 p-5 shadow-soft backdrop-blur-xl transition duration-300 ease-smooth hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-card">
       <PatientIdentity patient={patient} />
       <PatientMetrics patient={patient} />
       <PatientFooter patient={patient} />

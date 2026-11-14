@@ -7,7 +7,7 @@ import { isHighUrgency } from '../../lib/requests';
 
 export function UnlockedNotice({ status }: { status: string }) {
   const specialistRole = useIsSpecialist();
-  if (!specialistRole || !isUnlockedStatus(status)) return null;
+  if (!specialistRole || status === 'COMPLETED' || !isUnlockedStatus(status)) return null;
   return (
     <div className="flex items-start gap-2.5 rounded-2xl border border-ok/25 bg-ok-soft px-4 py-3 text-[13px] leading-5 text-ok">
       <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
@@ -44,6 +44,16 @@ export function ClosedNotice({ status }: { status: string }) {
 
 export function ConfirmedFooter({ status }: { status: string }) {
   const specialistRole = useIsSpecialist();
+  if (status === 'COMPLETED') {
+    return (
+      <p className="flex items-center justify-center gap-1.5 text-center text-[11px] text-caption">
+        <CheckCircle2 className="inline h-3.5 w-3.5 text-ok" />
+        {specialistRole
+          ? 'Visita completada. La nota se ha enviado a la clínica.'
+          : 'Visita completada. La nota está en la ficha del paciente.'}
+      </p>
+    );
+  }
   if (specialistRole || !isUnlockedStatus(status)) return null;
   return (
     <p className="flex items-center justify-center gap-1.5 text-center text-[11px] text-caption">

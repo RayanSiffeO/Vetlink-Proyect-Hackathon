@@ -223,6 +223,7 @@ function SummaryPanel({
   request: RequestRecord;
   summaryQuery: ReturnType<typeof useRequestSummary>;
 }) {
+  const status = String(request.status ?? '').toUpperCase();
   return (
     <section className="rounded-card border border-line bg-white/70 p-4 shadow-soft">
       <div className="flex items-center justify-between gap-2">
@@ -230,7 +231,9 @@ function SummaryPanel({
         {summaryQuery.isFetching ? <Spinner size="xs" /> : null}
       </div>
       <p className="mt-1 text-[11px] leading-[17px] text-caption">
-        Lo que el especialista ve antes de aceptar: clínico, sin datos del tutor.
+        {status === 'REQUESTED'
+          ? 'Lo que el especialista ve antes de aceptar: clínico, sin datos del tutor.'
+          : 'Resumen clínico no identificativo de la derivación.'}
       </p>
       <SummaryBody query={summaryQuery} />
       <p className="mt-3 rounded-xl border border-line bg-white/55 px-3 py-2 text-[11px] leading-[17px] text-caption">

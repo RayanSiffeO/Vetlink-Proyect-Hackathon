@@ -26,9 +26,9 @@ const SPECIALIST_ITEMS: NavItem[] = [
   { to: '/calendar', label: 'Calendario', icon: CalendarDays },
 ];
 
-const PRIMARY_LINKS_CLASS = 'ml-2 hidden items-center gap-1 md:flex';
+const PRIMARY_LINKS_CLASS = 'ml-2 hidden items-center gap-1 lg:flex';
 const MOBILE_LINKS_CLASS =
-  'mt-2 grid grid-cols-4 gap-1 border-t border-line/80 px-0.5 pt-2 pb-0.5 md:hidden';
+  'mt-2 grid grid-cols-4 gap-0.5 border-t border-line/80 px-0.5 pt-2 pb-0.5 lg:hidden';
 const NAV_ACTIVE_CLASS = 'bg-indigo text-ink shadow-lift';
 const NAV_IDLE_CLASS = 'text-para hover:bg-white/70 hover:text-indigo-700';
 
@@ -39,7 +39,7 @@ function navLinkClass({ isActive }: { isActive: boolean }): string {
 
 function mobileNavLinkClass({ isActive }: { isActive: boolean }): string {
   const tone = isActive ? NAV_ACTIVE_CLASS : NAV_IDLE_CLASS;
-  return `flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-1.5 text-center text-[10px] font-medium leading-3 transition duration-200 ease-smooth ${tone}`;
+  return `flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-0.5 py-1.5 text-center text-[9.5px] font-medium leading-3 transition duration-200 ease-smooth ${tone}`;
 }
 
 function NavBrand({ home }: { home: string }) {
@@ -92,7 +92,7 @@ function MobileNavigation({ items }: { items: NavItem[] }) {
 function SessionChip({ user }: { user: User | null | undefined }) {
   if (!user) return null;
   return (
-    <span className="hidden items-center gap-1.5 rounded-full border border-line bg-white/70 px-2.5 py-1 text-[11px] font-medium text-para sm:inline-flex">
+    <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-white/70 px-2.5 py-1 text-[11px] font-medium text-para sm:inline-flex">
       <span className="h-1.5 w-1.5 rounded-full bg-ok" aria-hidden="true" />
       {user.display_name}
       <span className="text-line-strong">·</span>
@@ -117,7 +117,7 @@ function DemoResetButton({ reset, onSettled }: { reset: ResetMutation; onSettled
       disabled={reset.isPending}
     >
       {reset.isPending ? <Spinner size="xs" /> : <RotateCcw className="h-4 w-4" />}
-      <span className="hidden text-[11.5px] lg:inline">Demo</span>
+      <span className="hidden text-[11.5px] xl:inline">Demo</span>
     </button>
   );
 }
@@ -138,7 +138,7 @@ function LogoutButton({
       disabled={logout.isPending}
     >
       <LogOut className="h-4 w-4" />
-      <span className="hidden text-[11.5px] lg:inline">Salir</span>
+      <span className="hidden text-[11.5px] xl:inline">Salir</span>
     </button>
   );
 }

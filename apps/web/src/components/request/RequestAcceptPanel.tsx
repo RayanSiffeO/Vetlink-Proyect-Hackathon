@@ -1,7 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { CheckCircle2, Sparkles, XCircle } from 'lucide-react';
 import type { AvailableSlot, RequestRecord } from '../../api/types';
-import { useAcceptRequest, useDeclineRequest, useSpecialist } from '../../api/hooks';
+import {
+  qk,
+  useAcceptRequest,
+  useAppointments,
+  useDeclineRequest,
+  useSpecialist,
+} from '../../api/hooks';
 import { formatDateTime, shareLevelLabel, slotIso, slotLabel } from '../../lib/format';
 import { toIsoFromLocal } from '../../lib/requests';
 import { Spinner } from '../Spinner';
@@ -52,28 +59,50 @@ function SlotOption({
   );
 }
 
-function AvailabilityEmpty({ query }: { query: ReturnType<typeof useSpecialist> }) {
+function AvailabilityEmpty({
+  query,
+  hasPublishedSlots,
+}: {
+  query: ReturnType<typeof useSpecialist>;
+  hasPublishedSlots: boolean;
+}) {
   return (
     <p className="mt-3 text-[12px] leading-[18px] text-caption">
       {query.isError
         ? `No se pudo cargar la disponibilidad (${query.error.message}). Indica una fecha concreta.`
-        : 'Sin franjas publicadas: indica una fecha concreta.'}
+        : hasPublishedSlots
+          ? 'No quedan franjas libres en la agenda: indica una fecha concreta.'
+          : 'Sin franjas publicadas: indica una fecha concreta.'}
     </p>
   );
 }
 
+function slotTime(iso: string): number {
+  return iso ? new Date(iso).getTime() : Number.NaN;
+}
+
+function isFutureSlot(iso: string): boolean {
+  const time = slotTime(iso);
+  return Number.isFinite(time) && time >= Date.now();
+}
+
 function AvailabilityBlock({
   query,
+  slots,
+  hasPublishedSlots,
   selection,
 }: {
   query: ReturnType<typeof useSpecialist>;
+  slots: AvailableSlot[];
+  hasPublishedSlots: boolean;
   selection: { selectedSlot: string; onPick: (iso: string) => void };
 }) {
-  const slots = query.data?.available_slots ?? [];
   if (query.isLoading) {
     return <p className="mt-3 text-[12px] leading-[18px] text-caption">Cargando disponibilidad…</p>;
   }
-  if (slots.length === 0) return <AvailabilityEmpty query={query} />;
+  if (slots.length === 0) {
+    return <AvailabilityEmpty query={query} hasPublishedSlots={hasPublishedSlots} />;
+  }
   return (
     <div className="mt-3 grid gap-2 sm:grid-cols-3">
       {slots.map((slot, index) => {
@@ -108,16 +137,26 @@ function ManualSlotField({ value, onChange }: { value: string; onChange: (value:
 function AcceptButton({
   accept,
   slot,
+  isPast,
+  isOccupied,
 }: {
   accept: ReturnType<typeof useAcceptRequest>;
   slot: string;
+  isPast: boolean;
+  isOccupied: boolean;
 }) {
+  const title = isPast
+    ? 'La franja ya ha pasado'
+    : isOccupied
+      ? 'La franja ya está ocupada'
+      : undefined;
   return (
     <button
       type="button"
       className="btn border-0 bg-ink text-cream hover:bg-\[\#3A2E26\] btn-sm h-9 gap-1.5 rounded-full px-4 text-[12px] shadow-lift"
-      disabled={!slot || accept.isPending}
+      disabled={!slot || isPast || isOccupied || accept.isPending}
       onClick={() => accept.mutate({ slot_iso: slot })}
+      title={title}
     >
       {accept.isPending ? <Spinner size="xs" /> : <CheckCircle2 className="h-4 w-4" />}
       Aceptar
@@ -139,7 +178,29 @@ function DeclineButton({ decline }: { decline: ReturnType<typeof useDeclineReque
   );
 }
 
-function SlotSummary({ slot }: { slot: string }) {
+function SlotSummary({
+  slot,
+  isPast,
+  isOccupied,
+}: {
+  slot: string;
+  isPast: boolean;
+  isOccupied: boolean;
+}) {
+  if (isPast) {
+    return (
+      <span className="text-[11px] leading-4 text-crit">
+        La franja ya ha pasado. Elige una fecha futura.
+      </span>
+    );
+  }
+  if (isOccupied) {
+    return (
+      <span className="text-[11px] leading-4 text-crit">
+        La franja ya está ocupada. Elige otra franja.
+      </span>
+    );
+  }
   return (
     <span className="text-[11px] leading-4 text-caption">
       {slot ? `Franja: ${formatDateTime(slot)}` : 'Selecciona una franja'}
@@ -151,29 +212,32 @@ function AcceptControls({
   selection,
   actions,
 }: {
-  selection: { manual: string; effectiveSlot: string; onManual: (value: string) => void };
+  selection: {
+    manual: string;
+    effectiveSlot: string;
+    isPast: boolean;
+    isOccupied: boolean;
+    onManual: (value: string) => void;
+  };
   actions: AcceptActions;
 }) {
   return (
     <div className="mt-3 flex flex-wrap items-end gap-3">
       <ManualSlotField value={selection.manual} onChange={selection.onManual} />
-      <AcceptButton accept={actions.accept} slot={selection.effectiveSlot} />
+      <AcceptButton
+        accept={actions.accept}
+        slot={selection.effectiveSlot}
+        isPast={selection.isPast}
+        isOccupied={selection.isOccupied}
+      />
       <DeclineButton decline={actions.decline} />
-      <SlotSummary slot={selection.effectiveSlot} />
+      <SlotSummary
+        slot={selection.effectiveSlot}
+        isPast={selection.isPast}
+        isOccupied={selection.isOccupied}
+      />
     </div>
   );
-}
-
-function useAutoSelectSlot(
-  slots: AvailableSlot[],
-  selectedSlot: string,
-  setSelectedSlot: (iso: string) => void,
-) {
-  useEffect(() => {
-    if (selectedSlot || slots.length === 0) return;
-    const first = slotIso(slots[0]);
-    if (first) setSelectedSlot(first);
-  }, [slots, selectedSlot, setSelectedSlot]);
 }
 
 export function AcceptPanel({
@@ -184,12 +248,52 @@ export function AcceptPanel({
   actions: AcceptActions;
 }) {
   const slotsQuery = useSpecialist(request.specialist_id ?? undefined);
+  const appointmentsQuery = useAppointments();
+  const queryClient = useQueryClient();
   const [selectedSlot, setSelectedSlot] = useState('');
   const [manualSlot, setManualSlot] = useState('');
-  const slots = slotsQuery.data?.available_slots ?? [];
-  const effectiveSlot = selectedSlot || toIsoFromLocal(manualSlot);
 
-  useAutoSelectSlot(slots, selectedSlot, setSelectedSlot);
+  const allSlots = slotsQuery.data?.available_slots ?? [];
+  const appointments = appointmentsQuery.data?.appointments ?? [];
+  const occupied = useMemo(() => {
+    const values = new Set<number>();
+    appointments.forEach((appointment) => {
+      if (String(appointment.status ?? '').toUpperCase() !== 'SCHEDULED') return;
+      const time = slotTime(appointment.when_iso);
+      if (Number.isFinite(time)) values.add(time);
+    });
+    return values;
+  }, [appointments]);
+  const slots = useMemo(
+    () =>
+      allSlots.filter((slot) => {
+        const iso = slotIso(slot);
+        const time = slotTime(iso);
+        return (
+          Boolean(iso) &&
+          Number.isFinite(time) &&
+          !occupied.has(time) &&
+          isFutureSlot(iso)
+        );
+      }),
+    [allSlots, occupied],
+  );
+  const manualIso = toIsoFromLocal(manualSlot);
+  const effectiveSlot = manualSlot ? manualIso : selectedSlot;
+  const slotIsPast = Boolean(effectiveSlot) && !isFutureSlot(effectiveSlot);
+  const slotIsOccupied = Boolean(effectiveSlot) && occupied.has(slotTime(effectiveSlot));
+
+  useEffect(() => {
+    if (manualSlot) return;
+    if (selectedSlot && slots.some((slot) => slotIso(slot) === selectedSlot)) return;
+    setSelectedSlot(slots.length > 0 ? slotIso(slots[0]) : '');
+  }, [manualSlot, selectedSlot, slots]);
+
+  useEffect(() => {
+    if (!actions.accept.error) return;
+    queryClient.invalidateQueries({ queryKey: qk.appointments });
+    queryClient.invalidateQueries({ queryKey: qk.request(request.id) });
+  }, [actions.accept.error, queryClient, request.id]);
 
   const pickSlot = (iso: string) => {
     setSelectedSlot(iso);
@@ -203,9 +307,20 @@ export function AcceptPanel({
   return (
     <section className="glass rounded-panel p-5">
       <AcceptHeading shareLevel={request.share_level} />
-      <AvailabilityBlock query={slotsQuery} selection={{ selectedSlot, onPick: pickSlot }} />
+      <AvailabilityBlock
+        query={slotsQuery}
+        slots={slots}
+        hasPublishedSlots={allSlots.length > 0}
+        selection={{ selectedSlot, onPick: pickSlot }}
+      />
       <AcceptControls
-        selection={{ manual: manualSlot, effectiveSlot, onManual: setManual }}
+        selection={{
+          manual: manualSlot,
+          effectiveSlot,
+          isPast: slotIsPast,
+          isOccupied: slotIsOccupied,
+          onManual: setManual,
+        }}
         actions={actions}
       />
     </section>

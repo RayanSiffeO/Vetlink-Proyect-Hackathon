@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, SlidersHorizontal, X } from 'lucide-react';
 import { useConfirmImportMapping, useImportMapping } from '../../api/hooks';
 import { Spinner } from '../Spinner';
@@ -19,6 +19,7 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
   const query = useImportMapping(jobId);
   const confirm = useConfirmImportMapping();
   const [mapping, setMapping] = useState<Record<number, string | null>>({});
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!query.data) return;
@@ -26,6 +27,16 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
       Object.fromEntries(query.data.columns.map((column) => [column.index, column.target ?? null])),
     );
   }, [query.data]);
+
+  useEffect(() => {
+    const node = panelRef.current;
+    node?.querySelector<HTMLElement>('button[aria-label="Cerrar editor de mapeo"]')?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   if (query.isLoading) {
     return (
@@ -59,14 +70,14 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
   };
 
   return (
-    <div className="mt-3 rounded-2xl border border-indigo-100 bg-white/70 p-4 shadow-soft">
+    <div ref={panelRef} role="region" aria-labelledby="mapping-title" className="mt-3 rounded-2xl border border-indigo-100 bg-white/70 p-4 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="flex items-start gap-2">
           <span className="grid h-8 w-8 place-items-center rounded-xl bg-indigo-50 text-indigo-700">
             <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
           </span>
           <div>
-            <h3 className="text-[13px] font-medium text-ink">Revisar mapeo de columnas</h3>
+            <h3 id="mapping-title" className="text-[13px] font-medium text-ink">Revisar mapeo de columnas</h3>
             <p className="text-[11px] leading-4 text-caption">
               {filename} · {data.rows_count} filas · {data.format.toUpperCase()}
             </p>
@@ -97,7 +108,8 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
               onChange={(event) =>
                 setMapping((current) => ({ ...current, [column.index]: event.target.value || null }))
               }
-              className="select select-bordered select-xs h-8 w-full rounded-lg border-line bg-white/80 text-[11px]"
+              disabled={column.target === 'patient.name' || column.target === 'patient.microchip'}
+              className="select select-bordered select-xs h-8 w-full rounded-lg border-line bg-white/80 text-[11px] disabled:cursor-not-allowed disabled:opacity-80"
             >
               <option
                 value=""
@@ -111,6 +123,9 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
                 </option>
               ))}
             </select>
+            {column.target === 'patient.name' || column.target === 'patient.microchip' ? (
+              <span className="text-[9px] font-medium text-indigo-700">Identidad protegida</span>
+            ) : null}
           </label>
         ))}
       </div>
@@ -133,12 +148,12 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
       </div>
 
       {confirm.isSuccess ? (
-        <p className="mt-2 rounded-xl bg-ok-soft px-3 py-2 text-[11px] text-ok">
+        <p role="status" className="mt-2 rounded-xl bg-ok-soft px-3 py-2 text-[11px] text-ok">
           Mapeo confirmado. La ficha se ha actualizado con las columnas elegidas.
         </p>
       ) : null}
       {confirm.isError ? (
-        <p className="mt-2 rounded-xl bg-crit-soft px-3 py-2 text-[11px] text-crit">
+        <p role="alert" className="mt-2 rounded-xl bg-crit-soft px-3 py-2 text-[11px] text-crit">
           {confirm.error.message}
         </p>
       ) : null}
@@ -147,3 +162,4 @@ export function ImportMappingEditor({ jobId, filename, onClose, onConfirmed }: I
 }
 
 export default ImportMappingEditor;
+

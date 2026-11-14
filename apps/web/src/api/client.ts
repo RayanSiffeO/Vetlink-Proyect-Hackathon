@@ -1,6 +1,14 @@
 export const API_BASE_URL: string =
   (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') || '/api';
 
+type UnauthorizedHandler = () => void;
+
+let unauthorizedHandler: UnauthorizedHandler | null = null;
+
+export function setUnauthorizedHandler(handler: UnauthorizedHandler | null): void {
+  unauthorizedHandler = handler;
+}
+
 const NETWORK_ERROR_MESSAGE =
   'No se puede contactar con la API. Comprueba que el backend esté arrancado en http://localhost:8000.';
 
@@ -142,6 +150,8 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
 
   const data = await parseResponseBody(response);
   if (response.ok) return data as T;
+
+  if (response.status === 401) unauthorizedHandler?.();
 
   const detail = extractDetail(data);
   throw new ApiError(humanizeDetail(detail), response.status, detail, url);

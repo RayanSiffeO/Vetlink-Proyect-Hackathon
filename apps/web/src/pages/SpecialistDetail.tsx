@@ -113,7 +113,7 @@ function SpecialistProfileHeader({ specialist }: { specialist: Specialist }) {
           {initials(specialist.name)}
         </span>
         <SpecialistProfileFacts specialist={specialist} />
-        <div className="ml-auto shrink-0">
+        <div className="flex w-full shrink-0 justify-end sm:ml-auto sm:block sm:w-auto">
           <SpecialistPriceBox priceFrom={specialist.price_from} />
         </div>
       </div>

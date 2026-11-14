@@ -7,9 +7,11 @@ from typing import Any
 from .base import UnsupportedFormat
 from .mapping import (
     clean,
+    clean_microchip,
     group_rows,
     is_negative_allergy,
     map_headers,
+    parse_bcs,
     parse_date,
     parse_sex,
     parse_weight,
@@ -38,9 +40,9 @@ def _patient(data: dict[str, str], patient_id: str, owner_id: str | None) -> dic
         "breed_label": data.get("breed"),
         "sex": parse_sex(data.get("sex")),
         "birth_date": parse_date(data.get("birth_date")),
-        "microchip": data.get("microchip"),
+        "microchip": clean_microchip(data.get("microchip")),
         "weight_current_kg": weight,
-        "bcs": data.get("bcs"),
+        "bcs": parse_bcs(data.get("bcs")),
         "owner_ids": [owner_id] if owner_id else [],
         "status": "ACTIVE",
         "deceased": False,

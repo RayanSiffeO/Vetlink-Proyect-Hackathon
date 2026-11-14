@@ -11,7 +11,7 @@ export default {
         mist: '#F9EFE3',
         ink: '#2E241F',
         para: '#5D4B40',
-        caption: '#8A7466',
+        caption: '#6B574A',
         line: {
           DEFAULT: '#EADAC9',
           strong: '#DDC6B1',
@@ -28,11 +28,11 @@ export default {
         highlight: '#9E4C36',
         ok: '#6F5136',
         'ok-soft': '#F3E8DA',
-        warn: '#B26B3F',
+        warn: '#96522A',
         'warn-soft': '#F8EBDD',
         crit: '#963F33',
         'crit-soft': '#F6E9E4',
-        infoblue: '#8A6673',
+        infoblue: '#7D5765',
         'infoblue-soft': '#F3E9ED',
       },
       fontFamily: {

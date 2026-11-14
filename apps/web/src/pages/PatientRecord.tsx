@@ -247,18 +247,61 @@ function EncounterClinicLine({
   );
 }
 
+function encounterText(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function encounterNote(encounter: Encounter): string {
+  const explicit = encounterText(encounter.note);
+  if (explicit) return explicit;
+  const soap = encounter.soap;
+  if (soap && typeof soap === 'object') {
+    return encounterText((soap as Record<string, unknown>).P);
+  }
+  return '';
+}
+
+function encounterDiagnosis(encounter: Encounter, note: string): string {
+  const diagnosis = encounterText(encounter.diagnosis_summary);
+  if (!diagnosis) return '';
+  if (note && (diagnosis === note || diagnosis === note.slice(0, 140))) return '';
+  return diagnosis;
+}
+
 function EncounterNotes({ encounter }: { encounter: Encounter }) {
   const clinic =
     typeof encounter.clinic === 'string' ? encounter.clinic : encounter.clinic?.name ?? null;
+  const note = encounterNote(encounter);
+  const diagnosis = encounterDiagnosis(encounter, note);
+  const recommendations = note ? encounterText(encounter.recommendations) : '';
+  const nextVisit = note ? encounterText(encounter.next_visit_date) : '';
   return (
     <>
       <p className="mt-0.5 text-[13.5px] font-medium leading-5 text-ink">
         {encounter.reason ?? 'Visita sin motivo registrado'}
       </p>
-      {encounter.diagnosis_summary ? (
+      {note ? (
+        <p className="mt-1.5 whitespace-pre-wrap break-words rounded-xl bg-mist/80 px-2.5 py-1.5 text-[12px] leading-[18px] text-para">
+          <span className="font-semibold text-ink">Nota de la visita: </span>
+          {note}
+        </p>
+      ) : null}
+      {diagnosis ? (
         <p className="mt-1.5 rounded-xl bg-mist/80 px-2.5 py-1.5 text-[12px] leading-[18px] text-para">
           <span className="font-semibold text-ink">Diagnóstico: </span>
-          {encounter.diagnosis_summary}
+          {diagnosis}
+        </p>
+      ) : null}
+      {recommendations ? (
+        <p className="mt-1.5 whitespace-pre-wrap break-words rounded-xl bg-mist/80 px-2.5 py-1.5 text-[12px] leading-[18px] text-para">
+          <span className="font-semibold text-ink">Recomendaciones: </span>
+          {recommendations}
+        </p>
+      ) : null}
+      {nextVisit ? (
+        <p className="mt-1.5 text-[11px] leading-4 text-caption">
+          <span className="font-semibold text-ink">Próxima revisión: </span>
+          {formatDate(nextVisit)}
         </p>
       ) : null}
       <EncounterClinicLine clinic={clinic} clinicianRef={encounter.clinician_ref} />

@@ -280,7 +280,7 @@ function BriefingAlerts({ alerts, total }: { alerts?: AlertItem[] | null; total?
 
 function BriefingTimelineRow({ encounter }: { encounter: Encounter }) {
   return (
-    <li className="flex gap-2.5 py-2">
+    <li className="flex min-w-0 gap-2.5 py-2">
       <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-indigo ring-4 ring-indigo-50" aria-hidden="true" />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
@@ -293,7 +293,7 @@ function BriefingTimelineRow({ encounter }: { encounter: Encounter }) {
             </span>
           ) : null}
         </div>
-        <p className="truncate text-[12.5px] font-medium leading-[18px] text-ink">
+        <p className="break-words text-[12.5px] font-medium leading-[18px] text-ink">
           {encounter.reason ?? 'Visita sin motivo registrado'}
         </p>
       </div>

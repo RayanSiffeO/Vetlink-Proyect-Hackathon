@@ -175,7 +175,9 @@ def test_assigned_specialist_closes_visit_and_writes_note(specialist_client: Tes
     assert encounter["type"] == "RECHECK"
     assert encounter["reason"] == "Cierre de visita · Cardiología"
     assert encounter["diagnosis_summary"] == DIAGNOSIS
+    assert encounter["note"] == NOTE
     assert encounter["soap"] == {"A": DIAGNOSIS, "P": NOTE}
+    assert encounter["recommendations"] == "Revisión en 6 meses con ecocardiografía"
     assert encounter["next_visit_date"] == NEXT_VISIT
     assert encounter["clinician_ref"] == "Dr. Marc Vidal"
     assert encounter["_meta"]["source_system"] == "VetLink · especialista"
@@ -194,6 +196,7 @@ def test_note_without_diagnosis_uses_note_preview(specialist_client: TestClient,
     assert response.status_code == 200, response.text
     encounter = stored_canonical(session)["encounters"][-1]
     assert encounter["diagnosis_summary"] == NOTE
+    assert encounter["note"] == NOTE
     assert encounter["soap"] == {"A": "", "P": NOTE}
     assert encounter["recommendations"] is None
     assert encounter["next_visit_date"] is None

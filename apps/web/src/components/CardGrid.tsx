@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
 
 export function CardGrid({ children }: { children: ReactNode }) {
-  return <div className="stagger grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{children}</div>;
+  return <div className="stagger grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">{children}</div>;
 }

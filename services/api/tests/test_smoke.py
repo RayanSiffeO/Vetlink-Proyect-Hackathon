@@ -1,16 +1,23 @@
 from __future__ import annotations
 
+from datetime import datetime, timedelta
+
 import pytest
 from fastapi.testclient import TestClient
+from sqlmodel import Session
 
 from app.config import settings
+from app.db import engine
 from app.main import app
+from app.seed import reset_and_seed
 
 LOCKED_DETAIL = "La historia completa se desbloquea al aceptar la derivación"
 
 
 @pytest.fixture(scope="module")
 def client() -> TestClient:
+    with Session(engine) as session:
+        reset_and_seed(session)
     with TestClient(app) as test_client:
         yield test_client
 
@@ -53,9 +60,10 @@ def assert_briefing_locked(client: TestClient, request_id: str) -> None:
 
 
 def accept_request(client: TestClient, request_id: str) -> None:
+    slot = (datetime.now() + timedelta(days=15)).replace(hour=9, minute=30, second=0, microsecond=0)
     accepted = client.post(
         f"/api/requests/{request_id}/accept",
-        json={"slot_iso": "2026-11-16T09:30:00"},
+        json={"slot_iso": slot.isoformat()},
     )
     assert accepted.status_code == 200, accepted.text
     assert accepted.json()["request"]["status"] == "SCHEDULED"
@@ -177,3 +185,43 @@ def test_specialist_cannot_access_clinic_patients(client: TestClient) -> None:
     login(client, "marc")
     assert client.get("/api/patients").status_code == 403
     assert client.get("/api/patients/pat_kira/record").status_code == 403
+
+def test_specialist_cannot_import_or_read_import_history(client: TestClient) -> None:
+    login(client, "marc")
+    assert client.get("/api/imports").status_code == 403
+    csv_path = settings.samples_dir / "export_clinica_norte.csv"
+    with csv_path.open("rb") as handle:
+        response = client.post(
+            "/api/imports",
+            files={"files": (csv_path.name, handle, "text/csv")},
+        )
+    assert response.status_code == 403
+
+
+def test_mapping_cannot_reassign_identity_and_persists_confirmation(client: TestClient) -> None:
+    login(client, "laura")
+    csv_path = settings.samples_dir / "export_clinica_norte.csv"
+    with csv_path.open("rb") as handle:
+        imported = client.post(
+            "/api/imports",
+            files={"files": (csv_path.name, handle, "text/csv")},
+        )
+    job_id = imported.json()["files"][0]["job_id"]
+    mapping = client.get(f"/api/imports/{job_id}/mapping").json()
+    remapped = client.post(
+        f"/api/imports/{job_id}/mapping",
+        json={
+            "mapping": [
+                {"index": item["index"], "target": "source.clinic" if item["source"] == "microchip" else item["target"]}
+                for item in mapping["columns"]
+            ]
+        },
+    )
+    assert remapped.status_code == 422
+    confirmed = client.post(
+        f"/api/imports/{job_id}/mapping",
+        json={"mapping": [{"index": item["index"], "target": item["target"]} for item in mapping["columns"]]},
+    )
+    assert confirmed.status_code == 200
+    persisted = client.get(f"/api/imports/{job_id}/mapping").json()
+    assert persisted["columns"] == mapping["columns"]

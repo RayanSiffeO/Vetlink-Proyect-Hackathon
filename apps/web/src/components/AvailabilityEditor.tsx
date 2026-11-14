@@ -14,6 +14,16 @@ function normalizeDraft(value: string): string {
   return value.length === 16 ? `${value}:00` : value;
 }
 
+function toLocalInputValue(date: Date): string {
+  const pad = (value: number) => String(value).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function isPastSlot(value: string): boolean {
+  const time = new Date(value).getTime();
+  return Number.isFinite(time) && time < Date.now();
+}
+
 export function AvailabilityEditor() {
   const me = useMe();
   const specialistId = me.data ? `spc_${me.data.username}` : '';
@@ -21,10 +31,15 @@ export function AvailabilityEditor() {
   const update = useUpdateAvailability();
   const [slots, setSlots] = useState<string[]>([]);
   const [draft, setDraft] = useState('');
+  const [slotError, setSlotError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!query.data) return;
-    setSlots(query.data.available_slots.map(isoSlot).filter(Boolean));
+    const future = query.data.available_slots
+      .map(isoSlot)
+      .filter(Boolean)
+      .filter((slot) => !isPastSlot(slot));
+    setSlots(future);
   }, [query.data]);
 
   if (query.isLoading) {
@@ -46,15 +61,26 @@ export function AvailabilityEditor() {
   const addSlot = () => {
     const value = normalizeDraft(draft);
     if (!value) return;
+    if (isPastSlot(value)) {
+      setSlotError('No puedes publicar una franja en el pasado.');
+      return;
+    }
+    setSlotError(null);
     setSlots((current) => Array.from(new Set([...current, value])).sort());
     setDraft('');
   };
 
   const removeSlot = (slot: string) => {
+    setSlotError(null);
     setSlots((current) => current.filter((item) => item !== slot));
   };
 
   const save = () => {
+    if (slots.some(isPastSlot)) {
+      setSlotError('Hay franjas en el pasado. Elimínalas antes de guardar.');
+      return;
+    }
+    setSlotError(null);
     update.mutate({ specialistId, slots });
   };
 
@@ -81,6 +107,7 @@ export function AvailabilityEditor() {
         <input
           type="datetime-local"
           value={draft}
+          min={toLocalInputValue(new Date())}
           onChange={(event) => setDraft(event.target.value)}
           className="input input-bordered input-sm h-9 rounded-xl border-line bg-white/80 text-[11.5px]"
           aria-label="Nueva franja de disponibilidad"
@@ -94,6 +121,15 @@ export function AvailabilityEditor() {
           <Plus className="h-3.5 w-3.5" /> Añadir franja
         </button>
       </div>
+
+      {slotError ? (
+        <p
+          role="alert"
+          className="mt-2 rounded-xl border border-crit/20 bg-crit-soft px-3 py-2 text-[11px] text-crit"
+        >
+          {slotError}
+        </p>
+      ) : null}
 
       {slots.length === 0 ? (
         <p className="mt-3 rounded-xl border border-dashed border-line bg-white/40 px-3 py-2 text-[11.5px] text-caption">

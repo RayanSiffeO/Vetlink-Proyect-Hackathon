@@ -1272,6 +1272,20 @@
   }
 }
 
+/* Keep low-opacity caption variants at AA contrast on the opaque light surfaces. */
+.text-caption\/60,
+.text-caption\/70,
+.text-caption\/75,
+.text-caption\/80 {
+  color: #6b574a;
+}
+
+.placeholder\:text-caption\/60::placeholder,
+.placeholder\:text-caption\/75::placeholder {
+  color: #6b574a;
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

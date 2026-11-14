@@ -27,6 +27,7 @@ UNSUPPORTED_FORMAT_MESSAGE = "Formato no soportado por los extractores; revisió
 FAILED_MESSAGE = "No se pudo procesar el fichero"
 MAPPING_CONFIRMED_MESSAGE = "Mapeo confirmado por la clínica"
 MAPPING_READY_DETAIL = "Mapeo disponible para revisión"
+IMPORT_CLINIC_ONLY = "Solo la clínica puede gestionar importaciones"
 CRITICAL_TARGETS = {"patient.name", "patient.microchip"}
 
 
@@ -159,6 +160,7 @@ def upload_files(
     ctx: ApiCtx,
     files: list[UploadFile] = File(..., description="Ficheros del PMS (docx, xlsx, json, csv)"),
 ) -> dict:
+    ensure(role_value(ctx.user) == Role.CLINIC.value, IMPORT_CLINIC_ONLY)
     ensure(bool(files), "Envía al menos un fichero", BAD_REQUEST)
     cache = build_import_cache()
     jobs = [_process_upload(ctx, upload, cache) for upload in files]
@@ -172,11 +174,26 @@ def upload_files(
 def _draft_payload(draft: ImportDraft) -> dict:
     headers = loads_json(draft.headers_json, [])
     rows = loads_json(draft.rows_json, [])
+    saved = {
+        int(item["index"]): item
+        for item in loads_json(draft.mapping_json, [])
+        if isinstance(item, dict) and "index" in item
+    }
+    columns = []
+    for item in plan(headers):
+        confirmed = saved.get(int(item["index"]), {})
+        columns.append(
+            {
+                **item,
+                "source": confirmed.get("source", item["source"]),
+                "target": confirmed.get("target", item["target"]),
+            }
+        )
     return {
         "job_id": draft.job_id,
         "format": draft.format,
         "rows_count": len(rows),
-        "columns": plan(headers),
+        "columns": columns,
         "targets": targets(),
         "mapping_available": True,
     }
@@ -184,13 +201,14 @@ def _draft_payload(draft: ImportDraft) -> dict:
 
 @router.get("/{job_id}", summary="Estado de una importación")
 def get_import(job_id: str, ctx: ApiCtx) -> dict:
+    ensure(role_value(ctx.user) == Role.CLINIC.value, IMPORT_CLINIC_ONLY)
     job = require_found(ctx.session.get(ImportJob, job_id), "Importación no encontrada")
     return {"job_id": job.id, "files": [_file_payload(ctx, job)]}
 
 
 @router.get("/{job_id}/mapping", summary="Mapeo propuesto para una importación")
 def get_mapping(job_id: str, ctx: ApiCtx) -> dict:
-    ensure(role_value(ctx.user) == Role.CLINIC.value, "Solo la clínica puede revisar el mapeo")
+    ensure(role_value(ctx.user) == Role.CLINIC.value, IMPORT_CLINIC_ONLY)
     require_found(ctx.session.get(ImportJob, job_id), "Importación no encontrada")
     draft = require_found(ctx.session.get(ImportDraft, job_id), "Esta importación no tiene mapeo editable")
     return _draft_payload(draft)
@@ -198,21 +216,21 @@ def get_mapping(job_id: str, ctx: ApiCtx) -> dict:
 
 @router.post("/{job_id}/mapping", summary="Confirmar o corregir el mapeo de columnas")
 def confirm_mapping(job_id: str, payload: MappingConfirmIn, ctx: ApiCtx) -> dict:
-    ensure(role_value(ctx.user) == Role.CLINIC.value, "Solo la clínica puede confirmar el mapeo")
+    ensure(role_value(ctx.user) == Role.CLINIC.value, IMPORT_CLINIC_ONLY)
     job = require_found(ctx.session.get(ImportJob, job_id), "Importación no encontrada")
     draft = require_found(ctx.session.get(ImportDraft, job_id), "Esta importación no tiene mapeo editable")
     headers = loads_json(draft.headers_json, [])
     rows = loads_json(draft.rows_json, [])
     mapping = {item.index: item.target for item in payload.mapping}
     initial = plan(headers)
-    ignored_identity = [
+    identity_conflicts = [
         item["source"]
         for item in initial
-        if item["target"] in CRITICAL_TARGETS and mapping.get(int(item["index"])) is None
+        if item["target"] in CRITICAL_TARGETS and mapping.get(int(item["index"])) != item["target"]
     ]
     ensure(
-        not ignored_identity,
-        f"No puedes ignorar columnas de identidad: {', '.join(ignored_identity)}",
+        not identity_conflicts,
+        f"No puedes reasignar ni ignorar columnas de identidad: {', '.join(identity_conflicts)}",
         UNPROCESSABLE,
     )
     mapped_headers = apply_mapping(headers, mapping)
@@ -225,7 +243,17 @@ def confirm_mapping(job_id: str, payload: MappingConfirmIn, ctx: ApiCtx) -> dict
     job.status = ImportStatus.READY
     job.record_id = outcome.record.id
     job.message = MAPPING_CONFIRMED_MESSAGE
-    draft.mapping_json = dumps_json(plan(mapped_headers))
+    draft.mapping_json = dumps_json(
+        [
+            {
+                "index": item["index"],
+                "source": item["source"],
+                "target": mapping.get(int(item["index"])),
+                "confidence": item["confidence"],
+            }
+            for item in initial
+        ]
+    )
     ctx.session.add(job)
     ctx.session.add(draft)
     ctx.session.commit()
@@ -235,6 +263,11 @@ def confirm_mapping(job_id: str, payload: MappingConfirmIn, ctx: ApiCtx) -> dict
 
 @router.get("", summary="Historial de importaciones")
 def list_imports(ctx: ApiCtx) -> dict:
+    ensure(role_value(ctx.user) == Role.CLINIC.value, IMPORT_CLINIC_ONLY)
     statement = select(ImportJob).order_by(ImportJob.created_at.desc()).limit(50)
     jobs = list(ctx.session.exec(statement).all())
     return {"files": [_file_payload(ctx, job) for job in jobs], "count": len(jobs)}
+
+
+
+

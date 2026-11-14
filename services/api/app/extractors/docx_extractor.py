@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import Any
 
 from docx import Document
 from docx.opc.exceptions import PackageNotFoundError
 
 from .base import ExtractResult, UnsupportedFormat
 from .canonical_csv import build_record
-from .mapping import clean, normalize_header
+from .mapping import clean, normalize_header, parse_date, parse_weight
 
 LABELS = {
     "nombre": "name",
@@ -20,6 +21,10 @@ LABELS = {
     "fecha_de_alta": "birth_date",
     "n_de_microchip": "microchip",
     "n_microchip": "microchip",
+    "n_o_de_microchip": "microchip",
+    "no_de_microchip": "microchip",
+    "nro_de_microchip": "microchip",
+    "numero_de_microchip": "microchip",
     "peso_actual": "weight_kg",
     "condicion_corporal": "bcs",
     "alergias_conocidas": "allergy",
@@ -36,6 +41,7 @@ VISIT_LABELS = (
 )
 OWNER_LABELS = {"nombre_y_apellidos", "tutor", "propietario"}
 HEADER_HINTS = {"fecha", "motivo", "exploracion", "actuacion", "tratamiento", "proxima"}
+VISIT_WEIGHT = re.compile(r"\bpeso\b\s*[:=]?\s*(\d+(?:[.,]\d+)?)\s*(kg|kilos?|lb|libras?)?", re.IGNORECASE)
 
 
 def _rows(table) -> list[list[str]]:
@@ -137,10 +143,46 @@ def read_table(path: Path) -> tuple[list[str], list[list[str]]]:
     return _table_rows(patient, visits)
 
 
+def _visit_weight(visit: dict[str, str]) -> float | None:
+    text = " ".join(visit.get(key) or "" for key in ("reason", "diagnosis", "treatment"))
+    match = VISIT_WEIGHT.search(text)
+    if match is None:
+        return None
+    unit = "lb" if (match.group(2) or "").casefold().startswith("lb") else "kg"
+    return parse_weight(match.group(1), unit)
+
+
+def _apply_visit_weights(record: dict[str, Any], visits: list[dict[str, str]]) -> None:
+    weights_by_date: dict[str, float] = {}
+    for visit in visits:
+        visit_date = parse_date(visit.get("date"))
+        weight = _visit_weight(visit)
+        if visit_date is not None and weight is not None:
+            weights_by_date[visit_date] = weight
+
+    for encounter in record.get("encounters") or []:
+        vitals = encounter.setdefault("vitals", {})
+        weight = weights_by_date.get(str(encounter.get("date")))
+        if weight is None:
+            vitals.pop("weight_kg", None)
+        else:
+            vitals["weight_kg"] = weight
+
+    kept_weights = []
+    for item in record.get("weights") or []:
+        weight = weights_by_date.get(str(item.get("date")))
+        if weight is None:
+            continue
+        item["weight_kg"] = weight
+        kept_weights.append(item)
+    record["weights"] = kept_weights
+
+
 def extract(path: Path) -> ExtractResult:
     patient, visits, ignored = _read(path)
     headers, rows = _table_rows(patient, visits)
     record, warnings = build_record(headers, rows, path.name)
+    _apply_visit_weights(record, visits)
     record["source"]["system"] = "Word genérico"
     record["source"]["format"] = "DOCX"
     warnings = ["Word genérico: tablas + texto de alertas; revisar identidad, dosis y alergias.", *warnings]

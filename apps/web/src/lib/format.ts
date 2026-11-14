@@ -157,6 +157,21 @@ export function formatWeekday(value: string | null | undefined): string {
   return WEEKDAYS_ES[date.getDay()];
 }
 
+const ISO_DATETIME_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?$/;
+
+export function formatPreferredSlots(value: string | null | undefined): string {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  return raw
+    .split(',')
+    .map((part) => {
+      const candidate = part.trim();
+      return ISO_DATETIME_RE.test(candidate) ? formatDateTime(candidate) : candidate;
+    })
+    .filter(Boolean)
+    .join(', ');
+}
+
 function monthsLabel(months: number): string {
   if (months === 1) return '1 mes';
   return `${months} meses`;
@@ -199,6 +214,8 @@ function hoursLabel(diffH: number): string {
 }
 
 function daysLabel(diffD: number): string {
+  if (diffD === 1) return 'en 1 día';
+  if (diffD === -1) return 'hace 1 día';
   return diffD > 0 ? `en ${diffD} días` : `hace ${Math.abs(diffD)} días`;
 }
 

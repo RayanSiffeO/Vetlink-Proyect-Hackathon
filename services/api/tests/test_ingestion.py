@@ -107,6 +107,18 @@ def test_bruno_variant_keeps_patient_and_updates_record(context: ApiContext, ses
     assert "PATIENT_MATCHED" in audit_actions(session)
 
 
+def test_variant_without_microchip_preserves_existing_identity(context: ApiContext, session: Session) -> None:
+    first = ingest_canonical(context, load_record("bruno"), "Clínica Veterinaria Vall del Sol.docx", "sha-keep-1")
+    variant = load_record("bruno")
+    variant["patient"]["microchip"] = None
+    variant["record_id"] = "vlr_bruno_sin_microchip"
+    second = ingest_canonical(context, variant, "bruno-sin-chip.docx", "sha-keep-2")
+    patient = session.get(Patient, "pat_bruno")
+    assert len(stored_patients(session)) == 1
+    assert second.record_id == first.record_id
+    assert patient is not None and patient.microchip == "941000012345678"
+
+
 def test_kira_masked_microchip_links_for_review_without_duplicating(context: ApiContext, session: Session) -> None:
     first = ingest_canonical(context, load_record("kira"), "historial.json", "sha-kira-1")
     second = ingest_canonical(context, load_record("kira"), "historial-variante.json", "sha-kira-2")

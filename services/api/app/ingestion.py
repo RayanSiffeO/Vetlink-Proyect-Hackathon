@@ -102,7 +102,7 @@ def _apply_patient_fields(patient: Patient, canonical: dict) -> None:
     patient.birth_date = data.get("birth_date")
     patient.weight_current_kg = data.get("weight_current_kg")
     patient.bcs = data.get("bcs")
-    patient.microchip = data.get("microchip")
+    patient.microchip = data.get("microchip") or patient.microchip
     patient.owner_display = (owners[0].get("display_name") if owners else None) or patient.owner_display
     patient.identity_confidence = identity.get("identity_confidence")
 

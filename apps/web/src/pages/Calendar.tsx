@@ -73,12 +73,19 @@ function AppointmentMotivo({ motivo }: { motivo?: string | null }) {
 
 function AppointmentFooter({ appointment }: { appointment: Appointment }) {
   const date = appointment.when_iso;
+  const status = String(appointment.status ?? '').toUpperCase();
   const isUpcoming = date ? new Date(date).getTime() >= Date.now() : false;
+  const timingLabel =
+    status === 'CANCELLED'
+      ? 'Visita cancelada'
+      : status === 'COMPLETED'
+        ? 'Visita completada'
+        : isUpcoming
+          ? `Próxima · ${relativeTime(date)}`
+          : `Pasada · ${relativeTime(date)}`;
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-[10.5px] leading-4 text-caption">
-        {isUpcoming ? `Próxima · ${relativeTime(date)}` : `Pasada · ${relativeTime(date)}`}
-      </span>
+      <span className="text-[10.5px] leading-4 text-caption">{timingLabel}</span>
       {appointment.request_id ? (
         <Link
           to={`/requests/${appointment.request_id}`}
@@ -136,6 +143,10 @@ function AppointmentsBody({ query }: { query: ReturnType<typeof useAppointments>
   }
   const appointments = sortAppointments(query.data?.appointments);
   if (appointments.length === 0) return <CalendarEmpty />;
+  const cancelled = appointments.filter(
+    (appointment) => String(appointment.status ?? '').toUpperCase() === 'CANCELLED',
+  ).length;
+  const active = appointments.length - cancelled;
   return (
     <>
       <section className="glass overflow-hidden rounded-panel" aria-label="Agenda de visitas">
@@ -146,8 +157,9 @@ function AppointmentsBody({ query }: { query: ReturnType<typeof useAppointments>
         </ul>
       </section>
       <p className="text-center text-[11px] leading-4 text-caption/80">
-        {appointments.length} {appointments.length === 1 ? 'cita' : 'citas'} · hora local
-        Europe/Madrid
+        {active} {active === 1 ? 'cita' : 'citas'}
+        {cancelled > 0 ? ` · ${cancelled} ${cancelled === 1 ? 'cancelada' : 'canceladas'}` : ''} ·
+        hora local Europe/Madrid
       </p>
     </>
   );

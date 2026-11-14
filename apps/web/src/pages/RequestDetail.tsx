@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
+import { ApiError } from '../api/client';
 import { BackLink } from '../components/BackLink';
 import { EmptyState, ErrorState } from '../components/EmptyState';
 import { Loading } from '../components/Loading';
@@ -76,7 +77,14 @@ function RequestDetailScreen({
       ) : null}
       <UnlockedNotice status={status} />
       <RequestTabs tab={screen.tab} onSelect={screen.setTab} />
-      <RequestTabPanels id={id} data={data} screen={screen} />
+      <div
+        role="tabpanel"
+        id={`request-panel-${screen.tab}`}
+        aria-labelledby={`request-tab-${screen.tab}`}
+        tabIndex={0}
+      >
+        <RequestTabPanels id={id} data={data} screen={screen} />
+      </div>
       {specialistRole && screen.tab === 'detail' ? (
         <RequestClosePanel request={request} />
       ) : null}
@@ -94,12 +102,17 @@ export function RequestDetail() {
 
   if (query.isLoading) return <Loading label="Cargando la solicitud…" />;
   if (query.isError) {
+    const forbidden = query.error instanceof ApiError && query.error.isForbidden;
     return (
       <ErrorState
         error={query.error}
-        title="No se pudo cargar la solicitud"
+        title={forbidden ? 'Sin acceso a la solicitud' : 'No se pudo cargar la solicitud'}
         onRetry={() => query.refetch()}
-        hint="Puede que la demo se haya reiniciado"
+        hint={
+          forbidden
+            ? 'La solicitud no está asignada a tu usuario'
+            : 'Puede que la demo se haya reiniciado'
+        }
       />
     );
   }

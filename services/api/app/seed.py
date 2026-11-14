@@ -7,10 +7,11 @@ from datetime import date, datetime, time, timedelta
 from pathlib import Path
 from typing import Optional
 
-from sqlmodel import Session, select
+from sqlalchemy import delete
+from sqlmodel import Session, SQLModel, select
 
 from .config import settings
-from .db import dumps_json, reset_db
+from .db import dumps_json
 from .models import (
     Alert,
     Appointment,
@@ -273,10 +274,16 @@ def _clear_uploads() -> None:
     uploads.mkdir(parents=True, exist_ok=True)
 
 
+def _clear_tables(session: Session) -> None:
+    for table in reversed(SQLModel.metadata.sorted_tables):
+        session.exec(delete(table))
+    session.commit()
+
+
 def reset_and_seed(session: Session) -> None:
     session.commit()
-    reset_db()
     _clear_uploads()
+    _clear_tables(session)
     seed_all(session)
 
 

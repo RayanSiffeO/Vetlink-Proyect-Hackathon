@@ -38,7 +38,7 @@ function HeroStat({
   label,
   tone = 'text-ink',
 }: {
-  value: number;
+  value: number | string;
   label: string;
   tone?: string;
 }) {
@@ -54,15 +54,23 @@ function PatientsHeader({
   count,
   alertCount,
   demo,
+  state,
 }: {
   count: number;
   alertCount: number;
   demo: DemoAction;
+  state: 'loading' | 'error' | 'ready';
 }) {
   const description =
-    count > 0
-      ? `${count} pacientes · ${alertCount} alertas activas en la bandeja de la clínica.`
-      : 'Sube historias clínicas y VetLink construye el registro canónico.';
+    state === 'loading'
+      ? 'Cargando la bandeja de la clínica…'
+      : state === 'error'
+        ? 'No se pudo cargar la bandeja. Revisa la conexión y reintenta.'
+        : count > 0
+          ? `${count} pacientes · ${alertCount} alertas activas en la bandeja de la clínica.`
+          : 'Sube historias clínicas y VetLink construye el registro canónico.';
+  const display = state === 'ready' ? count : '—';
+  const alertDisplay = state === 'ready' ? alertCount : '—';
   return (
     <section className="glass relative overflow-hidden rounded-panel px-5 py-6 sm:px-8 sm:py-8">
       <span className="dash-ring dash-ring-lg" aria-hidden="true" />
@@ -150,6 +158,7 @@ export function Patients() {
   const resetDemo = useResetDemo();
   const patients = query.data?.patients ?? [];
   const loadDemo = () => resetDemo.mutate(undefined, { onSuccess: () => query.refetch() });
+  const state = query.isLoading ? 'loading' : query.isError ? 'error' : 'ready';
 
   return (
     <div className="space-y-6">
@@ -157,6 +166,7 @@ export function Patients() {
         count={patients.length}
         alertCount={countPatientAlerts(patients)}
         demo={{ pending: resetDemo.isPending, onLoad: loadDemo }}
+        state={state}
       />
       <ImportSection />
       <section aria-label="Pacientes de la clínica" className="space-y-3">
@@ -166,16 +176,23 @@ export function Patients() {
             <h2 className="mt-1 text-h2 text-ink">Pacientes recientes</h2>
           </div>
           <span className="rounded-full border border-line bg-white/50 px-3 py-1 text-[11px] text-caption">
-            {patients.length} fichas · orden por alerta
+            {state === 'ready'
+              ? `${patients.length} fichas · orden por alerta`
+              : state === 'loading'
+                ? 'Cargando fichas…'
+                : 'Fichas no disponibles'}
           </span>
         </div>
         <PatientsList query={query} onLoadDemo={loadDemo} />
       </section>
-      <p className="text-center text-[11px] text-caption/80">
-        Última sincronización {formatDate(new Date().toISOString())} · registro canónico VetLink
-      </p>
+      {state === 'ready' ? (
+        <p className="text-center text-[11px] text-caption/80">
+          Última sincronización {formatDate(new Date().toISOString())} · registro canónico VetLink
+        </p>
+      ) : null}
     </div>
   );
 }
 
 export default Patients;
+

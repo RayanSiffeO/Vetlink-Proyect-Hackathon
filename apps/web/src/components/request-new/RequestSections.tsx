@@ -69,6 +69,7 @@ function MotivoField({
     <label className="block">
       <span className="vl-label">Motivo / observaciones</span>
       <textarea
+        id="motivo"
         className={`textarea textarea-bordered mt-1 min-h-[104px] w-full rounded-xl border-line bg-white/80 text-[12.5px] leading-[19px] ${
           error ? 'textarea-error' : ''
         }`}
@@ -76,9 +77,13 @@ function MotivoField({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         maxLength={MOTIVO_MAX_LENGTH}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? 'motivo-error' : 'motivo-count'}
       />
       <span className="mt-1 flex items-center justify-between gap-2 text-[11px] leading-4 text-caption">
-        <span className={error ? 'text-crit' : ''}>{error ?? `${value.length}/${MOTIVO_MAX_LENGTH} caracteres`}</span>
+        <span id={error ? 'motivo-error' : 'motivo-count'} className={error ? 'text-crit' : ''} aria-live="polite">
+          {error ?? `${value.length}/${MOTIVO_MAX_LENGTH} caracteres`}
+        </span>
         <span>Se comparte con el especialista</span>
       </span>
     </label>

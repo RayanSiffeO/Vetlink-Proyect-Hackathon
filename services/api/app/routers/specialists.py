@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from sqlmodel import select
 
 from ..auth import specialist_id_for_user
@@ -22,6 +22,54 @@ def _matches(value: str, needle: Optional[str]) -> bool:
     return needle.strip().lower() in (value or "").lower()
 
 
+def _parse_slot(value: object) -> datetime:
+    try:
+        return datetime.fromisoformat(str(value))
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=UNPROCESSABLE,
+            detail=f"Franja no válida: {value}",
+        ) from exc
+
+
+def _is_future(moment: datetime) -> bool:
+    if moment.tzinfo is None:
+        return moment > datetime.now()
+    return moment > datetime.now(moment.tzinfo)
+
+
+def _normalize_slot(value: object) -> str:
+    moment = _parse_slot(value)
+    ensure(_is_future(moment), f"La franja {value} ya ha pasado. Publica solo franjas futuras.", UNPROCESSABLE)
+    if moment.tzinfo is not None:
+        moment = moment.astimezone().replace(tzinfo=None)
+    return moment.replace(microsecond=0).isoformat()
+
+
+def _normalize_slots(slots: list[str]) -> list[str]:
+    return sorted({_normalize_slot(slot) for slot in slots})
+
+
+def _future_slots(spec: Specialist) -> list[str]:
+    slots = loads_json(spec.available_slots_json, [])
+    future: list[str] = []
+    for slot in slots:
+        try:
+            moment = datetime.fromisoformat(str(slot))
+        except ValueError:
+            continue
+        if _is_future(moment):
+            future.append(str(slot))
+    return future
+
+
+def _specialist_payload(spec: Specialist) -> dict:
+    payload = specialist_dict(spec)
+    future = _future_slots(spec)
+    payload["next_slot"] = future[0] if future else None
+    return payload
+
+
 @router.get("", summary="Buscar especialistas por especialidad y zona")
 def list_specialists(
     ctx: ApiCtx,
@@ -36,7 +84,7 @@ def list_specialists(
         if _matches(specialist.specialty, specialty) and _matches(specialist.zone, zone)
     ]
     return {
-        "specialists": [specialist_dict(specialist) for specialist in filtered],
+        "specialists": [_specialist_payload(specialist) for specialist in filtered],
         "count": len(filtered),
         "filters": {"specialty": specialty, "zone": zone},
     }
@@ -45,23 +93,12 @@ def list_specialists(
 @router.get("/{specialist_id}", summary="Ficha del especialista con slots")
 def get_specialist(specialist_id: str, ctx: ApiCtx) -> dict:
     spec = require_found(ctx.session.get(Specialist, specialist_id), "Especialista no encontrado")
-    slots = loads_json(spec.available_slots_json, [])
+    slots = _future_slots(spec)
     return {
-        "specialist": specialist_dict(spec),
+        "specialist": _specialist_payload(spec),
         "available_slots": slots,
         "slots_count": len(slots),
     }
-
-
-def _normalize_slots(slots: list[str]) -> list[str]:
-    values: set[str] = set()
-    for slot in slots:
-        try:
-            moment = datetime.fromisoformat(str(slot))
-        except ValueError:
-            ensure(False, f"Franja no válida: {slot}", UNPROCESSABLE)
-        values.add(moment.isoformat())
-    return sorted(values)
 
 
 @router.patch("/{specialist_id}/availability", summary="Actualizar la disponibilidad del especialista")
@@ -75,4 +112,8 @@ def update_availability(specialist_id: str, payload: AvailabilityIn, ctx: ApiCtx
     ctx.session.commit()
     ctx.session.refresh(spec)
     ctx.audit("Specialist", spec.id, "UPDATE_AVAILABILITY")
-    return {"specialist": specialist_dict(spec), "available_slots": slots, "slots_count": len(slots)}
+    return {
+        "specialist": _specialist_payload(spec),
+        "available_slots": slots,
+        "slots_count": len(slots),
+    }

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { AlertTriangle, CalendarClock, ClipboardList, XCircle } from 'lucide-react';
 import type { Appointment, RequestDetailResponse, RequestRecord } from '../../api/types';
 import { useCancelRequest, useIsSpecialist } from '../../api/hooks';
-import { formatDateTime, relativeTime } from '../../lib/format';
+import { formatDateTime, formatPreferredSlots, relativeTime } from '../../lib/format';
 import { canCancelRequest } from '../../lib/requests';
 import { ShareBadge, StatusBadge, UrgencyBadge } from '../badges';
 import { Spinner } from '../Spinner';
@@ -109,7 +109,7 @@ function RequestReasonGrid({ request }: { request: RequestRecord }) {
       <p>
         <span className="vl-label block">Franjas preferidas</span>
         <span className="mt-0.5 block leading-[18px] text-para">
-          {request.preferred ? request.preferred : 'Sin preferencia declarada'}
+          {request.preferred ? formatPreferredSlots(request.preferred) : 'Sin preferencia declarada'}
         </span>
       </p>
     </div>

@@ -1,6 +1,8 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { ApiError } from '../api/client';
-import { useMe } from '../api/hooks';
+import { useEffect, useRef } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { ApiError, setUnauthorizedHandler } from '../api/client';
+import { qk, useMe } from '../api/hooks';
 import Nav from './Nav';
 import { Spinner } from './Spinner';
 
@@ -81,10 +83,28 @@ function Shell() {
 export function Layout() {
   const { data: user, isLoading, isError, error } = useMe();
   const location = useLocation();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const redirectingOn401 = useRef(false);
+
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      if (redirectingOn401.current) return;
+      redirectingOn401.current = true;
+      const from = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      queryClient.clear();
+      queryClient.setQueryData(qk.me, null);
+      navigate('/login', { replace: true, state: { from } });
+    });
+    return () => setUnauthorizedHandler(null);
+  }, [navigate, queryClient]);
 
   if (isLoading) return <Splash />;
   if (isError) return <ApiUnavailable error={error} />;
-  if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  if (!user) {
+    const from = `${location.pathname}${location.search}${location.hash}`;
+    return <Navigate to="/login" replace state={{ from }} />;
+  }
   return <Shell />;
 }
 

@@ -19,6 +19,9 @@ ALIASES: dict[str, Column] = {
     "microchip": Column("microchip", "patient"),
     "chip": Column("microchip", "patient"),
     "numero_microchip": Column("microchip", "patient"),
+    "n_de_microchip": Column("microchip", "patient"),
+    "n_o_de_microchip": Column("microchip", "patient"),
+    "no_de_microchip": Column("microchip", "patient"),
     "nombre": Column("name", "patient"),
     "name": Column("name", "patient"),
     "nombre_paciente": Column("name", "patient"),
@@ -43,6 +46,8 @@ ALIASES: dict[str, Column] = {
     "weight_kg": Column("weight_kg", "patient"),
     "peso": Column("weight_kg", "patient"),
     "weight": Column("weight_kg", "patient"),
+    "peso_actual": Column("weight_kg", "patient"),
+    "peso_actual_kg": Column("weight_kg", "patient"),
     "peso_lb": Column("weight_lb", "patient"),
     "peso_libras": Column("weight_lb", "patient"),
     "weight_lb": Column("weight_lb", "patient"),
@@ -176,6 +181,31 @@ def parse_weight(value: object, unit: str) -> float | None:
     return round(number, 2)
 
 
+def parse_bcs(value: object) -> int | None:
+    text = clean(value)
+    if not text:
+        return None
+    match = re.search(r"(\d+(?:[.,]\d+)?)", text)
+    if not match:
+        return None
+    number = float(match.group(1).replace(",", "."))
+    score = int(number)
+    return score if 1 <= score <= 9 else None
+
+
+MICROCHIP_PLACEHOLDERS = frozenset({"no consta", "sin microchip", "ninguno", "ninguna", "n/a", "na", "-", "—"})
+MICROCHIP_ANNOTATION = re.compile(r"\s*\([^)]*\)")
+
+
+def clean_microchip(value: object) -> str | None:
+    text = clean(value)
+    if not text or text.casefold() in MICROCHIP_PLACEHOLDERS:
+        return None
+    text = MICROCHIP_ANNOTATION.sub("", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text or None
+
+
 def species_code(value: object) -> str | None:
     text = clean(value).casefold()
     for hint, code in SPECIES_CODES:
@@ -209,7 +239,12 @@ def _row_data(row: list[str], columns: list[Column | None]) -> dict[str, str]:
 
 
 def _patient_key(data: dict[str, str], index: int) -> str:
-    return data.get("microchip") or data.get("name", "").casefold() or data.get("external_id") or f"fila_{index}"
+    return (
+        clean_microchip(data.get("microchip"))
+        or data.get("name", "").casefold()
+        or data.get("external_id")
+        or f"fila_{index}"
+    )
 
 
 def group_rows(

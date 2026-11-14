@@ -85,16 +85,21 @@ def _visits_from(rows: list[list[str]], headers: list[str]) -> list[dict[str, st
 
 
 def _weights_from(rows: list[list[str]], headers: list[str]) -> tuple[float | None, str | None]:
-    for row in rows:
+    candidates: list[tuple[str, int, float]] = []
+    for index, row in enumerate(rows):
         mapped = _mapped_row(headers, row)
         weight = (
             parse_weight(mapped.get("weight_kg"), "kg")
             if mapped.get("weight_kg")
             else parse_weight(mapped.get("weight_lb"), "lb")
         )
-        if weight is not None:
-            return weight, parse_date(mapped.get("date"))
-    return None, None
+        if weight is None:
+            continue
+        candidates.append((parse_date(mapped.get("date")) or "", index, weight))
+    if not candidates:
+        return None, None
+    measured_on, _, weight = max(candidates, key=lambda item: (item[0], item[1]))
+    return weight, measured_on or None
 
 
 def _workbook_tables(path: Path) -> list[tuple[Any, list[str], list[list[str]]]]:

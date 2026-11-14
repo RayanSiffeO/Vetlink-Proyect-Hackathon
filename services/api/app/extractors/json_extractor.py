@@ -6,7 +6,17 @@ from pathlib import Path
 from typing import Any
 
 from .base import ExtractResult, UnsupportedFormat
-from .mapping import clean, parse_date, parse_sex, slug, species_code, stable_id
+from .mapping import (
+    clean,
+    clean_microchip,
+    parse_bcs,
+    parse_date,
+    parse_sex,
+    parse_weight,
+    slug,
+    species_code,
+    stable_id,
+)
 
 
 def now() -> str:
@@ -48,6 +58,32 @@ def _source(data: dict[str, Any], filename: str) -> dict[str, Any]:
     }
 
 
+def _picked_weight(item: dict[str, Any]) -> object:
+    value = item.get("weight_kg")
+    return item.get("kg") if value is None else value
+
+
+def _latest_weight(weights: list[Any]) -> tuple[float | None, str | None, int | None]:
+    best: tuple[tuple[str, int], float, dict[str, Any]] | None = None
+    for index, item in enumerate(weights):
+        if not isinstance(item, dict):
+            continue
+        raw = _picked_weight(item)
+        if raw is None or raw == "":
+            continue
+        weight = parse_weight(raw, "kg")
+        if weight is None:
+            continue
+        measured_on = parse_date(item.get("date"))
+        key = (measured_on or "", index)
+        if best is None or key > best[0]:
+            best = (key, weight, item)
+    if best is None:
+        return None, None, None
+    _, weight, item = best
+    return weight, parse_date(item.get("date")), parse_bcs(item.get("bcs"))
+
+
 def _patient(data: dict[str, Any], patient_id: str, owner_id: str | None) -> dict[str, Any]:
     source = data.get("patient")
     if not isinstance(source, dict):
@@ -64,9 +100,7 @@ def _patient(data: dict[str, Any], patient_id: str, owner_id: str | None) -> dic
         None,
     )
     weights = data.get("weights") if isinstance(data.get("weights"), list) else []
-    latest = next(
-        (item for item in reversed(weights) if isinstance(item, dict) and item.get("weight_kg") is not None), {}
-    )
+    weight, weight_on, bcs = _latest_weight(weights)
     label = species.get("display") or species.get("code")
     return {
         "_type": "Patient",
@@ -82,10 +116,10 @@ def _patient(data: dict[str, Any], patient_id: str, owner_id: str | None) -> dic
         "neutered": source.get("neutered"),
         "birth_date": parse_date(source.get("birth_date")),
         "coat": source.get("coat"),
-        "microchip": chip,
-        "weight_current_kg": latest.get("weight_kg"),
-        "weight_current_on": parse_date(latest.get("date")),
-        "bcs": latest.get("bcs"),
+        "microchip": clean_microchip(chip),
+        "weight_current_kg": weight,
+        "weight_current_on": weight_on,
+        "bcs": bcs,
         "owner_ids": [owner_id] if owner_id else [],
         "status": source.get("status") or "ACTIVE",
         "deceased": bool(source.get("deceased", False)),

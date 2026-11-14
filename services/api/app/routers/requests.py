@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from sqlmodel import select
 
 from ..auth import is_participant, request_scope, role_value, specialist_id_for_user
@@ -65,6 +65,9 @@ CLOSABLE_STATUSES = {
     RequestStatus.SCHEDULED,
 }
 LOCKED_DETAIL = "La historia completa se desbloquea al aceptar la derivación"
+NOT_PARTICIPANT_DETAIL = "No participas en esta derivación"
+PAST_SLOT_DETAIL = "La franja ya ha pasado. Elige una franja futura."
+SLOT_BUSY_DETAIL = "La franja ya está ocupada. Elige otra franja."
 ACCEPT_DETAIL = "Solo el especialista asignado puede aceptar la derivación"
 DECLINE_DETAIL = "Solo el especialista asignado puede rechazar la derivación"
 CLOSE_DETAIL = "Solo el especialista asignado puede cerrar la visita"
@@ -104,7 +107,7 @@ def _ensure_can_cancel(user: User, req: Request) -> None:
 
 
 def _ensure_unlocked(user: User, req: Request) -> None:
-    ensure(is_participant(user, req), LOCKED_DETAIL)
+    ensure(is_participant(user, req), NOT_PARTICIPANT_DETAIL)
     ensure(req.status in UNLOCKED_STATUSES, LOCKED_DETAIL)
 
 
@@ -116,12 +119,41 @@ def _apply_status(ctx: ApiContext, req: Request, new_status: RequestStatus) -> N
     ctx.session.refresh(req)
 
 
-def _is_iso_datetime(value: str) -> bool:
+def _parse_slot(value: str) -> datetime:
     try:
-        datetime.fromisoformat(value)
-    except ValueError:
-        return False
-    return True
+        return datetime.fromisoformat(str(value))
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=UNPROCESSABLE,
+            detail="slot_iso debe ser una fecha ISO 8601 válida",
+        ) from exc
+
+
+def _is_past(moment: datetime) -> bool:
+    if moment.tzinfo is None:
+        return moment < datetime.now()
+    return moment < datetime.now(moment.tzinfo)
+
+
+def _normalize_slot(moment: datetime) -> str:
+    if moment.tzinfo is not None:
+        moment = moment.astimezone().replace(tzinfo=None)
+    return moment.replace(microsecond=0).isoformat()
+
+
+def _ensure_slot_free(session, specialist_id: str, slot_iso: str) -> None:
+    statement = (
+        select(Appointment)
+        .join(Request, Request.id == Appointment.request_id)
+        .where(Request.specialist_id == specialist_id)
+        .where(Appointment.status == "SCHEDULED")
+    )
+    for appointment in session.exec(statement).all():
+        try:
+            candidate = _normalize_slot(_parse_slot(appointment.when_iso))
+        except HTTPException:
+            continue
+        ensure(candidate != slot_iso, SLOT_BUSY_DETAIL, CONFLICT)
 
 
 def _new_request(payload: RequestCreateIn, user: User) -> Request:
@@ -146,7 +178,10 @@ def _confirm_request(ctx: ApiContext, req: Request, payload: AcceptIn | None) ->
     if not slot_iso:
         _apply_status(ctx, req, RequestStatus.ACCEPTED)
         return None
-    ensure(_is_iso_datetime(slot_iso), "slot_iso debe ser una fecha ISO 8601 válida", UNPROCESSABLE)
+    moment = _parse_slot(slot_iso)
+    ensure(not _is_past(moment), PAST_SLOT_DETAIL, UNPROCESSABLE)
+    slot_iso = _normalize_slot(moment)
+    _ensure_slot_free(ctx.session, req.specialist_id, slot_iso)
     appointment = Appointment(
         id=new_id("apt"),
         request_id=req.id,
@@ -200,6 +235,7 @@ def _close_encounter(ctx: ApiContext, req: Request, payload: CloseRequest) -> di
         "clinician_ref": ctx.user.display_name,
         "status": "SIGNED",
         "diagnosis_summary": payload.diagnosis or payload.note[:140],
+        "note": payload.note,
         "soap": {"A": payload.diagnosis or "", "P": payload.note},
         "recommendations": payload.recommendations,
         "next_visit_date": payload.next_visit,
@@ -312,7 +348,7 @@ def list_requests(ctx: ApiCtx) -> dict:
 @router.get("/{request_id}", summary="Detalle de la solicitud")
 def get_request(request_id: str, ctx: ApiCtx) -> dict:
     req = request_or_404(ctx.session, request_id)
-    ensure(is_participant(ctx.user, req), LOCKED_DETAIL)
+    ensure(is_participant(ctx.user, req), NOT_PARTICIPANT_DETAIL)
     patient = _patient_of(ctx.session, req)
     spec = _specialist_of(ctx.session, req)
     canonical = _canonical_of_request(ctx.session, req)
@@ -333,7 +369,7 @@ def get_request(request_id: str, ctx: ApiCtx) -> dict:
 @router.get("/{request_id}/summary", summary="Resumen no identificativo pre/post aceptación")
 def get_summary(request_id: str, ctx: ApiCtx) -> dict:
     req = request_or_404(ctx.session, request_id)
-    ensure(is_participant(ctx.user, req), LOCKED_DETAIL)
+    ensure(is_participant(ctx.user, req), NOT_PARTICIPANT_DETAIL)
     canonical = _canonical_of_request(ctx.session, req)
     spec = _specialist_of(ctx.session, req)
     summary = build_public_summary(canonical, motivo=req.motivo, urgencia=req.urgencia)
