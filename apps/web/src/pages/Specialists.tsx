@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CalendarClock, MapPin, Search, Stethoscope, Tag, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Bone, CalendarClock, Eye, HeartPulse, MapPin, Ribbon, Search, Sparkles, Stethoscope, Tag, UserRound } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { EmptyState, ErrorState } from '../components/EmptyState';
 import { LoadingCards } from '../components/Loading';
@@ -220,22 +220,35 @@ function SpecialistsResultsHeader({
   );
 }
 
+const SPECIALTY_ICONS: Record<string, LucideIcon> = {
+  Cardiología: HeartPulse,
+  Dermatología: Sparkles,
+  Traumatología: Bone,
+  Oftalmología: Eye,
+  Oncología: Ribbon,
+};
+
+function SpecialtyIcon({ specialty, className }: { specialty: string; className: string }) {
+  const Icon = SPECIALTY_ICONS[specialty] ?? Stethoscope;
+  return <Icon className={className} aria-hidden="true" />;
+}
+
 function SpecialistIdentity({ specialist }: { specialist: Specialist }) {
   return (
     <div className="flex items-start gap-3">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-indigo-50 text-[15px] font-medium tracking-tight text-indigo-700 ring-1 ring-inset ring-indigo-100">
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[18px] border border-white/80 bg-[linear-gradient(135deg,rgba(255,255,255,0.98),rgba(246,221,196,0.72))] text-[16px] font-medium tracking-tight text-indigo-700 shadow-soft">
         {initials(specialist.name)}
       </span>
       <div className="min-w-0 flex-1">
-        <h3 className="truncate text-[16.5px] font-medium leading-6 tracking-[-0.01em] text-ink">
+        <h3 className="truncate text-[17px] font-medium leading-6 tracking-[-0.02em] text-ink">
           {specialist.name}
         </h3>
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span className="inline-flex items-center gap-1 rounded-full border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-[10.5px] font-medium leading-4 text-indigo-700">
-            <Stethoscope className="h-3 w-3" aria-hidden="true" />
+          <span className="inline-flex items-center gap-1 rounded-full border border-white/70 bg-white/55 px-2 py-0.5 text-[10.5px] font-medium leading-4 text-indigo-700">
+            <SpecialtyIcon specialty={specialist.specialty} className="h-3 w-3" />
             {specialist.specialty}
           </span>
-          <span className="inline-flex items-center gap-1 text-[11.5px] leading-4 text-caption">
+          <span className="inline-flex items-center gap-1 text-[11px] leading-4 text-caption">
             <MapPin className="h-3 w-3" aria-hidden="true" />
             {specialist.zone}
           </span>
@@ -252,18 +265,20 @@ function SpecialistBio({ bio }: { bio?: string | null }) {
 
 function SpecialistMetrics({ specialist }: { specialist: Specialist }) {
   return (
-    <dl className="mt-auto grid grid-cols-2 gap-2">
-      <div className="vl-metric min-w-0">
+    <dl className="mt-auto grid grid-cols-2 gap-3 border-t border-line/60 pt-3">
+      <div className="min-w-0">
         <dt className="vl-label flex items-center gap-1">
           <Tag className="h-3 w-3" aria-hidden="true" /> Desde
         </dt>
-        <dd className="vl-value mt-0.5 truncate">{formatPrice(specialist.price_from)}</dd>
+        <dd className="mt-0.5 truncate text-[15px] font-medium text-ink">
+          {formatPrice(specialist.price_from)}
+        </dd>
       </div>
-      <div className="vl-metric min-w-0">
+      <div className="min-w-0">
         <dt className="vl-label flex items-center gap-1">
           <CalendarClock className="h-3 w-3" aria-hidden="true" /> Próximo hueco
         </dt>
-        <dd className="vl-value mt-0.5 truncate">
+        <dd className="mt-0.5 truncate text-[12.5px] font-medium text-ink">
           {specialist.next_slot ? relativeTime(specialist.next_slot) : 'Sin hueco'}
         </dd>
       </div>
@@ -275,17 +290,20 @@ function SpecialistCard({ specialist }: { specialist: Specialist }) {
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get('patient_id') ?? '';
   return (
-    <article className="group flex flex-col gap-3.5 rounded-card border border-line bg-white/70 p-4 shadow-soft transition duration-300 ease-smooth hover:-translate-y-0.5 hover:border-indigo-100 hover:bg-white/90 hover:shadow-card">
+    <article className="group flex flex-col gap-3.5 rounded-[24px] border border-white/60 bg-white/65 p-5 shadow-soft backdrop-blur-xl transition duration-300 ease-smooth hover:-translate-y-0.5 hover:bg-white hover:shadow-card">
       <SpecialistIdentity specialist={specialist} />
       <SpecialistBio bio={specialist.bio} />
       <SpecialistMetrics specialist={specialist} />
-      <Link
-        to={specialistProfileHref(specialist.id, patientId)}
-        className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[12px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:bg-[#3A2E26]"
-      >
-        Ver perfil y disponibilidad
-        <ArrowRight className="h-3.5 w-3.5 transition duration-200 ease-smooth group-hover:translate-x-0.5" />
-      </Link>
+      <div className="flex justify-end">
+        <Link
+          to={specialistProfileHref(specialist.id, patientId)}
+          className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[11px] font-medium text-cream shadow-lift transition duration-200 ease-smooth hover:-translate-y-0.5 hover:bg-[#3A2E26]"
+          aria-label={`Ver perfil y disponibilidad de ${specialist.name}`}
+        >
+          Ver perfil
+          <ArrowRight className="h-3 w-3 transition duration-200 ease-smooth group-hover:translate-x-0.5" />
+        </Link>
+      </div>
     </article>
   );
 }
