@@ -189,11 +189,11 @@ export function LoginRolePanel({ user }: { user: User | null | undefined }) {
   const { login, pending, start } = useDemoLogin();
 
   return (
-    <section className="login-panel relative order-1 flex flex-col items-center justify-center overflow-hidden bg-mist px-4 py-8 sm:px-8 sm:py-10 lg:order-2 lg:min-h-screen lg:px-10">
+    <section className="login-panel login-panel-glass relative order-1 flex flex-col items-center justify-center overflow-hidden px-4 py-8 sm:px-8 sm:py-10 lg:order-2 lg:min-h-screen lg:px-10">
       <PanelGlow />
       <div className="relative z-10 w-full max-w-[432px]">
         <MobileBrand />
-        <div className="glass-strong rounded-[30px] px-5 py-6 sm:px-7 sm:py-7">
+        <div className="glass-login rounded-[30px] px-5 py-6 sm:px-7 sm:py-7">
           <div className="flex items-center justify-between gap-3">
             <p className="flex items-center gap-1.5 text-[9.5px] font-medium uppercase tracking-[0.14em] text-indigo-700">
               <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />

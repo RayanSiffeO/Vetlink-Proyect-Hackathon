@@ -33,7 +33,7 @@ export function Login() {
   };
 
   return (
-    <div className={`relative min-h-screen bg-cream ${intro ? 'overflow-hidden' : ''}`}>
+    <div className={`login-shell relative min-h-screen ${intro ? 'overflow-hidden' : ''}`}>
       {intro ? <LoginIntro onSkip={skipIntro} /> : null}
       <div className={`grid min-h-screen w-full lg:grid-cols-[55fr_45fr] ${revealed ? 'login-revealed' : ''}`}>
         <LoginBrand />
