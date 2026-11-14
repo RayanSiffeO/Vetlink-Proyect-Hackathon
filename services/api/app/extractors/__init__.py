@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .base import ExtractFn
+from .csv_extractor import extract as extract_csv
 
 EXTRACTORS: dict[str, ExtractFn] = {}
 
@@ -18,3 +19,6 @@ def register(extension: str, extractor: ExtractFn) -> None:
 
 def get_extractor(extension: str) -> ExtractFn | None:
     return EXTRACTORS.get(_normalize(extension))
+
+
+register(".csv", extract_csv)

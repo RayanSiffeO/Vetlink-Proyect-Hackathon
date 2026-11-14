@@ -39,8 +39,6 @@ try {
     if (-not $health) { throw "La API no arrancó en :$Port" }
 
     Add-Check "health" "ok" $health.status
-    Add-Check "seed pacientes" "3" "$($health.counts.patients)"
-    Add-Check "seed alertas" "22" "$($health.counts.alerts)"
 
     '{"user":"laura"}' | Set-Content (Join-Path $tmp "laura.json") -NoNewline -Encoding utf8
     '{"user":"marc"}' | Set-Content (Join-Path $tmp "marc.json") -NoNewline -Encoding utf8
@@ -51,6 +49,9 @@ try {
     Add-Check "login Laura" "200" "$loginCode"
     $initialReset = curl.exe -s -b $jarLa -X POST "$base/api/demo/reset"
     Add-Check "reset inicial" "0" "$((($initialReset | ConvertFrom-Json).counts.requests))"
+    $health = Invoke-RestMethod "$base/api/health"
+    Add-Check "seed pacientes" "3" "$($health.counts.patients)"
+    Add-Check "seed alertas" "22" "$($health.counts.alerts)"
     $me = curl.exe -s -b $jarLa "$base/api/me" | ConvertFrom-Json
     Add-Check "rol Laura" "CLINIC" "$($me.user.role)"
 

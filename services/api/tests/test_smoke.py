@@ -115,7 +115,17 @@ def test_import_cache_and_csv_review(client: TestClient) -> None:
         )
     entry = response.json()["files"][0]
     assert entry["status"] == "NEEDS_REVIEW"
-    assert entry["message"] == "mapeo asistido pendiente"
+    assert "mapeo heurístico" in entry["message"]
+    assert entry["record_id"]
+
+    patients = client.get("/api/patients").json()["patients"]
+    nala = next(patient for patient in patients if patient["name"] == "Nala")
+    body = client.get(f"/api/patients/{nala['id']}/record").json()
+    canonical = body["record"]
+    assert len(canonical["encounters"]) == 3
+    assert canonical["patient"]["weight_current_kg"] == 11.97
+    assert canonical["problems"][0]["category"] == "ALLERGY"
+    assert len(body["alerts"]) == 2
 
 
 def test_request_summary_locked_then_briefing(client: TestClient) -> None:

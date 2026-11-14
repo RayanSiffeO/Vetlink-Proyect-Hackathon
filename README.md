@@ -120,6 +120,7 @@ La ficha, las alertas y la navegación están preparadas para móvil:
 ## Funcionalidades
 
 - **Importación multi-formato:** Word, Excel, JSON y CSV; los cuatro ejemplos del reto se cargan desde la caché de importación.
+- **CSV genérico:** las variantes de CSV se mapean por reglas y sinónimos, con conversión de fechas y pesos (kg/lb) y marca de revisión humana.
 - **Registro canónico:** paciente, tutores, encuentros, problemas, alertas, vacunas, tratamientos y procedencia.
 - **Alertas clínicas:** severidad ordenada (crítica → alta → media → baja → info), evidencia y acción recomendada.
 - **Revisión humana:** campos dudosos señalados y confirmación de la ficha antes de compartirla.
@@ -140,7 +141,9 @@ En `data/samples/` están las historias anonimizadas del reto:
 | `historial.json` | Kira | API VetNexo Cloud |
 | `export_clinica_norte.csv` | Nala | Export de otra clínica (4º formato) |
 
-> En esta versión, los cuatro ficheros de muestra se resuelven por caché. Una **variante modificada** de un fichero se marca para revisión manual: el adaptador genérico de columnas queda como siguiente paso.
+> Los cuatro ficheros exactos se resuelven por caché. Las **variantes de CSV** se procesan con el mapeador heurístico y quedan marcadas para revisión humana; los adaptadores genéricos de Word, Excel y JSON quedan como siguiente paso.
+>
+> Prueba rápida del mapeador: sube `export_clinica_norte.csv` o cambia sus cabeceras (`nombre` → `nombre_completo`, `peso_lb` → `weight_lb`) y vuelve a subirlo. Se crea o actualiza **Nala** y queda en revisión.
 
 ## Arquitectura
 
