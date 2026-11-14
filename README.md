@@ -1,13 +1,95 @@
 # VetLink · Salud animal, a un clic
 
-> **Reto 3 — "Menos papeleo, más cuidado: los datos al servicio de la clínica"**  
+> **Reto 3 — “Menos papeleo, más cuidado: los datos al servicio de la clínica”**
 > VIII Hackathon Boehringer Ingelheim España · 13–15 de noviembre de 2026 · Equipo **Joniha**
 
-VetLink convierte el papeleo veterinario en **una historia clínica única y compartible**, conecta a la clínica generalista con el **especialista** que necesita y entrega al especialista un **briefing pre-visita** antes de ver al paciente.
+VetLink convierte historias clínicas veterinarias dispersas en **una ficha única y compartible**, conecta a la clínica generalista con el **especialista** que necesita y entrega al especialista un **briefing pre-visita** antes de ver al paciente.
+
+![Ficha clínica de Kira](screenshots/04-ficha-kira.png)
 
 ## El problema
 
-Laura es veterinaria generalista: no puede tener especialistas en plantilla y no sabe quién trabaja en su zona, qué ofrece, cuánto cuesta ni cuándo puede venir. Marc es especialista ambulante: cada clínica usa un software distinto y la historia del paciente le llega como Word, Excel, JSON o texto libre, incompleta y desordenada. Los primeros minutos de cada visita los dedica a reconstruir el caso. **La información existe, pero no llega a tiempo.**
+Laura es veterinaria generalista: no puede tener especialistas en plantilla y no sabe quién trabaja en su zona, qué ofrece, cuánto cuesta ni cuándo puede venir. Marc es especialista ambulante: cada clínica usa un software distinto y la historia del paciente le llega como Word, Excel, JSON o CSV, incompleta y desordenada. Los primeros minutos de cada visita los dedica a reconstruir el caso. **La información existe, pero no llega a tiempo.**
+
+## La solución
+
+1. **VetRecord · una historia, un formato.** La clínica sube Word, Excel, JSON o CSV. La API lo convierte a un registro canónico con procedencia por campo, confianza y alertas clínicas.
+2. **VetNetwork · marketplace.** La clínica busca especialistas por especialidad y zona, consulta tarifa y disponibilidad, y solicita una derivación.
+3. **VetBriefing · el puente.** Antes de aceptar, el especialista ve un resumen no identificativo. Al aceptar se desbloquean la historia completa y el briefing pre-visita. Todo acceso queda auditado.
+
+## Arranque en 1 minuto
+
+### Opción A — Python (Windows, macOS y Linux)
+
+Requisitos: **Python 3.11+** y **Node.js 20+**. Node solo se usa la primera vez para compilar la interfaz.
+
+```bash
+python start.py
+```
+
+En macOS/Linux, si `python` apunta a Python 2, usa:
+
+```bash
+python3 start.py
+```
+
+El script:
+
+- crea el entorno virtual;
+- instala las dependencias de la API;
+- compila la SPA si hace falta;
+- arranca todo en un único proceso;
+- abre `http://127.0.0.1:8000` en el navegador.
+
+Si el puerto 8000 está ocupado, elige el siguiente libre. Para cambiar el puerto:
+
+```bash
+python start.py --port 8080
+```
+
+### Opción B — Docker (sin instalar Python ni Node)
+
+¿Tienes Docker? Es la opción más portable:
+
+```bash
+docker compose up --build
+```
+
+Abre `http://127.0.0.1:8000`. Para parar: `Ctrl+C`.
+
+### Opción C — desarrollo
+
+Backend:
+
+```bash
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+pip install -r services/api/requirements.txt
+cd services/api
+uvicorn app.main:app --reload --port 8000
+```
+
+Frontend, en otra terminal:
+
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+
+La SPA de desarrollo está en `http://127.0.0.1:5173` y hace proxy de `/api` a `:8000`.
+
+## Acceso a la demo
+
+Login sin contraseña, con dos roles:
+
+| Rol | Usuario | Qué puede hacer |
+|---|---|---|
+| Clínica | **Laura** | Importar historias, revisar alertas y solicitar derivaciones |
+| Especialista | **Marc** | Recibir solicitudes, aceptar una franja y consultar el briefing |
+
+El botón **Cargar demo** de la cabecera reinicia los datos de ejemplo.
 
 ## Capturas
 
@@ -15,133 +97,39 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 |---|---|
 | ![Importación](screenshots/03-importacion.png) | ![Ficha de Kira](screenshots/04-ficha-kira.png) |
 
-| Solicitud de derivación | Briefing pre-visita |
+| Marketplace | Solicitud de derivación |
 |---|---|
-| ![Solicitud](screenshots/06-solicitud-clinica.png) | ![Briefing](screenshots/07-briefing-desbloqueado.png) |
+| ![Especialistas](screenshots/05-marketplace.png) | ![Solicitud](screenshots/06-solicitud-clinica.png) |
 
-| Login por rol | Marketplace de especialistas | Pacientes | Agenda |
-|---|---|---|---|
-| ![Login](screenshots/01-login.png) | ![Marketplace](screenshots/05-marketplace.png) | ![Pacientes](screenshots/02-pacientes.png) | ![Calendario](screenshots/08-calendario.png) |
+| Briefing pre-visita | Agenda |
+|---|---|
+| ![Briefing](screenshots/07-briefing-desbloqueado.png) | ![Calendario](screenshots/08-calendario.png) |
 
-## Cómo funciona
+| Login por rol | Pacientes |
+|---|---|
+| ![Login](screenshots/01-login.png) | ![Pacientes](screenshots/02-pacientes.png) |
 
-1. **VetRecord · importación y normalización.** La clínica sube la historia en Word, Excel, JSON o CSV. La API la normaliza a un registro canónico único con procedencia por campo, confianza y alertas clínicas.
-2. **VetNetwork · marketplace.** La clínica busca especialistas por especialidad y zona, ve su tarifa y disponibilidad, y solicita una derivación.
-3. **VetBriefing · puente clínica ↔ especialista.** Antes de aceptar, el especialista ve un resumen no identificativo; al aceptar se desbloquean la historia completa y un briefing pre-visita determinista. Todo acceso queda auditado.
+### Móvil
 
-## Arquitectura y flujos
+La ficha, las alertas y la navegación están preparadas para móvil:
 
-Un solo proceso FastAPI sirve la SPA y la API sobre SQLite y disco local; sin servicios externos en la demo.
+![Ficha en móvil](screenshots/09-movil-ficha.png)
 
-![Arquitectura](screenshots/arquitectura.png)
+## Funcionalidades
 
-Flujo completo de usuarios (clínica → VetLink → especialista):
+- **Importación multi-formato:** Word, Excel, JSON y CSV; los cuatro ejemplos del reto se cargan desde la caché de importación.
+- **Registro canónico:** paciente, tutores, encuentros, problemas, alertas, vacunas, tratamientos y procedencia.
+- **Alertas clínicas:** severidad ordenada (crítica → alta → media → baja → info), evidencia y acción recomendada.
+- **Revisión humana:** campos dudosos señalados y confirmación de la ficha antes de compartirla.
+- **Marketplace:** búsqueda por especialidad y zona, tarifa orientativa y siguiente hueco.
+- **Derivación con consentimiento:** resumen no identificativo antes de aceptar; historia completa y briefing después.
+- **Agenda:** cita confirmada al aceptar una franja.
+- **Cierre de visita:** nota del especialista que vuelve a la ficha de la clínica.
+- **Auditoría:** accesos y acciones relevantes registrados.
 
-![Flujo de usuarios](screenshots/flujo-usuarios.png)
+## Datos de ejemplo
 
-## Stack
-
-- **Frontend:** React 18 + Vite + TypeScript + Tailwind CSS + DaisyUI + React Router + TanStack Query.
-- **Backend:** FastAPI + Pydantic + SQLModel.
-- **Datos:** SQLite (demo) + documentos en disco. El modelo es portable a PostgreSQL.
-- **Un solo proceso en demo:** FastAPI sirve la SPA compilada y la API en el mismo puerto, sin CORS ni servicios externos.
-
-## Arranque rápido
-
-Requisitos: **Python 3.11+**, **Node 20+** (con `npm`) y PowerShell en Windows.
-
-### 1) Backend
-
-```powershell
-python -m venv services/api/.venv
-services/api/.venv/Scripts/python.exe -m pip install -r services/api/requirements.txt
-
-cd services/api
-.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
-```
-
-- API: `http://127.0.0.1:8000/api/health` · Swagger: `http://127.0.0.1:8000/docs`
-- La base SQLite (`data/vetlink.db`) se crea y se rellena con los datos de demo al arrancar.
-
-### 2) Frontend (desarrollo)
-
-```powershell
-cd apps/web
-npm install
-npm run dev
-```
-
-- SPA: `http://127.0.0.1:5173` (proxy `/api` → `:8000`).
-
-### 3) Modo demo (un solo proceso, el que se presenta)
-
-```powershell
-cd apps/web
-npm run build
-cd ../services/api
-.venv\Scripts\python.exe -m uvicorn app.main:app --port 8000
-```
-
-- Todo en `http://127.0.0.1:8000`.
-
-### Atajos (PowerShell)
-
-```powershell
-powershell -File scripts\api.ps1     # API + SQLite + seed
-powershell -File scripts\dev.ps1     # Vite dev
-powershell -File scripts\demo.ps1    # compila la SPA y sirve todo en un proceso
-powershell -File scripts\build.ps1   # compila la SPA
-powershell -File scripts\stop.ps1    # libera los puertos de la demo
-```
-
-## Despliegue
-
-La app está preparada para desplegarse como **un solo servicio** (FastAPI sirve la SPA y la API).
-
-### Render (recomendado)
-
-1. Crea una cuenta en <https://render.com> y conecta tu GitHub.
-2. **New → Blueprint** y selecciona este repositorio: Render detecta `render.yaml`.
-3. Espera al build (Docker multi-stage: Node compila la SPA y Python sirve todo).
-4. La URL pública queda en `https://<servicio>.onrender.com`.
-
-Notas del plan gratuito: el servicio se duerme por inactividad (el primer acceso tarda unos segundos) y la base SQLite es **efímera**: se vuelve a sembrar en cada arranque. Es un entorno de demostración con datos ficticios, no un entorno clínico real.
-
-### Docker
-
-```powershell
-docker build -t vetlink .
-docker run --rm -p 8000:8000 -e VETLINK_SECRET_KEY=cambia-esta-clave vetlink
-```
-
-### URL pública rápida para una demo (sin desplegar)
-
-Con la demo arrancada en `:8000`:
-
-```powershell
-powershell -File scripts\tunnel.ps1
-```
-
-Abre un túnel temporal (`https://*.trycloudflare.com`) válido mientras el proceso siga vivo.
-
-### Comprobación remota
-
-```powershell
-powershell -File scripts\smoke-remote.ps1 -BaseUrl https://<servicio>.onrender.com
-```
-
-## Acceso a la demo
-
-Login sin contraseña, con dos roles:
-
-- **Laura (clínica):** importa historias, revisa alertas y solicita derivaciones.
-- **Marc (especialista):** recibe solicitudes, acepta una franja y consulta el briefing pre-visita.
-
-El botón **Cargar demo** (cabecera) reinicia los datos de ejemplo.
-
-## Datos de ejemplo incluidos
-
-En `data/samples/` hay tres historias reales del reto, anonimizadas, más un CSV con cabeceras no vistas para probar el mapeador:
+En `data/samples/` están las historias anonimizadas del reto:
 
 | Fichero | Paciente | Origen |
 |---|---|---|
@@ -150,45 +138,110 @@ En `data/samples/` hay tres historias reales del reto, anonimizadas, más un CSV
 | `historial.json` | Kira | API VetNexo Cloud |
 | `export_clinica_norte.csv` | Nala | Export de otra clínica (4º formato) |
 
+> En esta versión, los cuatro ficheros de muestra se resuelven por caché. Una **variante modificada** de un fichero se marca para revisión manual: el adaptador genérico de columnas queda como siguiente paso.
+
+## Arquitectura
+
+Un solo proceso FastAPI sirve la SPA compilada y la API sobre SQLite y disco local; sin servicios externos en la demo.
+
+![Arquitectura](screenshots/arquitectura.png)
+
+Flujo completo de usuarios:
+
+![Flujo de usuarios](screenshots/flujo-usuarios.png)
+
+**Stack:**
+
+- **Frontend:** React 18 + Vite + TypeScript + Tailwind CSS + DaisyUI + React Router + TanStack Query.
+- **Backend:** FastAPI + Pydantic + SQLModel.
+- **Datos:** SQLite (demo) + documentos en disco. El modelo es portable a PostgreSQL.
+- **Demo:** un único proceso; FastAPI sirve la SPA y la API en el mismo puerto.
+
 ## API
 
-Contrato con 23 endpoints y documentación interactiva en **Swagger** (`/docs`). Un resumen por bloques:
+Contrato OpenAPI en [`contracts/openapi-v1.json`](contracts/openapi-v1.json) y documentación interactiva en `http://127.0.0.1:8000/docs`.
 
-- `auth`: login/logout demo por rol (`/api/auth/demo`, `/api/me`).
-- `patients`: listado y ficha canónica (`/api/patients`, `/api/patients/{id}/record`).
-- `imports`: subida multi-fichero y estado por fichero (`POST /api/imports`).
-- `specialists`: marketplace y disponibilidad.
-- `requests`: solicitud, resumen pre-aceptación, aceptación/declinación y briefing.
+Bloques principales:
+
+- `auth`: login/logout demo por rol.
+- `patients`: bandeja y ficha canónica.
+- `imports`: subida multi-fichero y estado por fichero.
+- `specialists`: marketplace, perfil y disponibilidad.
+- `requests`: solicitud, resumen pre-aceptación, aceptación/declinación, briefing y cierre.
 - `appointments` y `audit`: agenda y registro de accesos.
 - `demo/reset`: reinicio de datos de ejemplo.
 
-## Tests
+## Tests y calidad
 
-```powershell
-cd services/api
-.venv\Scripts\python.exe -m ruff check app tests
-.venv\Scripts\python.exe -m pytest -q
+Con el entorno ya creado por `start.py`:
 
-cd ../..
-powershell -File scripts\e2e-api.ps1   # E2E de API (flujo completo, headless)
+```bash
+# Windows
+services\api\.venv\Scripts\python.exe -m pytest services/api/tests -q
+
+# macOS/Linux
+services/api/.venv/bin/python -m pytest services/api/tests -q
 ```
 
-Puertas de calidad del proyecto: `ruff` sin avisos, `pytest` en verde, 0 comentarios/TODO en el código (`scripts\check-code.ps1`) y E2E de API con todas las comprobaciones en verde.
+E2E de API (flujo completo clínica → especialista):
+
+```bash
+# Windows
+powershell -ExecutionPolicy Bypass -File scripts/e2e-api.ps1
+
+# macOS/Linux (requiere PowerShell 7)
+pwsh -File scripts/e2e-api.ps1
+```
+
+Puertas de calidad: `ruff` sin avisos, `pytest` en verde, 0 comentarios/TODO en el código (`scripts/check-code.ps1`) y E2E de API con todas las comprobaciones en verde.
 
 ## Estructura
 
-```
+```text
 VetLink/
 ├── apps/web/              # SPA React + Vite + TypeScript + DaisyUI
-├── services/api/          # FastAPI + SQLModel + SQLite (routers, seed, extractores)
+├── services/api/          # FastAPI + SQLModel + SQLite
 ├── data/
-│   ├── samples/           # historias de ejemplo del reto + CSV
+│   ├── samples/           # historias de ejemplo
 │   └── canonical/         # registros canónicos usados por el seed
 ├── contracts/             # contrato OpenAPI v1
 ├── screenshots/           # capturas de la demo y diagramas
-├── scripts/               # atajos de arranque y verificación
+├── scripts/               # atajos de desarrollo y E2E
+├── start.py               # arranque multiplataforma en un comando
+├── compose.yaml           # demo con Docker
 └── README.md
 ```
+
+## Despliegue
+
+La app está preparada para desplegarse como **un solo servicio** (FastAPI sirve la SPA y la API).
+
+### Render
+
+1. Crea una cuenta en <https://render.com> y conecta tu GitHub.
+2. **New → Blueprint** y selecciona este repositorio: Render detecta `render.yaml`.
+3. Espera al build: Docker multi-stage compila la SPA y Python sirve todo.
+4. La URL pública queda en `https://<servicio>.onrender.com`.
+
+En el plan gratuito el servicio se duerme por inactividad y SQLite es efímera: se vuelve a sembrar en cada arranque. Es un entorno de demostración con datos ficticios.
+
+### Docker
+
+```bash
+docker build -t vetlink .
+docker run --rm -p 8000:8000 -e VETLINK_SECRET_KEY=cambia-esta-clave vetlink
+```
+
+### Túnel temporal
+
+Con la demo arrancada en `:8000`:
+
+```bash
+# Windows
+powershell -File scripts/tunnel.ps1
+```
+
+Abre un túnel `https://*.trycloudflare.com` válido mientras el proceso siga vivo.
 
 ## Privacidad
 
@@ -197,4 +250,5 @@ Todos los datos son **ficticios y anonimizados**. El prototipo aplica mínimo pr
 ## Equipo
 
 Equipo **Joniha** · Jose Miguel (producto, frontend y demo) y Rayan (backend y datos).
-Reto 3 de la VIII Hackathon de Boehringer Ingelheim España.
+
+Reto 3 de la VIII Hackathon Boehringer Ingelheim España.

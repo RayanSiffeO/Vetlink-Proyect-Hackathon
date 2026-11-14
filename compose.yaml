@@ -1,0 +1,8 @@
+services:
+  vetlink:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      VETLINK_SECRET_KEY: "demo-vetlink-cambia-esta-clave"
+    restart: unless-stopped
