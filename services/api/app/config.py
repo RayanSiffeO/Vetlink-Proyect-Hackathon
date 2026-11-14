@@ -14,7 +14,7 @@ API_VERSION = "0.1.0-h0"
 class Settings:
     data_dir: Path = field(default_factory=lambda: REPO_ROOT / "data")
     samples_dir: Path = field(default_factory=lambda: REPO_ROOT / "data" / "samples")
-    canonical_dir: Path = field(default_factory=lambda: REPO_ROOT / "docs" / "ejemplos")
+    canonical_dir: Path = field(default_factory=lambda: REPO_ROOT / "data" / "canonical")
     web_dist: Path = field(default_factory=lambda: REPO_ROOT / "apps" / "web" / "dist")
 
     db_filename: str = "vetlink.db"

@@ -2,7 +2,7 @@
 
 **Stack:** Python 3.12 · FastAPI · SQLModel · SQLite (`data/vetlink.db`) · auth demo por cookie firmada (`itsdangerous`). Sin JWT, sin Supabase, sin Docker. En la demo, FastAPI sirve también la SPA compilada si existe `apps/web/dist`.
 
-Contrato congelado: `docs/contracts/openapi-v1.json` (autogenerado desde `/openapi.json`).
+Contrato congelado: `contracts/openapi-v1.json` (autogenerado desde `/openapi.json`).
 
 ---
 
@@ -89,7 +89,7 @@ curl.exe -s -b m.txt $B/appointments
 
 ## 5. Datos demo y cache de importación
 
-- Los 3 canónicos de `docs/ejemplos/` se siembran como `pat_bruno`, `pat_luna`, `pat_kira` (registro completo, alertas proyectadas, `identity_confidence`).
+- Los 3 canónicos de `data/canonical/` se siembran como `pat_bruno`, `pat_luna`, `pat_kira` (registro completo, alertas proyectadas, `identity_confidence`).
 - La cache de importación se construye en caliente con el **sha256** de `data/samples/` y los mapea a su `record_id`: subir esos 3 ficheros devuelve `READY` sin parsear (demo instantánea).
 - Cualquier otro fichero (p. ej. `export_clinica_norte.csv`) devuelve `NEEDS_REVIEW` con `"mapeo asistido pendiente"`. El pipeline nunca falla en bloque.
 - Especialistas: `spc_marc` (Cardiología, Barcelona, 120 €), `spc_elena` (Dermatología, Barcelona, 95 €), `spc_javier` (Traumatología, Sant Cugat, 110 €). Slots ISO reales de los próximos días laborables.

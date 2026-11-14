@@ -29,6 +29,16 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 2. **VetNetwork · marketplace.** La clínica busca especialistas por especialidad y zona, ve su tarifa y disponibilidad, y solicita una derivación.
 3. **VetBriefing · puente clínica ↔ especialista.** Antes de aceptar, el especialista ve un resumen no identificativo; al aceptar se desbloquean la historia completa y un briefing pre-visita determinista. Todo acceso queda auditado.
 
+## Arquitectura y flujos
+
+Un solo proceso FastAPI sirve la SPA y la API sobre SQLite y disco local; sin servicios externos en la demo.
+
+![Arquitectura](screenshots/arquitectura.png)
+
+Flujo completo de usuarios (clínica → VetLink → especialista):
+
+![Flujo de usuarios](screenshots/flujo-usuarios.png)
+
 ## Stack
 
 - **Frontend:** React 18 + Vite + TypeScript + Tailwind CSS + DaisyUI + React Router + TanStack Query.
@@ -136,11 +146,10 @@ VetLink/
 ├── apps/web/              # SPA React + Vite + TypeScript + DaisyUI
 ├── services/api/          # FastAPI + SQLModel + SQLite (routers, seed, extractores)
 ├── data/
-│   └── samples/           # historias de ejemplo del reto + CSV
-├── docs/
-│   ├── ejemplos/          # registros canónicos usados por el seed
-│   └── contracts/         # contrato OpenAPI v1
-├── screenshots/           # capturas de la demo
+│   ├── samples/           # historias de ejemplo del reto + CSV
+│   └── canonical/         # registros canónicos usados por el seed
+├── contracts/             # contrato OpenAPI v1
+├── screenshots/           # capturas de la demo y diagramas
 ├── scripts/               # atajos de arranque y verificación
 └── README.md
 ```
