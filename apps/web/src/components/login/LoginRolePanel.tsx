@@ -231,7 +231,7 @@ export function LoginRolePanel({ user }: { user: User | null | undefined }) {
   const reset = useResetDemo();
 
   return (
-    <section className="login-panel login-panel-glass relative order-1 flex flex-col items-center justify-center overflow-hidden px-4 py-8 sm:px-8 sm:py-10 lg:order-2 lg:min-h-screen lg:px-10">
+    <section className="login-panel login-panel-glass relative flex flex-col items-center justify-center overflow-hidden px-4 py-8 sm:px-8 sm:py-10 lg:min-h-screen lg:px-10">
       <PanelGlow />
       <div className="relative z-10 w-full max-w-[432px]">
         <div className="glass-login rounded-[30px] px-5 py-6 sm:px-7 sm:py-7">
