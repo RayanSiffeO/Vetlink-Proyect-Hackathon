@@ -60,7 +60,7 @@ EXTRACTORS: dict[str, callable] = {
 ```
 
 - `record` = registro canónico con las claves de los ejemplos. **Mínimo obligatorio:** `schema_version`, `source`, `privacy`, `identity`, `patient`, `owners`, `encounters`, `problems`, `immunizations`, `parasite_control`, `weights`, `reminders`, `prescriptions`, `invoices`, `documents`, `provenance_summary`.
-- **No hace falta calcular `alerts` ni `briefing`:** los calcula la API a partir del canónico. Si los incluyes, respeta el formato de los ejemplos.
+- **Los extractores NO calculan `alerts` ni `briefing`.** La API lee `canonical["alerts"]` y construye el briefing; el **motor de alertas** (reglas R01–R11) y el dedupe de pacientes los implementa el Lead a partir de las entidades. Tú solo entregas entidades + procedencia; si incluyes `alerts`, respeta el formato de los ejemplos.
 - Cada entidad lleva su `_meta` de procedencia (`source_system`, `source_format`, `source_ref`, `extracted_at`, `extracted_by`, `method`, `confidence`, `assumed`). Los campos derivados/inferidos llevan `assumed: true`.
 - Formato no soportado → `UnsupportedFormat` (la API lo convierte en `NEEDS_REVIEW`).
 
