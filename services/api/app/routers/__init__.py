@@ -1,5 +1,3 @@
-"""Routers de la API VetLink. `main` los monta bajo /api."""
-
 from __future__ import annotations
 
 from . import appointments, audit, auth, demo, imports, patients, requests, specialists

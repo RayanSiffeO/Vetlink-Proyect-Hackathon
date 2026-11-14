@@ -1,5 +1,3 @@
-"""Modelos SQLModel de VetLink (demo). Tablas del contrato v1."""
-
 from __future__ import annotations
 
 from datetime import datetime, timezone

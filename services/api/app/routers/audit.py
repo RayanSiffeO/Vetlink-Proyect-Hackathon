@@ -1,41 +1,35 @@
-"""Trazabilidad: eventos de auditoría por solicitud y globales."""
-
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, Query
 from sqlmodel import select
 
-from ..auth import CurrentUser, DbSession, is_participant
-from ..db import audit_events_for, audit_to_dict, recent_audit_events, record_for_patient
-from ..models import Appointment, Request
+from ..auth import is_participant
+from ..context import ApiCtx
+from ..db import audit_events_for, audit_to_dict, recent_audit_events, record_for_patient, request_or_404
+from ..errors import ensure
+from ..models import Appointment, AuditEvent, Request
 
 router = APIRouter(tags=["audit"])
 
 
-@router.get("/requests/{request_id}/audit", summary="Eventos de auditoría de la solicitud")
-def request_audit(request_id: str, user: CurrentUser, session: DbSession) -> dict:
-    req = session.get(Request, request_id)
-    if req is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Solicitud no encontrada")
-    if not is_participant(user, req):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="No participas en esta derivación",
-        )
-
+def _request_events(session, req: Request) -> list[AuditEvent]:
     events = audit_events_for(session, "Request", req.id)
-
     record = record_for_patient(session, req.patient_id)
     if record is not None:
         events += audit_events_for(session, "Record", record.id)
-
     appointments = session.exec(select(Appointment).where(Appointment.request_id == req.id)).all()
-    for appt in appointments:
-        events += audit_events_for(session, "Appointment", appt.id)
+    for appointment in appointments:
+        events += audit_events_for(session, "Appointment", appointment.id)
+    return sorted(events, key=lambda event: event.created_at)
 
-    events.sort(key=lambda e: e.created_at)
+
+@router.get("/requests/{request_id}/audit", summary="Eventos de auditoría de la solicitud")
+def request_audit(request_id: str, ctx: ApiCtx) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    ensure(is_participant(ctx.user, req), "No participas en esta derivación")
+    events = _request_events(ctx.session, req)
     return {
-        "events": [audit_to_dict(e) for e in events],
+        "events": [audit_to_dict(event) for event in events],
         "count": len(events),
         "request_id": req.id,
     }
@@ -43,9 +37,8 @@ def request_audit(request_id: str, user: CurrentUser, session: DbSession) -> dic
 
 @router.get("/audit", summary="Últimos eventos de auditoría")
 def global_audit(
-    user: CurrentUser,
-    session: DbSession,
+    ctx: ApiCtx,
     limit: int = Query(default=50, ge=1, le=200, description="Máximo de eventos"),
 ) -> dict:
-    events = recent_audit_events(session, limit)
-    return {"events": [audit_to_dict(e) for e in events], "count": len(events), "limit": limit}
+    events = recent_audit_events(ctx.session, limit)
+    return {"events": [audit_to_dict(event) for event in events], "count": len(events), "limit": limit}

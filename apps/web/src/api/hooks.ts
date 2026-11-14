@@ -2,14 +2,17 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
+  type QueryClient,
   type QueryKey,
 } from '@tanstack/react-query';
 import { ApiError, request } from './client';
+import { isSpecialist } from '../lib/format';
 import type {
   AppointmentsResponse,
   AuditResponse,
   BriefingResponse,
   CreateRequestPayload,
+  DemoUserId,
   ImportResponse,
   LoginResponse,
   MeResponse,
@@ -26,10 +29,6 @@ import type {
   User,
 } from './types';
 
-/* ------------------------------------------------------------------ */
-/* Query keys                                                          */
-/* ------------------------------------------------------------------ */
-
 export const qk = {
   me: ['me'] as QueryKey,
   patients: ['patients'] as QueryKey,
@@ -44,9 +43,9 @@ export const qk = {
   appointments: ['appointments'] as QueryKey,
 };
 
-/* ------------------------------------------------------------------ */
-/* Sesión                                                              */
-/* ------------------------------------------------------------------ */
+function isUnauthorizedError(error: unknown): boolean {
+  return error instanceof ApiError && error.isUnauthorized;
+}
 
 export function useMe() {
   return useQuery<User | null>({
@@ -56,8 +55,7 @@ export function useMe() {
         const data = await request<MeResponse>('/me');
         return data?.user ?? null;
       } catch (error) {
-        // Sin sesión (401) no es un error de la app: es "no hay usuario".
-        if (error instanceof ApiError && error.isUnauthorized) return null;
+        if (isUnauthorizedError(error)) return null;
         throw error;
       }
     },
@@ -67,9 +65,14 @@ export function useMe() {
   });
 }
 
+export function useIsSpecialist(): boolean {
+  const { data: user } = useMe();
+  return isSpecialist(user);
+}
+
 export function useLogin() {
   const queryClient = useQueryClient();
-  return useMutation<LoginResponse, Error, 'laura' | 'marc'>({
+  return useMutation<LoginResponse, Error, DemoUserId>({
     mutationFn: (user) => request<LoginResponse>('/auth/demo', { method: 'POST', body: { user } }),
     onSuccess: (data) => {
       queryClient.setQueryData(qk.me, data.user);
@@ -87,7 +90,6 @@ export function useLogout() {
       queryClient.clear();
     },
     onError: () => {
-      // El logout es best-effort: pase lo que pase, la UI vuelve al login.
       queryClient.setQueryData(qk.me, null);
     },
   });
@@ -102,10 +104,6 @@ export function useResetDemo() {
     },
   });
 }
-
-/* ------------------------------------------------------------------ */
-/* Pacientes                                                           */
-/* ------------------------------------------------------------------ */
 
 export function usePatients() {
   return useQuery<PatientsResponse>({
@@ -124,33 +122,37 @@ export function usePatientRecord(id: string | undefined) {
   });
 }
 
+function filesToFormData(files: File[]): FormData {
+  const formData = new FormData();
+  files.forEach((file) => formData.append('files', file, file.name));
+  return formData;
+}
+
 export function useImportFiles() {
   const queryClient = useQueryClient();
   return useMutation<ImportResponse, Error, File[]>({
-    mutationFn: (files) => {
-      const formData = new FormData();
-      files.forEach((file) => formData.append('files', file, file.name));
-      return request<ImportResponse>('/imports', { method: 'POST', formData });
-    },
+    mutationFn: (files) =>
+      request<ImportResponse>('/imports', { method: 'POST', formData: filesToFormData(files) }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: qk.patients });
     },
   });
 }
 
-/* ------------------------------------------------------------------ */
-/* Especialistas                                                       */
-/* ------------------------------------------------------------------ */
+function specialistQueryString(specialty: string, zone: string): string {
+  const params = new URLSearchParams();
+  if (specialty.trim()) params.set('specialty', specialty.trim());
+  if (zone.trim()) params.set('zone', zone.trim());
+  return params.toString();
+}
 
 export function useSpecialists(specialty: string, zone: string) {
   return useQuery<SpecialistsResponse>({
     queryKey: qk.specialists(specialty, zone),
     queryFn: () => {
-      const params = new URLSearchParams();
-      if (specialty.trim()) params.set('specialty', specialty.trim());
-      if (zone.trim()) params.set('zone', zone.trim());
-      const qs = params.toString();
-      return request<SpecialistsResponse>(`/specialists${qs ? `?${qs}` : ''}`);
+      const queryString = specialistQueryString(specialty, zone);
+      const suffix = queryString ? `?${queryString}` : '';
+      return request<SpecialistsResponse>(`/specialists${suffix}`);
     },
     retry: 1,
   });
@@ -165,10 +167,6 @@ export function useSpecialist(id: string | undefined) {
   });
 }
 
-/* ------------------------------------------------------------------ */
-/* Solicitudes                                                         */
-/* ------------------------------------------------------------------ */
-
 export function useRequests() {
   return useQuery<RequestsResponse>({
     queryKey: qk.requests,
@@ -180,17 +178,13 @@ export function useRequests() {
 export function useCreateRequest() {
   const queryClient = useQueryClient();
   return useMutation<RequestDetailResponse, Error, CreateRequestPayload>({
-    mutationFn: (payload) => request<RequestDetailResponse>('/requests', {
-      method: 'POST',
-      body: payload,
-    }),
+    mutationFn: (payload) =>
+      request<RequestDetailResponse>('/requests', { method: 'POST', body: payload }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: qk.requests });
       const created = data?.request as RequestRecord | undefined;
-      if (created?.id) {
-        // El detalle se pide de nuevo a la API: el POST solo devuelve `{request}`.
-        queryClient.invalidateQueries({ queryKey: qk.request(created.id) });
-      }
+      if (!created?.id) return;
+      queryClient.invalidateQueries({ queryKey: qk.request(created.id) });
     },
   });
 }
@@ -213,10 +207,6 @@ export function useRequestSummary(id: string | undefined, enabled = true) {
   });
 }
 
-/**
- * Briefing pre-visita. Antes de aceptar la solicitud la API responde 403 a
- * propósito: NO reintentamos y dejamos que la UI muestre el estado bloqueado.
- */
 export function useBriefing(id: string | undefined, enabled = true) {
   return useQuery<BriefingResponse>({
     queryKey: qk.briefing(id ?? ''),
@@ -235,6 +225,15 @@ export function useRequestAudit(id: string | undefined, enabled = true) {
   });
 }
 
+function invalidateRequestData(queryClient: QueryClient, id: string | undefined): void {
+  queryClient.invalidateQueries({ queryKey: qk.requests });
+  queryClient.invalidateQueries({ queryKey: qk.appointments });
+  if (!id) return;
+  queryClient.invalidateQueries({ queryKey: qk.request(id) });
+  queryClient.invalidateQueries({ queryKey: qk.audit(id) });
+  queryClient.invalidateQueries({ queryKey: qk.briefing(id) });
+}
+
 function useRequestTransition<TBody>(id: string | undefined, action: string) {
   const queryClient = useQueryClient();
   return useMutation<RequestDetailResponse, Error, TBody>({
@@ -243,15 +242,7 @@ function useRequestTransition<TBody>(id: string | undefined, action: string) {
         method: 'POST',
         body: body ?? {},
       }),
-    onSuccess: () => {
-      if (id) queryClient.invalidateQueries({ queryKey: qk.request(id) });
-      queryClient.invalidateQueries({ queryKey: qk.requests });
-      queryClient.invalidateQueries({ queryKey: qk.appointments });
-      if (id) {
-        queryClient.invalidateQueries({ queryKey: qk.audit(id) });
-        queryClient.invalidateQueries({ queryKey: qk.briefing(id) });
-      }
-    },
+    onSuccess: () => invalidateRequestData(queryClient, id),
   });
 }
 
@@ -267,10 +258,6 @@ export function useCancelRequest(id: string | undefined) {
   return useRequestTransition<void>(id, 'cancel');
 }
 
-/* ------------------------------------------------------------------ */
-/* Calendario                                                          */
-/* ------------------------------------------------------------------ */
-
 export function useAppointments() {
   return useQuery<AppointmentsResponse>({
     queryKey: qk.appointments,
@@ -279,11 +266,13 @@ export function useAppointments() {
   });
 }
 
-/* ------------------------------------------------------------------ */
-/* Utilidades compartidas                                              */
-/* ------------------------------------------------------------------ */
+export interface UrgencyOption {
+  value: Urgency;
+  label: string;
+  hint: string;
+}
 
-export const URGENCY_OPTIONS: Array<{ value: Urgency; label: string; hint: string }> = [
+export const URGENCY_OPTIONS: UrgencyOption[] = [
   { value: 'BAJA', label: 'Baja', hint: 'Puede esperar a la agenda habitual' },
   { value: 'MEDIA', label: 'Media', hint: 'Conviene verlo en los próximos días' },
   { value: 'ALTA', label: 'Urgente', hint: 'No puede esperar más de 24-48 h' },

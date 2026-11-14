@@ -1,16 +1,17 @@
-"""Auth demo: cookie de sesión firmada con itsdangerous (sin JWT)."""
-
 from __future__ import annotations
 
 from typing import Annotated, Optional
 
-from fastapi import Depends, HTTPException, Request, Response, status
+from fastapi import Depends, Request, Response
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from sqlmodel import Session, select
 
 from .config import settings
 from .db import get_session
+from .errors import UNAUTHORIZED, ensure, require_found
+from .models import Request as RequestModel
 from .models import Role, User
+from .schemas import role_value
 
 _serializer = URLSafeTimedSerializer(settings.secret_key, salt="vetlink-session")
 
@@ -28,9 +29,7 @@ def read_session_token(token: Optional[str]) -> Optional[str]:
         data = _serializer.loads(token, max_age=settings.session_max_age)
     except (BadSignature, SignatureExpired):
         return None
-    if isinstance(data, dict):
-        return data.get("uid")
-    return None
+    return data.get("uid") if isinstance(data, dict) else None
 
 
 def set_session_cookie(response: Response, token: str) -> None:
@@ -53,51 +52,36 @@ def get_current_user(
     session: Annotated[Session, Depends(get_session)],
 ) -> User:
     user_id = read_session_token(request.cookies.get(COOKIE_NAME))
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Sesión no válida o expirada. Inicia sesión demo.",
-        )
+    ensure(user_id is not None, "Sesión no válida o expirada. Inicia sesión demo.", UNAUTHORIZED)
     user = session.get(User, user_id)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Usuario de sesión no encontrado.",
-        )
-    return user
+    return require_found(user, "Usuario de sesión no encontrado.", UNAUTHORIZED)
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
 DbSession = Annotated[Session, Depends(get_session)]
 
 
-def role_value(user: User) -> str:
-    return user.role.value if isinstance(user.role, Role) else str(user.role)
-
-
-def user_to_dict(user: User) -> dict:
-    return {
-        "id": user.id,
-        "username": user.username,
-        "display_name": user.display_name,
-        "role": role_value(user),
-        "clinic_id": user.clinic_id,
-        "specialty": user.specialty,
-    }
-
-
 def specialist_id_for_user(user: User) -> Optional[str]:
-    """Convención de la demo: el especialista `marc` corresponde a `spc_marc`."""
     if role_value(user) != Role.SPECIALIST.value:
         return None
     return f"spc_{user.username}"
 
 
-def is_participant(user: User, req) -> bool:
-    if role_value(user) == Role.ADMIN.value:
+def is_participant(user: User, req: RequestModel) -> bool:
+    role = role_value(user)
+    if role == Role.ADMIN.value:
         return True
-    if role_value(user) == Role.CLINIC.value:
+    if role == Role.CLINIC.value:
         return req.created_by == user.id
-    if role_value(user) == Role.SPECIALIST.value:
+    if role == Role.SPECIALIST.value:
         return req.specialist_id == specialist_id_for_user(user)
     return False
+
+
+def request_scope(user: User):
+    role = role_value(user)
+    if role == Role.CLINIC.value:
+        return select(RequestModel).where(RequestModel.created_by == user.id)
+    if role == Role.SPECIALIST.value:
+        return select(RequestModel).where(RequestModel.specialist_id == specialist_id_for_user(user))
+    return select(RequestModel)

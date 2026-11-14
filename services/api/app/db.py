@@ -1,16 +1,15 @@
-"""Engine SQLite, creación de tablas, sesión y auditoría."""
-
 from __future__ import annotations
 
 import json
 import uuid
-from datetime import datetime, timezone
+from dataclasses import dataclass
 from typing import Any, Iterator, Optional
 
 from sqlmodel import Session, SQLModel, create_engine, select
 
 from .config import settings
-from .models import Alert, AuditEvent, Patient, Record, Request, utcnow
+from .errors import require_found
+from .models import Alert, AuditEvent, Record, Request, utcnow
 
 settings.data_dir.mkdir(parents=True, exist_ok=True)
 settings.uploads_dir.mkdir(parents=True, exist_ok=True)
@@ -23,17 +22,12 @@ engine = create_engine(
 
 
 def init_db() -> None:
-    """Crea las tablas (idempotente) e importa los modelos para registrarlos."""
-    from . import models  # noqa: F401  (registra las tablas en SQLModel.metadata)
-
     settings.data_dir.mkdir(parents=True, exist_ok=True)
     settings.uploads_dir.mkdir(parents=True, exist_ok=True)
     SQLModel.metadata.create_all(engine)
 
 
 def reset_db() -> None:
-    from . import models  # noqa: F401
-
     SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
 
@@ -47,22 +41,23 @@ def new_id(prefix: str) -> str:
     return f"{prefix}_{uuid.uuid4().hex[:10]}"
 
 
-def log_audit(
-    session: Session,
-    *,
-    actor: str,
-    role: str,
-    entity_type: str,
-    entity_id: str,
-    action: str,
-) -> AuditEvent:
+@dataclass(frozen=True)
+class AuditEntry:
+    actor: str
+    role: str
+    entity_type: str
+    entity_id: str
+    action: str
+
+
+def write_audit(session: Session, entry: AuditEntry) -> AuditEvent:
     event = AuditEvent(
         id=new_id("aud"),
-        actor=actor,
-        role=str(role),
-        entity_type=entity_type,
-        entity_id=entity_id,
-        action=action,
+        actor=entry.actor,
+        role=entry.role,
+        entity_type=entry.entity_type,
+        entity_id=entry.entity_id,
+        action=entry.action,
         created_at=utcnow(),
     )
     session.add(event)
@@ -82,10 +77,6 @@ def audit_to_dict(event: AuditEvent) -> dict[str, Any]:
     }
 
 
-def iso(dt: Optional[datetime]) -> Optional[str]:
-    return dt.isoformat() if dt else None
-
-
 def loads_json(raw: Optional[str], default: Any) -> Any:
     if not raw:
         return default
@@ -99,34 +90,37 @@ def dumps_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
-# --------------------------------------------------------- consultas frecuentes
-
-
 def record_for_patient(session: Session, patient_id: str) -> Optional[Record]:
-    return session.exec(
+    statement = (
         select(Record).where(Record.patient_id == patient_id).order_by(Record.record_version.desc())
-    ).first()
+    )
+    return session.exec(statement).first()
 
 
 def alerts_for_patient(session: Session, patient_id: str) -> list[Alert]:
     return list(session.exec(select(Alert).where(Alert.patient_id == patient_id)).all())
 
 
-def patient_or_none(session: Session, patient_id: str) -> Optional[Patient]:
-    return session.get(Patient, patient_id)
+def alert_counts_by_patient(session: Session) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for alert in session.exec(select(Alert)).all():
+        counts[alert.patient_id] = counts.get(alert.patient_id, 0) + 1
+    return counts
 
 
 def audit_events_for(session: Session, entity_type: str, entity_id: str) -> list[AuditEvent]:
-    return list(
-        session.exec(
-            select(AuditEvent)
-            .where(AuditEvent.entity_type == entity_type, AuditEvent.entity_id == entity_id)
-            .order_by(AuditEvent.created_at.asc())
-        ).all()
+    statement = (
+        select(AuditEvent)
+        .where(AuditEvent.entity_type == entity_type, AuditEvent.entity_id == entity_id)
+        .order_by(AuditEvent.created_at.asc())
     )
+    return list(session.exec(statement).all())
 
 
 def recent_audit_events(session: Session, limit: int = 50) -> list[AuditEvent]:
-    return list(
-        session.exec(select(AuditEvent).order_by(AuditEvent.created_at.desc()).limit(limit)).all()
-    )
+    statement = select(AuditEvent).order_by(AuditEvent.created_at.desc()).limit(limit)
+    return list(session.exec(statement).all())
+
+
+def request_or_404(session: Session, request_id: str) -> Request:
+    return require_found(session.get(Request, request_id), "Solicitud no encontrada")

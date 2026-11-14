@@ -3,7 +3,6 @@ import type { ProvenanceSummary } from '../api/types';
 
 interface ProvenanceBadgeProps {
   summary?: ProvenanceSummary | null;
-  /** Alternativa: totales ya calculados por la pantalla. */
   entities?: number | null;
   fieldsPopulated?: number | null;
   alerts?: number | null;
@@ -18,7 +17,30 @@ function pickNumber(value: unknown): number | null {
   return null;
 }
 
-/** Contador de provenance: "N entidades · N campos · N alertas". */
+interface ProvenanceSource {
+  summary?: ProvenanceSummary | null;
+  entities?: number | null;
+  fieldsPopulated?: number | null;
+  alerts?: number | null;
+}
+
+function resolveAlertCount(source: ProvenanceSource): number | null {
+  const raw = source.summary?.alerts;
+  const nested = raw && typeof raw === 'object' ? pickNumber((raw as Record<string, unknown>).total) : null;
+  return pickNumber(source.alerts) ?? pickNumber(raw) ?? nested;
+}
+
+function provenanceParts(source: ProvenanceSource): string[] {
+  const entityCount = pickNumber(source.entities) ?? pickNumber(source.summary?.entities);
+  const fieldCount = pickNumber(source.fieldsPopulated) ?? pickNumber(source.summary?.fields_populated);
+  const alertCount = resolveAlertCount(source);
+  return [
+    entityCount !== null ? `${entityCount} entidades` : null,
+    fieldCount !== null ? `${fieldCount} campos` : null,
+    alertCount !== null ? `${alertCount} alertas` : null,
+  ].filter((part): part is string => part !== null);
+}
+
 export function ProvenanceBadge({
   summary,
   entities,
@@ -26,22 +48,7 @@ export function ProvenanceBadge({
   alerts,
   className = '',
 }: ProvenanceBadgeProps) {
-  const rawAlerts = summary?.alerts;
-  const alertCount =
-    pickNumber(alerts) ??
-    pickNumber(rawAlerts) ??
-    (rawAlerts && typeof rawAlerts === 'object'
-      ? pickNumber((rawAlerts as Record<string, unknown>).total)
-      : null);
-
-  const entityCount = pickNumber(entities) ?? pickNumber(summary?.entities);
-  const fieldCount = pickNumber(fieldsPopulated) ?? pickNumber(summary?.fields_populated);
-
-  const parts: string[] = [];
-  if (entityCount !== null) parts.push(`${entityCount} entidades`);
-  if (fieldCount !== null) parts.push(`${fieldCount} campos`);
-  if (alertCount !== null) parts.push(`${alertCount} alertas`);
-
+  const parts = provenanceParts({ summary, entities, fieldsPopulated, alerts });
   return (
     <span
       className={`inline-flex items-center gap-2 rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1 text-xs font-medium text-secondary ${className}`}

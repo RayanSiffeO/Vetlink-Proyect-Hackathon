@@ -1,22 +1,22 @@
-"""Derivaciones (requests): creación, resumen no identificativo, briefing y estados."""
-
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 from sqlmodel import select
 
-from ..auth import CurrentUser, DbSession, is_participant, role_value, specialist_id_for_user
+from ..auth import is_participant, request_scope, role_value, specialist_id_for_user
 from ..briefing import build_briefing, build_patient_public, build_public_summary
+from ..context import ApiContext, ApiCtx
 from ..db import (
     alerts_for_patient,
     audit_events_for,
     audit_to_dict,
-    log_audit,
     new_id,
     record_for_patient,
+    request_or_404,
 )
+from ..errors import CONFLICT, UNPROCESSABLE, ensure, require_found
 from ..models import (
     Appointment,
     Patient,
@@ -24,14 +24,17 @@ from ..models import (
     RequestStatus,
     Role,
     Specialist,
+    User,
     utcnow,
 )
 from ..schemas import (
     AcceptIn,
     DeclineIn,
     RequestCreateIn,
+    appointment_dict,
     canonical_of,
     request_dict,
+    request_status,
     specialist_dict,
 )
 
@@ -42,59 +45,76 @@ UNLOCKED_STATUSES = {
     RequestStatus.SCHEDULED,
     RequestStatus.COMPLETED,
 }
+DECLINABLE_STATUSES = {
+    RequestStatus.REQUESTED,
+    RequestStatus.ACCEPTED,
+    RequestStatus.SCHEDULED,
+}
+NON_CANCELLABLE_STATUSES = {
+    RequestStatus.COMPLETED,
+    RequestStatus.CANCELLED,
+    RequestStatus.DECLINED,
+}
 LOCKED_DETAIL = "La historia completa se desbloquea al aceptar la derivación"
+ACCEPT_DETAIL = "Solo el especialista asignado puede aceptar la derivación"
+DECLINE_DETAIL = "Solo el especialista asignado puede rechazar la derivación"
 
 
-def _load_request(session, request_id: str) -> Request:
-    req = session.get(Request, request_id)
-    if req is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Solicitud no encontrada")
-    return req
-
-
-def _ensure_participant(user, req: Request) -> None:
-    if not is_participant(user, req):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=LOCKED_DETAIL)
+def _patient_of(session, req: Request) -> Patient:
+    return require_found(session.get(Patient, req.patient_id), "Paciente no encontrado")
 
 
 def _specialist_of(session, req: Request) -> Specialist | None:
     return session.get(Specialist, req.specialist_id)
 
 
-def _patient_of(session, req: Request) -> Patient:
-    patient = session.get(Patient, req.patient_id)
-    if patient is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Paciente no encontrado")
-    return patient
-
-
 def _canonical_of_request(session, req: Request) -> dict:
-    record = record_for_patient(session, req.patient_id)
-    if record is None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="El paciente de la solicitud no tiene registro canónico",
-        )
+    record = require_found(
+        record_for_patient(session, req.patient_id),
+        "El paciente de la solicitud no tiene registro canónico",
+        CONFLICT,
+    )
     return canonical_of(record)
 
 
-@router.post("", summary="Crear una derivación")
-def create_request(payload: RequestCreateIn, user: CurrentUser, session: DbSession) -> dict:
-    if role_value(user) not in {Role.CLINIC.value, Role.ADMIN.value}:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Solo la clínica puede crear derivaciones",
-        )
+def _ensure_assigned_specialist(user: User, req: Request, detail: str) -> None:
+    assigned = role_value(user) == Role.SPECIALIST.value
+    ensure(assigned and req.specialist_id == specialist_id_for_user(user), detail)
 
-    patient = session.get(Patient, payload.patient_id)
-    if patient is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Paciente no encontrado")
-    specialist = session.get(Specialist, payload.specialist_id)
-    if specialist is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Especialista no encontrado")
 
+def _ensure_can_cancel(user: User, req: Request) -> None:
+    role = role_value(user)
+    ensure(
+        role != Role.CLINIC.value or req.created_by == user.id,
+        "Solo la clínica que creó la solicitud puede cancelarla",
+    )
+    ensure(role in {Role.CLINIC.value, Role.ADMIN.value}, "Solo la clínica puede cancelar la derivación")
+
+
+def _ensure_unlocked(user: User, req: Request) -> None:
+    ensure(is_participant(user, req), LOCKED_DETAIL)
+    ensure(req.status in UNLOCKED_STATUSES, LOCKED_DETAIL)
+
+
+def _apply_status(ctx: ApiContext, req: Request, new_status: RequestStatus) -> None:
+    req.status = new_status
+    req.updated_at = utcnow()
+    ctx.session.add(req)
+    ctx.session.commit()
+    ctx.session.refresh(req)
+
+
+def _is_iso_datetime(value: str) -> bool:
+    try:
+        datetime.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def _new_request(payload: RequestCreateIn, user: User) -> Request:
     now = utcnow()
-    req = Request(
+    return Request(
         id=new_id("req"),
         patient_id=payload.patient_id,
         specialist_id=payload.specialist_id,
@@ -107,52 +127,117 @@ def create_request(payload: RequestCreateIn, user: CurrentUser, session: DbSessi
         created_at=now,
         updated_at=now,
     )
-    session.add(req)
-    session.commit()
-    session.refresh(req)
 
-    log_audit(
-        session,
-        actor=user.username,
-        role=role_value(user),
-        entity_type="Request",
-        entity_id=req.id,
-        action="REQUEST_CREATED",
+
+def _confirm_request(ctx: ApiContext, req: Request, payload: AcceptIn | None) -> Appointment | None:
+    slot_iso = payload.slot_iso if payload else None
+    if not slot_iso:
+        _apply_status(ctx, req, RequestStatus.ACCEPTED)
+        return None
+    ensure(_is_iso_datetime(slot_iso), "slot_iso debe ser una fecha ISO 8601 válida", UNPROCESSABLE)
+    appointment = Appointment(
+        id=new_id("apt"),
+        request_id=req.id,
+        when_iso=slot_iso,
+        status="SCHEDULED",
     )
+    ctx.session.add(appointment)
+    _apply_status(ctx, req, RequestStatus.SCHEDULED)
+    return appointment
+
+
+def _cancel_appointments(session, req: Request) -> None:
+    appointments = session.exec(select(Appointment).where(Appointment.request_id == req.id)).all()
+    for appointment in appointments:
+        appointment.status = "CANCELLED"
+        session.add(appointment)
+
+
+def _request_item(session, req: Request) -> dict:
+    patient = session.get(Patient, req.patient_id)
+    spec = session.get(Specialist, req.specialist_id)
+    item = request_dict(req)
+    item.update(
+        {
+            "patient_name": patient.name if patient else None,
+            "patient_species": patient.species if patient else None,
+            "specialist_name": spec.name if spec else None,
+            "specialist_specialty": spec.specialty if spec else None,
+        }
+    )
+    return item
+
+
+def _service_summary(req: Request, spec: Specialist | None) -> dict:
+    detail = specialist_dict(spec) if spec else {}
+    return {
+        "specialist_id": req.specialist_id,
+        "specialist": detail.get("name"),
+        "specialty": detail.get("specialty"),
+        "zone": detail.get("zone"),
+        "price_from": detail.get("price_from"),
+        "next_slot": detail.get("next_slot"),
+    }
+
+
+def _record_meta(record, alerts_count: int) -> dict:
+    if record is None:
+        return {
+            "id": None,
+            "source_system": None,
+            "record_version": None,
+            "imported_at": None,
+            "alerts_count": alerts_count,
+        }
+    return {
+        "id": record.id,
+        "source_system": record.source_system,
+        "record_version": record.record_version,
+        "imported_at": record.imported_at.isoformat(),
+        "alerts_count": alerts_count,
+    }
+
+
+def _patient_summary(patient: Patient, canonical: dict) -> dict:
+    return {
+        "id": patient.id,
+        "name": patient.name,
+        "owner_display": patient.owner_display,
+        "microchip": patient.microchip,
+        "patient": build_patient_public(canonical),
+    }
+
+
+@router.post("", summary="Crear una derivación")
+def create_request(payload: RequestCreateIn, ctx: ApiCtx) -> dict:
+    ensure(
+        role_value(ctx.user) in {Role.CLINIC.value, Role.ADMIN.value},
+        "Solo la clínica puede crear derivaciones",
+    )
+    require_found(ctx.session.get(Patient, payload.patient_id), "Paciente no encontrado")
+    require_found(ctx.session.get(Specialist, payload.specialist_id), "Especialista no encontrado")
+    req = _new_request(payload, ctx.user)
+    ctx.session.add(req)
+    ctx.session.commit()
+    ctx.session.refresh(req)
+    ctx.audit("Request", req.id, "REQUEST_CREATED")
     return {"request": request_dict(req)}
 
 
 @router.get("", summary="Solicitudes visibles según rol")
-def list_requests(user: CurrentUser, session: DbSession) -> dict:
-    role = role_value(user)
-    stmt = select(Request).order_by(Request.created_at.desc())
-    if role == Role.CLINIC.value:
-        stmt = stmt.where(Request.created_by == user.id)
-    elif role == Role.SPECIALIST.value:
-        stmt = stmt.where(Request.specialist_id == specialist_id_for_user(user))
-    reqs = list(session.exec(stmt).all())
-
-    items = []
-    for req in reqs:
-        patient = session.get(Patient, req.patient_id)
-        spec = _specialist_of(session, req)
-        item = request_dict(req)
-        item["patient_name"] = patient.name if patient else None
-        item["patient_species"] = patient.species if patient else None
-        item["specialist_name"] = spec.name if spec else None
-        item["specialist_specialty"] = spec.specialty if spec else None
-        items.append(item)
-
-    return {"requests": items, "count": len(items), "scope": role}
+def list_requests(ctx: ApiCtx) -> dict:
+    statement = request_scope(ctx.user).order_by(Request.created_at.desc())
+    items = [_request_item(ctx.session, req) for req in ctx.session.exec(statement).all()]
+    return {"requests": items, "count": len(items), "scope": role_value(ctx.user)}
 
 
 @router.get("/{request_id}", summary="Detalle de la solicitud")
-def get_request(request_id: str, user: CurrentUser, session: DbSession) -> dict:
-    req = _load_request(session, request_id)
-    _ensure_participant(user, req)
-    patient = _patient_of(session, req)
-    spec = _specialist_of(session, req)
-    canonical = _canonical_of_request(session, req)
+def get_request(request_id: str, ctx: ApiCtx) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    ensure(is_participant(ctx.user, req), LOCKED_DETAIL)
+    patient = _patient_of(ctx.session, req)
+    spec = _specialist_of(ctx.session, req)
+    canonical = _canonical_of_request(ctx.session, req)
     briefing = build_briefing(canonical)
     return {
         "request": request_dict(req),
@@ -168,151 +253,59 @@ def get_request(request_id: str, user: CurrentUser, session: DbSession) -> dict:
 
 
 @router.get("/{request_id}/summary", summary="Resumen no identificativo pre/post aceptación")
-def get_summary(request_id: str, user: CurrentUser, session: DbSession) -> dict:
-    req = _load_request(session, request_id)
-    _ensure_participant(user, req)
-    canonical = _canonical_of_request(session, req)
-    spec = _specialist_of(session, req)
-
+def get_summary(request_id: str, ctx: ApiCtx) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    ensure(is_participant(ctx.user, req), LOCKED_DETAIL)
+    canonical = _canonical_of_request(ctx.session, req)
+    spec = _specialist_of(ctx.session, req)
     summary = build_public_summary(canonical, motivo=req.motivo, urgencia=req.urgencia)
-    log_audit(
-        session,
-        actor=user.username,
-        role=role_value(user),
-        entity_type="Request",
-        entity_id=req.id,
-        action="VIEW_SUMMARY",
-    )
+    ctx.audit("Request", req.id, "VIEW_SUMMARY")
+    data = request_dict(req)
     return {
         "request_id": req.id,
-        "status": request_dict(req)["status"],
+        "status": data["status"],
         "created_at": req.created_at.isoformat(),
         "urgencia": req.urgencia,
-        "share_level": request_dict(req)["share_level"],
+        "share_level": data["share_level"],
         "motivo": req.motivo,
         "preferred": req.preferred,
         **summary,
-        "service": {
-            "specialist_id": req.specialist_id,
-            "specialist": spec.name if spec else None,
-            "specialty": spec.specialty if spec else None,
-            "zone": spec.zone if spec else None,
-            "price_from": spec.price_from if spec else None,
-            "next_slot": (specialist_dict(spec)["next_slot"] if spec else None),
-        },
+        "service": _service_summary(req, spec),
     }
 
 
 @router.post("/{request_id}/accept", summary="Aceptar la derivación (opcionalmente con slot)")
-def accept_request(
-    request_id: str,
-    user: CurrentUser,
-    session: DbSession,
-    payload: AcceptIn | None = None,
-) -> dict:
-    req = _load_request(session, request_id)
-    if role_value(user) != Role.SPECIALIST.value or req.specialist_id != specialist_id_for_user(user):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Solo el especialista asignado puede aceptar la derivación",
-        )
-    if req.status not in {RequestStatus.REQUESTED}:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"La solicitud no está en estado REQUESTED (estado: {request_dict(req)['status']})",
-        )
-
-    spec = _specialist_of(session, req)
-    slot_iso = payload.slot_iso if payload else None
-    if slot_iso:
-        try:
-            datetime.fromisoformat(slot_iso)
-        except ValueError:
-            raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail="slot_iso debe ser una fecha ISO 8601 válida",
-            )
-        req.status = RequestStatus.SCHEDULED
-        appointment = Appointment(
-            id=new_id("apt"),
-            request_id=req.id,
-            when_iso=slot_iso,
-            status="SCHEDULED",
-        )
-        session.add(appointment)
-    else:
-        req.status = RequestStatus.ACCEPTED
-        appointment = None
-
-    req.updated_at = utcnow()
-    session.add(req)
-    session.commit()
-    session.refresh(req)
-
-    log_audit(
-        session,
-        actor=user.username,
-        role=role_value(user),
-        entity_type="Request",
-        entity_id=req.id,
-        action="REQUEST_ACCEPTED" if appointment is None else "REQUEST_SCHEDULED",
+def accept_request(request_id: str, ctx: ApiCtx, payload: AcceptIn | None = None) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    _ensure_assigned_specialist(ctx.user, req, ACCEPT_DETAIL)
+    ensure(
+        req.status in {RequestStatus.REQUESTED},
+        f"La solicitud no está en estado REQUESTED (estado: {request_status(req)})",
+        CONFLICT,
     )
+    appointment = _confirm_request(ctx, req, payload)
+    ctx.audit("Request", req.id, "REQUEST_SCHEDULED" if appointment else "REQUEST_ACCEPTED")
     if appointment is not None:
-        log_audit(
-            session,
-            actor=user.username,
-            role=role_value(user),
-            entity_type="Appointment",
-            entity_id=appointment.id,
-            action="APPOINTMENT_CREATED",
-        )
-        session.refresh(appointment)
-
+        ctx.audit("Appointment", appointment.id, "APPOINTMENT_CREATED")
+    spec = _specialist_of(ctx.session, req)
     return {
         "request": request_dict(req),
-        "appointment": {
-            "id": appointment.id,
-            "request_id": appointment.request_id,
-            "when_iso": appointment.when_iso,
-            "status": appointment.status,
-        }
-        if appointment
-        else None,
+        "appointment": appointment_dict(appointment) if appointment else None,
         "specialist": specialist_dict(spec) if spec else None,
     }
 
 
 @router.post("/{request_id}/decline", summary="Rechazar la derivación")
-def decline_request(
-    request_id: str,
-    user: CurrentUser,
-    session: DbSession,
-    payload: DeclineIn | None = None,
-) -> dict:
-    req = _load_request(session, request_id)
-    if role_value(user) != Role.SPECIALIST.value or req.specialist_id != specialist_id_for_user(user):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Solo el especialista asignado puede rechazar la derivación",
-        )
-    if req.status not in {RequestStatus.REQUESTED, RequestStatus.ACCEPTED, RequestStatus.SCHEDULED}:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"No se puede rechazar una solicitud en estado {request_dict(req)['status']}",
-        )
-    req.status = RequestStatus.DECLINED
-    req.updated_at = utcnow()
-    session.add(req)
-    session.commit()
-    session.refresh(req)
-    log_audit(
-        session,
-        actor=user.username,
-        role=role_value(user),
-        entity_type="Request",
-        entity_id=req.id,
-        action="REQUEST_DECLINED",
+def decline_request(request_id: str, ctx: ApiCtx, payload: DeclineIn | None = None) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    _ensure_assigned_specialist(ctx.user, req, DECLINE_DETAIL)
+    ensure(
+        req.status in DECLINABLE_STATUSES,
+        f"No se puede rechazar una solicitud en estado {request_status(req)}",
+        CONFLICT,
     )
+    _apply_status(ctx, req, RequestStatus.DECLINED)
+    ctx.audit("Request", req.id, "REQUEST_DECLINED")
     return {
         "request": request_dict(req),
         "reason": payload.reason if payload else None,
@@ -321,88 +314,40 @@ def decline_request(
 
 
 @router.post("/{request_id}/cancel", summary="Cancelar la derivación (clínica)")
-def cancel_request(request_id: str, user: CurrentUser, session: DbSession) -> dict:
-    req = _load_request(session, request_id)
-    role = role_value(user)
-    if role == Role.CLINIC.value and req.created_by != user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Solo la clínica que creó la solicitud puede cancelarla",
-        )
-    if role not in {Role.CLINIC.value, Role.ADMIN.value}:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Solo la clínica puede cancelar la derivación",
-        )
-    if req.status in {RequestStatus.COMPLETED, RequestStatus.CANCELLED, RequestStatus.DECLINED}:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"No se puede cancelar una solicitud en estado {request_dict(req)['status']}",
-        )
-    req.status = RequestStatus.CANCELLED
-    req.updated_at = utcnow()
-    session.add(req)
-    for appt in session.exec(select(Appointment).where(Appointment.request_id == req.id)).all():
-        appt.status = "CANCELLED"
-        session.add(appt)
-    session.commit()
-    session.refresh(req)
-    log_audit(
-        session,
-        actor=user.username,
-        role=role_value(user),
-        entity_type="Request",
-        entity_id=req.id,
-        action="REQUEST_CANCELLED",
+def cancel_request(request_id: str, ctx: ApiCtx) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    _ensure_can_cancel(ctx.user, req)
+    ensure(
+        req.status not in NON_CANCELLABLE_STATUSES,
+        f"No se puede cancelar una solicitud en estado {request_status(req)}",
+        CONFLICT,
     )
+    _cancel_appointments(ctx.session, req)
+    _apply_status(ctx, req, RequestStatus.CANCELLED)
+    ctx.audit("Request", req.id, "REQUEST_CANCELLED")
     return {"request": request_dict(req), "detail": "Derivación cancelada"}
 
 
 @router.get("/{request_id}/briefing", summary="Briefing completo (solo tras aceptar)")
-def get_briefing(request_id: str, user: CurrentUser, session: DbSession) -> dict:
-    req = _load_request(session, request_id)
-    if not is_participant(user, req):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=LOCKED_DETAIL)
-    if req.status not in UNLOCKED_STATUSES:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=LOCKED_DETAIL)
-
-    canonical = _canonical_of_request(session, req)
+def get_briefing(request_id: str, ctx: ApiCtx) -> dict:
+    req = request_or_404(ctx.session, request_id)
+    _ensure_unlocked(ctx.user, req)
+    canonical = _canonical_of_request(ctx.session, req)
     briefing = build_briefing(canonical)
-    patient = _patient_of(session, req)
-    record = record_for_patient(session, req.patient_id)
-    alerts = alerts_for_patient(session, req.patient_id)
-    spec = _specialist_of(session, req)
-
-    log_audit(
-        session,
-        actor=user.username,
-        role=role_value(user),
-        entity_type="Request",
-        entity_id=req.id,
-        action="VIEW_BRIEFING",
-    )
-    session.refresh(req)
-    events = audit_events_for(session, "Request", req.id)
-
+    patient = _patient_of(ctx.session, req)
+    record = record_for_patient(ctx.session, req.patient_id)
+    alerts = alerts_for_patient(ctx.session, req.patient_id)
+    spec = _specialist_of(ctx.session, req)
+    ctx.audit("Request", req.id, "VIEW_BRIEFING")
+    ctx.session.refresh(req)
+    events = audit_events_for(ctx.session, "Request", req.id)
     return {
         "request": request_dict(req),
         "briefing": briefing,
         "record": canonical,
-        "record_meta": {
-            "id": record.id if record else None,
-            "source_system": record.source_system if record else None,
-            "record_version": record.record_version if record else None,
-            "imported_at": record.imported_at.isoformat() if record else None,
-            "alerts_count": len(alerts),
-        },
-        "patient_summary": {
-            "id": patient.id,
-            "name": patient.name,
-            "owner_display": patient.owner_display,
-            "microchip": patient.microchip,
-            "patient": build_patient_public(canonical),
-        },
+        "record_meta": _record_meta(record, len(alerts)),
+        "patient_summary": _patient_summary(patient, canonical),
         "specialist": specialist_dict(spec) if spec else None,
-        "audit": [audit_to_dict(e) for e in events],
+        "audit": [audit_to_dict(event) for event in events],
         "unlocked_at": req.updated_at.isoformat(),
     }

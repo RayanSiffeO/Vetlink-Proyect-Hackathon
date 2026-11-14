@@ -1,5 +1,3 @@
-"""VetLink API — H+0 (FastAPI + SQLModel + SQLite)."""
-
 from __future__ import annotations
 
 import logging
@@ -11,18 +9,20 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session
 
-from .config import settings, API_TITLE, API_VERSION
+from . import routers
+from .config import API_TITLE, API_VERSION, settings
 from .db import engine, init_db
 from .models import Patient
 from .seed import ensure_seed, patient_counts
-from . import routers
 
 logger = logging.getLogger("vetlink.api")
+
+ASSETS_DIR = settings.web_dist / "assets"
+SPA_INDEX = settings.web_dist / "index.html"
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    """Crea tablas y siembra la demo si la BD está vacía (idempotente)."""
     init_db()
     with Session(engine) as session:
         seeded_now = ensure_seed(session)
@@ -73,17 +73,21 @@ for router in routers.ALL_ROUTERS:
     app.include_router(router, prefix=settings.api_prefix)
 
 
-# --- SPA compilada (solo si existe apps/web/dist); nunca intercepta /api ---
-if settings.web_dist.exists() and (settings.web_dist / "index.html").exists():
-    assets_dir = settings.web_dist / "assets"
-    if assets_dir.exists():
-        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+def spa_fallback(full_path: str):
+    if full_path.startswith("api") or full_path in {"docs", "openapi.json"}:
+        return JSONResponse({"detail": "Not Found"}, status_code=404)
+    candidate = settings.web_dist / full_path
+    if full_path and candidate.is_file():
+        return FileResponse(candidate)
+    return FileResponse(SPA_INDEX)
 
-    @app.get("/{full_path:path}", include_in_schema=False)
-    def spa_fallback(full_path: str):
-        if full_path.startswith("api") or full_path in {"docs", "openapi.json"}:
-            return JSONResponse({"detail": "Not Found"}, status_code=404)
-        candidate = settings.web_dist / full_path
-        if full_path and candidate.is_file():
-            return FileResponse(candidate)
-        return FileResponse(settings.web_dist / "index.html")
+
+def mount_spa_assets(application: FastAPI) -> None:
+    if not ASSETS_DIR.is_dir():
+        return
+    application.mount("/assets", StaticFiles(directory=str(ASSETS_DIR)), name="assets")
+
+
+if SPA_INDEX.is_file():
+    mount_spa_assets(app)
+    app.add_api_route("/{full_path:path}", spa_fallback, methods=["GET"], include_in_schema=False)

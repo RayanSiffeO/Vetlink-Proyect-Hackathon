@@ -25,7 +25,9 @@ Laura es veterinaria generalista: no puede tener especialistas en plantilla y no
 | Diagramas navegables (`docs/diagramas/`) | ✅ 4 HTML validados |
 | Datos de ejemplo (3 pacientes, 3 formatos + CSV de robustez) | ✅ |
 | Modelo canónico + reglas de normalización | ✅ 3 registros JSON canónicos validados (1.785 campos, 22 alertas con evidencia) |
-| Aplicación (React + FastAPI + SQLite) | 🟡 **H+0 funcional**: login demo, seed de los 3 pacientes, import cache, ficha con alertas, marketplace, solicitud, briefing con niveles de acceso y agenda |
+| Aplicación (React + FastAPI + SQLite) | ✅ **MVP C' funcional**: 5 pantallas (9 rutas), login demo, seed, import cache, ficha con alertas, marketplace, solicitud, briefing con niveles de acceso, agenda y auditoría. Backend limpio (`ruff` 0, `pytest` 5/5) y contrato de 23 endpoints congelado |
+| Cumplimiento estimado del reto (14/11 03:15) | 🟢 **~84 %**: normalización 65 % (demo vía cache; falta extracción real), marketplace 95 %, briefing/conexión 92 %, prototipo/ops 90 %, documentación 100 %, entrega final 40 % |
+| Entrega final | 🟡 Aplazada al cierre: pasada E2E en navegador, vídeo de 3 min, README de cierre y paquete local. GitHub congelado por indicación del equipo |
 
 ## Documentación
 
@@ -63,8 +65,8 @@ Joniha/
 ├── docs/                  # contexto, reto, datos, debate, flujos, arquitectura
 │   ├── diagramas/         # diagramas HTML navegables
 │   └── ejemplos/          # registros canónicos JSON de ejemplo
-├── apps/web/              # frontend React + Vite + TypeScript + DaisyUI (en construcción)
-├── services/api/          # API FastAPI + SQLModel + extractores (en construcción)
+├── apps/web/              # frontend React + Vite + TS + DaisyUI (5 pantallas; build en dist/)
+├── services/api/          # API FastAPI + SQLModel + SQLite (23 endpoints, seed y contrato v1)
 ├── data/samples/          # los 3 ficheros de ejemplo del reto + CSV de robustez
 ├── data/vetlink.db        # SQLite de la demo (gitignored; se genera al arrancar)
 └── scripts/               # demo:reset y utilidades

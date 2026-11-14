@@ -1,5 +1,3 @@
-"""Schemas de entrada (Pydantic) y serializadores de salida."""
-
 from __future__ import annotations
 
 from typing import Any, Literal, Optional
@@ -7,10 +5,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from .db import loads_json
-from .models import Alert, Appointment, ImportJob, Patient, Record, Request, Role, Specialist, User
-
-
-# ---------------------------------------------------------------- entradas
+from .models import Alert, Appointment, ImportJob, Patient, Record, Request, Specialist, User
 
 
 class DemoLoginIn(BaseModel):
@@ -34,9 +29,6 @@ class DeclineIn(BaseModel):
     reason: Optional[str] = None
 
 
-# --------------------------------------------------------------- utilidades
-
-
 def enum_value(value: Any) -> Any:
     return value.value if hasattr(value, "value") else value
 
@@ -45,7 +37,8 @@ def role_value(user: User) -> str:
     return str(enum_value(user.role))
 
 
-# ------------------------------------------------------------ serializadores
+def request_status(req: Request) -> str:
+    return str(enum_value(req.status))
 
 
 def user_dict(user: User) -> dict[str, Any]:
@@ -120,7 +113,7 @@ def request_dict(req: Request) -> dict[str, Any]:
         "patient_id": req.patient_id,
         "specialist_id": req.specialist_id,
         "created_by": req.created_by,
-        "status": str(enum_value(req.status)),
+        "status": request_status(req),
         "motivo": req.motivo,
         "urgencia": req.urgencia,
         "share_level": str(enum_value(req.share_level)),

@@ -1,14 +1,8 @@
-/**
- * Cliente HTTP mínimo de VetLink.
- *
- * - `${VITE_API_URL}` por defecto `/api` (el proxy de Vite lo reenvía a :8000).
- * - `credentials: 'include'`: la sesión demo viaja en cookie.
- * - Errores: se normalizan a `ApiError` con `status`, `message` y `detail`
- *   (FastAPI devuelve `{detail: "..."}` o `{detail: [{msg, loc}]}`).
- */
-
 export const API_BASE_URL: string =
   (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') || '/api';
+
+const NETWORK_ERROR_MESSAGE =
+  'No se puede contactar con la API. Comprueba que el backend esté arrancado en http://localhost:8000.';
 
 export class ApiError extends Error {
   status: number;
@@ -36,40 +30,35 @@ export class ApiError extends Error {
   }
 }
 
-/** Convierte el `detail` de FastAPI en un texto legible en español. */
-export function errorMessage(error: unknown): string {
-  if (error instanceof ApiError) {
-    return error.message;
-  }
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return 'Error inesperado';
+function describeDetailRecord(record: Record<string, unknown>): string {
+  const loc = Array.isArray(record.loc) ? record.loc.join('.') : '';
+  const msg = typeof record.msg === 'string' ? record.msg : JSON.stringify(record);
+  return loc ? `${loc}: ${msg}` : msg;
+}
+
+function describeDetailEntry(item: unknown): string {
+  if (typeof item === 'string') return item;
+  if (item && typeof item === 'object') return describeDetailRecord(item as Record<string, unknown>);
+  return String(item);
+}
+
+function humanizeArrayDetail(detail: unknown[]): string {
+  const parts = detail.map(describeDetailEntry).filter(Boolean);
+  return parts.join(' · ') || 'Datos no válidos';
+}
+
+function humanizeObjectDetail(detail: Record<string, unknown>): string {
+  if (typeof detail.message === 'string') return detail.message;
+  if (typeof detail.msg === 'string') return detail.msg;
+  if (typeof detail.detail === 'string') return detail.detail;
+  return JSON.stringify(detail);
 }
 
 function humanizeDetail(detail: unknown): string {
   if (typeof detail === 'string') return detail;
-  if (Array.isArray(detail)) {
-    const parts = detail
-      .map((item) => {
-        if (typeof item === 'string') return item;
-        if (item && typeof item === 'object') {
-          const record = item as Record<string, unknown>;
-          const loc = Array.isArray(record.loc) ? record.loc.join('.') : '';
-          const msg = typeof record.msg === 'string' ? record.msg : JSON.stringify(record);
-          return loc ? `${loc}: ${msg}` : msg;
-        }
-        return String(item);
-      })
-      .filter(Boolean);
-    return parts.join(' · ') || 'Datos no válidos';
-  }
+  if (Array.isArray(detail)) return humanizeArrayDetail(detail);
   if (detail && typeof detail === 'object') {
-    const record = detail as Record<string, unknown>;
-    if (typeof record.message === 'string') return record.message;
-    if (typeof record.msg === 'string') return record.msg;
-    if (typeof record.detail === 'string') return record.detail;
-    return JSON.stringify(detail);
+    return humanizeObjectDetail(detail as Record<string, unknown>);
   }
   return 'Error de la API';
 }
@@ -82,10 +71,12 @@ export interface RequestOptions {
   headers?: Record<string, string>;
 }
 
-export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', body, formData, signal, headers } = options;
-  const url = `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+function resolveUrl(path: string): string {
+  return `${API_BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+}
 
+function buildInit(options: RequestOptions): RequestInit {
+  const { method = 'GET', body, formData, signal, headers } = options;
   const init: RequestInit = {
     method,
     credentials: 'include',
@@ -98,50 +89,60 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
 
   if (formData) {
     init.body = formData;
-  } else if (body !== undefined) {
+    return init;
+  }
+
+  if (body !== undefined) {
     init.headers = { ...init.headers, 'Content-Type': 'application/json' };
     init.body = JSON.stringify(body);
   }
 
-  let response: Response;
+  return init;
+}
+
+function isJsonResponse(response: Response): boolean {
+  return (response.headers.get('content-type') ?? '').includes('application/json');
+}
+
+function safeJsonParse(raw: string): unknown {
   try {
-    response = await fetch(url, init);
-  } catch (error) {
-    if (error instanceof DOMException && error.name === 'AbortError') {
-      throw error;
-    }
-    throw new ApiError(
-      'No se puede contactar con la API. Comprueba que el backend esté arrancado en http://localhost:8000.',
-      0,
-      null,
-      url,
-    );
+    return JSON.parse(raw);
+  } catch {
+    return raw;
   }
+}
 
+async function parseResponseBody(response: Response): Promise<unknown> {
   const raw = await response.text();
-  const hasBody = raw.length > 0;
-  let data: unknown = null;
+  if (!raw) return null;
+  if (!isJsonResponse(response)) return raw;
+  return safeJsonParse(raw);
+}
 
-  if (hasBody) {
-    const contentType = response.headers.get('content-type') ?? '';
-    if (contentType.includes('application/json')) {
-      try {
-        data = JSON.parse(raw);
-      } catch {
-        data = raw;
-      }
-    } else {
-      data = raw;
-    }
+function toNetworkError(error: unknown, url: string): unknown {
+  if (error instanceof DOMException && error.name === 'AbortError') return error;
+  return new ApiError(NETWORK_ERROR_MESSAGE, 0, null, url);
+}
+
+function extractDetail(data: unknown): unknown {
+  const isRecord = data && typeof data === 'object' && 'detail' in data;
+  if (!isRecord) return data;
+  return (data as Record<string, unknown>).detail;
+}
+
+export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const url = resolveUrl(path);
+  let response: Response;
+
+  try {
+    response = await fetch(url, buildInit(options));
+  } catch (error) {
+    throw toNetworkError(error, url);
   }
 
-  if (!response.ok) {
-    const detail =
-      data && typeof data === 'object' && 'detail' in (data as Record<string, unknown>)
-        ? (data as Record<string, unknown>).detail
-        : data;
-    throw new ApiError(humanizeDetail(detail), response.status, detail, url);
-  }
+  const data = await parseResponseBody(response);
+  if (response.ok) return data as T;
 
-  return data as T;
+  const detail = extractDetail(data);
+  throw new ApiError(humanizeDetail(detail), response.status, detail, url);
 }

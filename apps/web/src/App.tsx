@@ -20,7 +20,6 @@ function Splash() {
   );
 }
 
-/** `/` aterriza en la pantalla propia del rol (o en el login). */
 function HomeRedirect() {
   const { data: user, isLoading } = useMe();
   if (isLoading) return <Splash />;

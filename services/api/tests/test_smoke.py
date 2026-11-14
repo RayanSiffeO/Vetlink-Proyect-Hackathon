@@ -1,5 +1,3 @@
-"""Smoke tests del H+0 (sin red externa, misma BD de demo)."""
-
 from __future__ import annotations
 
 import pytest
@@ -8,23 +6,73 @@ from fastapi.testclient import TestClient
 from app.config import settings
 from app.main import app
 
+LOCKED_DETAIL = "La historia completa se desbloquea al aceptar la derivación"
+
 
 @pytest.fixture(scope="module")
 def client() -> TestClient:
-    with TestClient(app) as c:
-        yield c
+    with TestClient(app) as test_client:
+        yield test_client
 
 
 def login(client: TestClient, user: str) -> None:
-    r = client.post("/api/auth/demo", json={"user": user})
-    assert r.status_code == 200, r.text
-    assert r.json()["user"]["username"] == user
+    response = client.post("/api/auth/demo", json={"user": user})
+    assert response.status_code == 200, response.text
+    assert response.json()["user"]["username"] == user
+
+
+def create_kira_request(client: TestClient) -> str:
+    created = client.post(
+        "/api/requests",
+        json={
+            "patient_id": "pat_kira",
+            "specialist_id": "spc_marc",
+            "motivo": "Soplo cardíaco",
+            "urgencia": "ALTA",
+            "share_level": "CLINICAL",
+            "preferred": "Mañanas",
+        },
+    )
+    assert created.status_code == 200, created.text
+    request_body = created.json()["request"]
+    assert request_body["status"] == "REQUESTED"
+    return request_body["id"]
+
+
+def assert_summary_has_no_identity(client: TestClient, request_id: str) -> None:
+    summary = client.get(f"/api/requests/{request_id}/summary")
+    assert summary.status_code == 200
+    raw = summary.text
+    assert "9410000" not in raw and "TUTOR_" not in raw and "Carmen" not in raw
+
+
+def assert_briefing_locked(client: TestClient, request_id: str) -> None:
+    locked = client.get(f"/api/requests/{request_id}/briefing")
+    assert locked.status_code == 403
+    assert locked.json()["detail"] == LOCKED_DETAIL
+
+
+def accept_request(client: TestClient, request_id: str) -> None:
+    accepted = client.post(
+        f"/api/requests/{request_id}/accept",
+        json={"slot_iso": "2026-11-16T09:30:00"},
+    )
+    assert accepted.status_code == 200, accepted.text
+    assert accepted.json()["request"]["status"] == "SCHEDULED"
+
+
+def assert_briefing_unlocked(client: TestClient, request_id: str) -> None:
+    unlocked = client.get(f"/api/requests/{request_id}/briefing")
+    assert unlocked.status_code == 200
+    briefing = unlocked.json()["briefing"]
+    assert set(briefing["alert_counts"]) == {"CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"}
+    assert 1 <= len(briefing["alerts_rendered"]) <= 7
 
 
 def test_health(client: TestClient) -> None:
-    r = client.get("/api/health")
-    assert r.status_code == 200
-    body = r.json()
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    body = response.json()
     assert body["status"] == "ok" and body["db"] == "sqlite" and body["seeded"] is True
 
 
@@ -34,7 +82,7 @@ def test_auth_and_patients(client: TestClient) -> None:
     me = client.get("/api/me").json()["user"]
     assert me["role"] == "CLINIC"
     patients = client.get("/api/patients").json()["patients"]
-    ids = {p["id"] for p in patients}
+    ids = {patient["id"] for patient in patients}
     assert {"pat_bruno", "pat_kira", "pat_luna"} <= ids
 
 
@@ -49,57 +97,36 @@ def test_record_has_canonical_and_alerts(client: TestClient) -> None:
 def test_import_cache_and_csv_review(client: TestClient) -> None:
     login(client, "laura")
     sample = settings.samples_dir / "historial.json"
-    with sample.open("rb") as fh:
-        r = client.post("/api/imports", files={"files": ("historial.json", fh, "application/json")})
-    assert r.status_code == 200
-    entry = r.json()["files"][0]
+    with sample.open("rb") as handle:
+        response = client.post(
+            "/api/imports",
+            files={"files": ("historial.json", handle, "application/json")},
+        )
+    assert response.status_code == 200
+    entry = response.json()["files"][0]
     assert entry["status"] == "READY"
     assert entry["record_id"] == "pat_kira"
 
     csv_path = settings.samples_dir / "export_clinica_norte.csv"
-    with csv_path.open("rb") as fh:
-        r = client.post("/api/imports", files={"files": (csv_path.name, fh, "text/csv")})
-    entry = r.json()["files"][0]
+    with csv_path.open("rb") as handle:
+        response = client.post(
+            "/api/imports",
+            files={"files": (csv_path.name, handle, "text/csv")},
+        )
+    entry = response.json()["files"][0]
     assert entry["status"] == "NEEDS_REVIEW"
     assert entry["message"] == "mapeo asistido pendiente"
 
 
 def test_request_summary_locked_then_briefing(client: TestClient) -> None:
     login(client, "laura")
-    created = client.post(
-        "/api/requests",
-        json={
-            "patient_id": "pat_kira",
-            "specialist_id": "spc_marc",
-            "motivo": "Soplo cardíaco",
-            "urgencia": "ALTA",
-            "share_level": "CLINICAL",
-            "preferred": "Mañanas",
-        },
-    )
-    assert created.status_code == 200, created.text
-    rid = created.json()["request"]["id"]
-    assert created.json()["request"]["status"] == "REQUESTED"
-
-    summary = client.get(f"/api/requests/{rid}/summary")
-    assert summary.status_code == 200
-    raw = summary.text
-    assert "9410000" not in raw and "TUTOR_" not in raw and "Carmen" not in raw
-
-    locked = client.get(f"/api/requests/{rid}/briefing")
-    assert locked.status_code == 403
-    assert locked.json()["detail"] == "La historia completa se desbloquea al aceptar la derivación"
+    request_id = create_kira_request(client)
+    assert_summary_has_no_identity(client, request_id)
+    assert_briefing_locked(client, request_id)
 
     login(client, "marc")
-    accepted = client.post(f"/api/requests/{rid}/accept", json={"slot_iso": "2026-11-16T09:30:00"})
-    assert accepted.status_code == 200, accepted.text
-    assert accepted.json()["request"]["status"] == "SCHEDULED"
+    accept_request(client, request_id)
+    assert_briefing_unlocked(client, request_id)
 
-    unlocked = client.get(f"/api/requests/{rid}/briefing")
-    assert unlocked.status_code == 200
-    briefing = unlocked.json()["briefing"]
-    assert set(briefing["alert_counts"]) == {"CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"}
-    assert 1 <= len(briefing["alerts_rendered"]) <= 7
-
-    appts = client.get("/api/appointments").json()["appointments"]
-    assert any(a["request_id"] == rid for a in appts)
+    appointments = client.get("/api/appointments").json()["appointments"]
+    assert any(appointment["request_id"] == request_id for appointment in appointments)

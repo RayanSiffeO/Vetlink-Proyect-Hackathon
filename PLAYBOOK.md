@@ -2,8 +2,10 @@
 
 > **Documento maestro de trabajo y ritmo del equipo.**  
 > Ventana real: sábado 14/11/2026 01:00 → domingo 15/11/2026. **Trata el domingo 13:30 como deadline real** (el oficial lo anuncia la organización; asumimos 15:00 CET).  
-> Versión 1.6 · 14/11/2026 02:25 · Lead (agente) para el equipo Joniha.  
-> Cambios v1.6: **calendario oficial re-anclado** (CP1 sáb 12:00 · CP2 sáb 18:00 · CP3 dom 14:45, 15 min cada uno, cámara on, sala del jurado) y plan hora a hora reescrito (§8). H+0 ejecutado en local con agentes. **GitHub congelado por indicación del equipo: nada de push.**  
+> Versión 1.8 · 14/11/2026 03:15 · Lead (agente) para el equipo Joniha.  
+> Cambios v1.8: **refactor clean-code completado y verificado** — backend `ruff` 0, `pytest` 5/5 y contrato OpenAPI deep-equal; frontend build OK con 0 comentarios y 0 ifs anidados; 165 violaciones del gate → 0/74 ficheros. Añadido `scripts\check-code.ps1` como gate de §7.1.  
+> Cambios v1.7: **H+0 validado por el equipo en navegador** (login, importación, ficha, marketplace, solicitud, briefing con niveles de acceso y agenda) y **reglas de código obligatorias** añadidas (§7.1): DRY, clean code sin comentarios, cero `ifs` imbricados, una función un propósito y sin funciones complejas.  
+> Cambios v1.6: **calendario oficial re-anclado** (CP1 sáb 12:00 · CP2 sáb 18:00 · CP3 dom 14:45, 15 min cada uno, cámara on, sala del jurado) y plan hora a hora reescrito (§8). **GitHub congelado por indicación del equipo: nada de push.**  
 > Cambios v1.5: **organización real confirmada** — 2 personas en **pair programming** por Discord, decisiones conjuntas con IA como apoyo; Jose Miguel = frontend/producto/demo; compañero = backend/datos. Roles (§7) y modo de trabajo actualizados, nuevo [`docs/decisiones.md`](docs/decisiones.md) como registro de decisiones.  
 > Cambios v1.4: **equipo real = 2 personas**; roles y liderazgos reescritos (§7), ritmo ajustado (§8.5) y paquete de **los 3 checkpoints oficiales** en `docs/checkpoints/` (§13).  
 > Cambios v1.3: **stack rápido aprobado** — React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico y sin LLM en la demo; Postgres-ready. Elimina ~4–6 h de infra.  
@@ -19,7 +21,7 @@
 - **Nuestra apuesta:** **VetLink** = la historia clínica en un formato único + la red de especialistas + el **briefing pre-visita**. Pitch: *"La historia clínica de tu paciente llega completa al especialista antes de la visita."*
 - **Decisiones clave del debate:** alcance **C' recortado** (5 pantallas, ~40–48 h-persona), **briefing determinista** (la IA solo extrae), **resumen no identificativo antes de aceptar**, **demo local-first** con seed y vídeo.
 - **Stack rápido (v1.3):** React + Vite + Tailwind + **DaisyUI** · FastAPI + **SQLModel + SQLite** · auth demo por cookie · **un solo proceso en demo** (FastAPI sirve la SPA). Sin Supabase, sin Docker en el camino crítico, sin LLM en la demo. Postgres-ready.
-- **Estado:** repo con documentación, checkpoints y estructura (0 código de app), ~36 h de reloj, **equipo de 2 personas**. Plan por bloques con hitos demoables y congelación progresiva.
+- **Estado:** **H+0 funcional y validado por el equipo en navegador** (login, importación, ficha con alertas, marketplace, solicitud, briefing con niveles de acceso y agenda). Código en local (GitHub congelado por indicación del equipo). ~33 h de reloj, **equipo de 2 personas** en pair programming. Plan re-anclado a los 3 checkpoints.
 
 ---
 
@@ -265,12 +267,43 @@ Joniha/
 8. `README.md` se actualiza **hoy**, no el domingo.
 9. Toda decisión relevante se registra en [`docs/decisiones.md`](docs/decisiones.md): es la prueba de plan vivo y coordinado en los checkpoints.
 
+### 7.1 Reglas de código (obligatorias desde H+0, validadas por el equipo)
+
+> Aplican a `services/api/**` y `apps/web/**`. No son sugerencias: un cambio que las incumpla se rechaza en la revisión cruzada de 5 minutos.
+
+| Regla | Qué significa | Cómo se comprueba |
+|---|---|---|
+| **DRY** | una sola implementación por lógica; helpers/componentes compartidos; constantes para literales repetidos; nada de copiar-pegar | revisión + `ruff` (back) / `eslint` (front) |
+| **Clean code, sin comentarios** | **cero comentarios y docstrings explicativos**; cero código muerto, imports sin usar o código comentado; el código se explica solo | `scripts\check-code.ps1` |
+| **Cero ifs imbricados** | ningún `if` dentro de otro `if`; guard clauses y early return; sin `else` después de `return` | `eslint` (`max-depth`, `no-else-return`) + revisión |
+| **Una función, un propósito** | funciones/componentes ≤25 líneas lógicas, ≤3 parámetros, sin flags booleanas que cambien el comportamiento; si hace dos cosas, se parte | revisión + `max-lines-per-function` |
+| **Sin funciones complejas** | complejidad ciclomática ≤8; sin anidamiento profundo ni callbacks anidados | `ruff` `C901` · `eslint` `complexity` |
+| **Sin cambios silenciosos** | un refactor no cambia contrato, textos de UI ni comportamiento; si los cambia, se anota en `docs/decisiones.md` | revisión cruzada + demo |
+
+**Revisión en pareja (5 min) antes de aceptar un cambio:** build/tests en verde · `scripts\check-code.ps1` en verde · sin ifs anidados ni funciones >25 líneas · la demo sigue funcionando.
+
+**Comandos de calidad:**
+```powershell
+# Backend
+cd services/api; .venv\Scripts\python.exe -m ruff check app tests; .venv\Scripts\python.exe -m pytest -q
+# Frontend
+cd apps/web; npm run build; npm run lint   # si ESLint está configurado
+# Barrido de comentarios/TODOs (ambos)
+powershell -ExecutionPolicy Bypass -File scripts\check-code.ps1
+```
+
+**Estado tras la pasada de limpieza (03:15):**
+- Backend: `ruff` **0**, `pytest` **5/5**, OpenAPI **deep-equal** al contrato congelado, 0 comentarios/docstrings, 0 ifs anidados (AST), 0 funciones >25 líneas, complejidad máx. 5.
+- Frontend: `npm run build` **OK**, 0 comentarios, 0 ifs anidados, 0 ternarios anidados, ningún componente >39 líneas; textos de UI y clases intactos.
+- Gate `scripts\check-code.ps1`: **0 violaciones en 74 ficheros** (antes: 165).
+- Verificación E2E post-refactor: health, login, 3 pacientes, import 3 READY + 1 NEEDS_REVIEW, ficha Kira, solicitud, briefing 403→aceptar→200, agenda, SPA y reset — **todo OK**.
+
 ### Gestión de tareas
 
 - Tablero (GitHub Projects o Issues): **Backlog · En curso (WIP máx. 2/persona) · En revisión · Hecho**.
 - Cada tarea con dueño, criterio de aceptación observable y marca 🏁 si entra en la demo.
 - Revisión del tablero en cada checkpoint.
-- **Definición de Hecho (DoD):** visible en la demo · estados vacío y error · sin secretos · commit en `main` · documentación tocada si aplica · 0 bugs P0.
+- **Definición de Hecho (DoD):** visible en la demo · estados vacío y error · sin secretos · commit **local** (GitHub congelado hasta nuevo aviso) · documentación tocada si aplica · **cumple §7.1** (DRY, sin comentarios, sin ifs imbricados, funciones pequeñas) · 0 bugs P0.
 
 ---
 
@@ -284,7 +317,7 @@ Joniha/
 
 | Franja | Bloque | Objetivo | Entregable/Hito | Checkpoint |
 |---|---|---|---|---|
-| 02:20–03:00 | **H+0 · Base** | Scaffold `apps/web` + `services/api`, contrato congelado, SQLite con seed de los 3 pacientes (agentes en paralelo) | Base levantando en local | — |
+| 02:20–03:15 | **H+0 · Base ✅** | Scaffold `apps/web` + `services/api`, contrato congelado, SQLite con seed de los 3 pacientes (agentes en paralelo) + refactor clean-code | **Validado por el equipo (02:50)** + limpieza §7.1 verificada (03:15) | — |
 | 03:00–08:00 | **Descanso** | Dormir; los humanos no rinden a las 4 a.m. | — | — |
 | 08:00–08:30 | Kickoff | Revisar H+0 en pareja, arrancar backend+frontend y validar `/api/health` y seed | Entorno verificado | Standup 10' |
 | 08:30–11:15 | **B1 · Demo CP1** | Login+seed+import cache+ficha de paciente; repasar CP1 y plan | **H1 (11:15): demo mínima + CP1 listo** | Demo interna 1 |

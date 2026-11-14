@@ -1,14 +1,3 @@
-/**
- * Tipos del contrato de API de VetLink.
- *
- * Verificado contra `services/api` (contrato real de la demo del H+0):
- * - urgencia: BAJA | MEDIA | ALTA
- * - estados de solicitud: REQUESTED | ACCEPTED | SCHEDULED | COMPLETED | DECLINED | CANCELLED | EXPIRED
- * - `available_slots`: array de strings ISO 8601
- * - el resumen no identificativo (`/summary`) agrupa `patient`, `headline`, `alert_counts`,
- *   `alerts`, `priority_actions` y `privacy`.
- */
-
 export type Role = 'CLINIC' | 'SPECIALIST' | 'ADMIN' | string;
 
 export interface User {
@@ -28,9 +17,7 @@ export interface LoginResponse {
   user: User;
 }
 
-/* ------------------------------------------------------------------ */
-/* Pacientes                                                           */
-/* ------------------------------------------------------------------ */
+export type DemoUserId = 'laura' | 'marc';
 
 export interface PatientSummary {
   id: string;
@@ -149,10 +136,6 @@ export interface RecordMeta {
   alerts_count?: number | null;
 }
 
-/* ------------------------------------------------------------------ */
-/* Importación de ficheros                                             */
-/* ------------------------------------------------------------------ */
-
 export type ImportFileStatus = 'UPLOADING' | 'PARSING' | 'NEEDS_REVIEW' | 'READY' | 'FAILED' | string;
 
 export interface ImportFileResult {
@@ -169,10 +152,6 @@ export interface ImportResponse {
   summary?: { total: number; ready: number; needs_review: number };
 }
 
-/* ------------------------------------------------------------------ */
-/* Especialistas                                                       */
-/* ------------------------------------------------------------------ */
-
 export interface Specialist {
   id: string;
   name: string;
@@ -183,8 +162,6 @@ export interface Specialist {
   next_slot?: string | null;
   [key: string]: unknown;
 }
-
-/** La API devuelve los slots como strings ISO (`2026-11-16T09:30:00`). */
 export type AvailableSlot = string | { slot_iso?: string; label?: string; duration_min?: number };
 
 export interface SpecialistsResponse {
@@ -199,10 +176,6 @@ export interface SpecialistDetailResponse {
   slots_count?: number;
 }
 
-/* ------------------------------------------------------------------ */
-/* Solicitudes                                                         */
-/* ------------------------------------------------------------------ */
-
 export type RequestStatus =
   | 'REQUESTED'
   | 'ACCEPTED'
@@ -214,8 +187,6 @@ export type RequestStatus =
   | string;
 
 export type ShareLevel = 'CLINICAL' | 'FULL';
-
-/** Urgencias según `RequestCreateIn`: BAJA / MEDIA / ALTA. */
 export type Urgency = 'BAJA' | 'MEDIA' | 'ALTA';
 
 export interface RequestRecord {
@@ -227,19 +198,15 @@ export interface RequestRecord {
   motivo?: string | null;
   urgencia?: Urgency | string | null;
   share_level?: ShareLevel | string | null;
-  /** La API guarda un texto libre ("Mañanas de lunes a jueves"). */
   preferred?: string | null;
   created_at?: string | null;
   updated_at?: string | null;
-  // Enriquecido en el listado:
   patient_name?: string | null;
   patient_species?: string | null;
   specialist_name?: string | null;
   specialist_specialty?: string | null;
   [key: string]: unknown;
 }
-
-/** Ficha pública del paciente (sin datos del tutor ni microchip). */
 export interface PublicPatient {
   species?: string | null;
   species_code?: string | null;
@@ -328,8 +295,6 @@ export interface BriefingBody {
   alerts_rendered?: AlertItem[] | null;
   alerts_total?: number | null;
 }
-
-/** `GET /requests/{id}/briefing`: sobre con briefing, registro y auditoría. */
 export interface BriefingResponse {
   request?: RequestRecord;
   briefing?: BriefingBody | null;
@@ -387,7 +352,6 @@ export interface CreateRequestPayload {
   motivo: string;
   urgencia: Urgency;
   share_level: ShareLevel;
-  /** Texto libre con las franjas preferidas (la API lo guarda como string). */
   preferred: string;
 }
 
