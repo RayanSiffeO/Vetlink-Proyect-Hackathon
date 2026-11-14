@@ -632,6 +632,13 @@
   .alert-surface-medium {
     background: linear-gradient(180deg, rgba(125, 90, 103, 0.09) 0%, rgba(255, 255, 255, 0.95) 56%);
   }
+  .alert-card summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .alert-card[open] .alert-chevron {
+    transform: rotate(180deg);
+  }
   .glass {
     background-color: rgba(255, 252, 246, 0.42);
     background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 46%);
@@ -1244,6 +1251,13 @@
 
   .alert-surface-medium {
     background: linear-gradient(180deg, rgba(125, 90, 103, 0.09) 0%, rgba(255, 255, 255, 0.95) 56%);
+  }
+  .alert-card summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .alert-card[open] .alert-chevron {
+    transform: rotate(180deg);
   }
   .glass {
     background-color: rgba(255, 255, 255, 0.96);
