@@ -217,6 +217,7 @@ VetLink/
 │   ├── samples/           # historias de ejemplo
 │   └── canonical/         # registros canónicos usados por el seed
 ├── contracts/             # contrato OpenAPI v1
+├── docs/presentacion-final/ # presentación de la fase final
 ├── screenshots/           # capturas de la demo y diagramas
 ├── scripts/               # atajos de desarrollo y E2E
 ├── start.py               # arranque multiplataforma en un comando
@@ -227,6 +228,12 @@ VetLink/
 ## Privacidad
 
 Todos los datos son **ficticios y anonimizados**. El prototipo aplica mínimo privilegio: roles, niveles de compartición (`CLINICAL` / `FULL`), resumen no identificativo antes de aceptar, auditoría de accesos y aviso visible de entorno de demostración. En producción: clínica como responsable del tratamiento, VetLink como encargado (DPA), alojamiento en la UE y consentimiento informado del tutor (RGPD / LOPDGDD).
+
+## Presentación final
+
+Resumen de 5 minutos para la fase final: idea, problema, demo, valor y nivel técnico. Incluye notas de ponente en cada diapositiva.
+
+- [VetLink · presentación final (PPTX)](docs/presentacion-final/VetLink-final-5min.pptx)
 
 ## Equipo
 
