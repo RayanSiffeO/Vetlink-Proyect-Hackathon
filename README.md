@@ -233,7 +233,8 @@ Todos los datos son **ficticios y anonimizados**. El prototipo aplica mínimo pr
 
 Resumen de 5 minutos para la fase final: idea, problema, demo, valor y nivel técnico. Incluye notas de ponente en cada diapositiva.
 
-- [VetLink · presentación final (PPTX)](docs/presentacion-final/VetLink-final-5min.pptx)
+- [VetLink · presentación final (PPTX con notas)](docs/presentacion-final/VetLink-final-5min.pptx)
+- [VetLink · presentación final (PDF)](docs/presentacion-final/VetLink-final-5min.pdf)
 
 ## Equipo
 
